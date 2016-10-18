@@ -1,0 +1,9 @@
+{
+  "routes": [
+    {
+      "route": "/api/home/:testid",
+      "method": "GET",
+      "controller": "../controllers/home-controller"
+    }
+  ]
+}

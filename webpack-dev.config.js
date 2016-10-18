@@ -1,4 +1,5 @@
 var commonConfig = require('./webpack-common.config.js');
+var nodeExternals = require('webpack-node-externals');
 
 var devLoaders = [
   // javascript/jsx loader - https://www.npmjs.com/package/babel-loader - with the react-hot loader
@@ -9,7 +10,7 @@ var devLoaders = [
   }
 ]
 
-module.exports = {
+module.exports = [{
   entry: [
     // setup the hot mobule loading
     'webpack-dev-server/client?http://localhost:8080',
@@ -34,4 +35,22 @@ module.exports = {
   plugins: [
     commonConfig.indexPagePlugin
   ],
-};
+},
+{
+  target: 'node',
+  devtool: 'eval',
+  externals: [nodeExternals()],
+  entry: [
+    './server/config/worker-config.js'
+  ],
+  output: {
+    path: './build',
+    filename: 'server-bundle.js'
+  },
+  module: {
+    loaders: commonConfig.loaders.concat(devLoaders)
+  },
+  plugins: [
+    commonConfig.indexPagePlugin
+  ],
+}];

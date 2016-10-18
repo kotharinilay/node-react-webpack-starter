@@ -1,7 +1,7 @@
 {
-  "name": "webpack-starter",
+  "name": "node-react-webpack-starter",
   "version": "1.0.0",
-  "description": "Bare bones webpack project with a node express server",
+  "description": "Demo starter kit with node-react-redux",
   "main": "server/index.js",
   "scripts": {
     "dev-server": "nodemon server/index.js --watch server",
@@ -12,8 +12,8 @@
     "test": "karma start",
     "testing": "karma start --single-run=false"
   },
-  "repository": "git@github.com:cgreening/webpack-starter.git",
-  "author": "Chris Greening",
+  "repository": "https://github.com/kotharinilay/node-react-webpack-starter.git",
+  "author": "Nilay Kothari",
   "license": "UNLICENSED",
   "dependencies": {
     "compression": "^1.5.0",
