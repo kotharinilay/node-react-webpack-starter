@@ -1,8 +1,13 @@
 require("./Assets/style.scss")
 
-var React = require('react');
-var ReactDOM = require('react-dom');
+import React from 'react';
+import { render } from 'react-dom';
+import { Provider } from 'react-redux';
+import store from './store';
+import App from './Components/App';
 
-var App = require('./App.js');
-
-ReactDOM.render(<App/>, document.getElementById('body'));
+render(
+    <Provider store={store}>
+        <App />
+    </Provider>, document.getElementById('body')
+);
