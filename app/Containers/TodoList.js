@@ -1,7 +1,7 @@
-import React, { PropTypes } from 'react';
-import { connect } from 'react-redux';
-import { changeStatus, deleteTodo } from '../Actions/todoActions';
-import { DISPLAY_ALL, DISPLAY_ACTIVE, DISPLAY_INACTIVE } from '../constants';
+import React, {PropTypes} from 'react';
+import {connect} from 'react-redux';
+import {changeStatus, deleteTodo, editTodo} from '../Actions/todoActions';
+import {DISPLAY_ALL, DISPLAY_ACTIVE, DISPLAY_INACTIVE} from '../constants';
 import Todo from '../Components/Todo'
 
 const filterTodo = (notes, filter) => {
@@ -35,29 +35,32 @@ const mapDispatchToProps = (dispatch) => {
         },
         deleteTodo: (id) => {
             dispatch(deleteTodo(id))
+        },
+        editTodo: (id, text) => {
+            dispatch(editTodo(id, text))
         }
     }
 }
 
-let TodoList = ({notes, onTodoClick, deleteTodo}) => {
+let TodoList = ({notes, onTodoClick, deleteTodo, editTodo}) => {
     debugger;
     return (
         <ul>
-            {notes.map(note =>
-                <Todo key={note.id} note={note} changeStatus={() => onTodoClick(note.id)} deleteTodo={() => deleteTodo(note.id)} />
-            )}
+            {notes.map(note => <Todo
+                key={note.id}
+                note={note}
+                changeStatus={() => onTodoClick(note.id)}
+                deleteTodo={() => deleteTodo(note.id)}
+                editTodo={(id, text) => editTodo(id, text)}/>)}
         </ul>
     )
 }
 
 TodoList.propTypes = {
-    notes: PropTypes.arrayOf(PropTypes.shape({
-        text: PropTypes.string.isRequired,
-        id: PropTypes.number.isRequired,
-        completed: PropTypes.bool.isRequired
-    })),
+    notes: PropTypes.arrayOf(PropTypes.shape({text: PropTypes.string.isRequired, id: PropTypes.number.isRequired, completed: PropTypes.bool.isRequired})),
     onTodoClick: PropTypes.func.isRequired,
-    deleteTodo: PropTypes.func.isRequired
+    deleteTodo: PropTypes.func.isRequired,
+    editTodo: PropTypes.func.isRequired
 }
 
 TodoList = connect(mapStateToProps, mapDispatchToProps)(TodoList)

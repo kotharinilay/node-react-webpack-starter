@@ -1,4 +1,4 @@
-import { ADD_TODO, CHANGE_STATUS, DELETE_TODO } from '../constants';
+import {ADD_TODO, CHANGE_STATUS, DELETE_TODO, EDIT_TODO} from '../constants';
 
 const notes = (state = [], action) => {
     debugger;
@@ -14,17 +14,16 @@ const notes = (state = [], action) => {
         case DELETE_TODO:
             return state.filter(t => t.id != action.id)
 
+        case EDIT_TODO:
+            return state.map(t => editTodo(t, action))
+
         default:
             return state;
     }
 }
 
 const addTodo = (action) => {
-    return {
-        text: action.text,
-        id: action.id,
-        completed: false
-    }
+    return {text: action.text, id: action.id, completed: false}
 }
 
 const changeStatus = (state, id) => {
@@ -32,6 +31,13 @@ const changeStatus = (state, id) => {
         return Object.assign({}, state, {
             completed: !state.completed
         })
+    }
+    return state
+}
+
+const editTodo = (state, action) => {
+    if (state.id == action.id) {
+        return Object.assign({}, state, {text: action.text})
     }
     return state
 }
