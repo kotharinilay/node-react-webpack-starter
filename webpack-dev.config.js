@@ -1,6 +1,8 @@
 var commonConfig = require('./webpack-common.config.js');
 var nodeExternals = require('webpack-node-externals');
-
+//http://www.c-sharpcorner.com/uploadfile/asmabegam/asp-net-mvc-5-security-and-creating-user-role/
+//https://code.msdn.microsoft.com/MVC-ASPNET-Identity-7cd386d3
+//http://techbrij.com/role-based-menu-asp-net-mvc
 var devLoaders = [
   // javascript/jsx loader - https://www.npmjs.com/package/babel-loader - with the react-hot loader
   {
