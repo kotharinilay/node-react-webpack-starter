@@ -1,14 +1,15 @@
 import React, {PropTypes, Component} from 'react';
 import {render} from 'react-dom';
 
-// const Todo = (props) => {     debugger;     render()     {         return (
-// <li onClick={props.changeStatus}>                 {props.note.text} <button
-// onClick={props.deleteTodo}> Delete </button> </li>         ) } }
+// const Todo = (props) => {     debugger;     return (         <li
+// onClick={props.changeStatus}>             {props.note.text} <button
+// onClick={props.deleteTodo}>                 Delete </button>         </li>  )
+// }
 
 class Todo extends Component {
     constructor(props) {
         debugger;
-        super(props)
+        super(props);
         this.props = props;
         this.state = {
             isEditing: false
@@ -33,13 +34,11 @@ class Todo extends Component {
         );
     }
     onEdit(e) {
-
         this
             .props
-            .editTodo(this.props.note.id, this.refs.editNote.value)
+            .editTodo(this.props.note.id, this.refs.editNote.value);
         this.setState({isEditing: false});
     }
-
     renderActions() {
         if (this.state.isEditing) {
             debugger;
@@ -60,7 +59,6 @@ class Todo extends Component {
                 </div>
             );
         }
-
         return (
             <div>
                 <button onClick={this.props.deleteTodo}>
