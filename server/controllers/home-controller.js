@@ -4,7 +4,6 @@ var jslinq = require('jslinq');
 function HomeController() {}
 
 function get(req, res, next) {
-  debugger;
   axios
     .get('https://jsonplaceholder.typicode.com/comments')
     .then(function (resd) {

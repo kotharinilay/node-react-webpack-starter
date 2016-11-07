@@ -1,7 +1,6 @@
 import {ADD_TODO, CHANGE_STATUS, DELETE_TODO, EDIT_TODO} from '../constants';
 
 const notes = (state = [], action) => {
-    debugger;
     switch (action.type) {
         case ADD_TODO:
             return [

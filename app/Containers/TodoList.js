@@ -5,7 +5,6 @@ import {DISPLAY_ALL, DISPLAY_ACTIVE, DISPLAY_INACTIVE} from '../constants';
 import Todo from '../Components/Todo'
 
 const filterTodo = (notes, filter) => {
-    debugger;
     switch (filter) {
         case DISPLAY_ALL:
             return notes
@@ -22,7 +21,6 @@ const filterTodo = (notes, filter) => {
 }
 
 const mapStateToProps = (state) => {
-    debugger;
     return {
         notes: filterTodo(state.notes, state.filter)
     }
@@ -43,7 +41,6 @@ const mapDispatchToProps = (dispatch) => {
 }
 
 let TodoList = ({notes, onTodoClick, deleteTodo, editTodo}) => {
-    debugger;
     return (
         <ul>
             {notes.map(note => <Todo

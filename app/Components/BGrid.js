@@ -20,7 +20,6 @@ class BGrid extends Component {
     }
 
     getExternalData(pageSize, page, sortColumn, sortasc, filter) {
-        debugger;
         var that = this;
         pageSize = pageSize || 10;
         page = page || 1;
@@ -31,7 +30,6 @@ class BGrid extends Component {
         this.setState({isLoading: true});
 
         api(pageSize, page, sortColumn, sortasc, filter).then(function (data) {
-            debugger;
             //let pageSize = that.state.externalResultsPerPage;
             that.setState({
                 results: data.data,
@@ -50,24 +48,20 @@ class BGrid extends Component {
     componentWillMount() {}
 
     componentDidMount() {
-        debugger;
         this.getExternalData();
     }
 
     onPageChange(page, sizePerPage) {
-        debugger;
         this.getExternalData(sizePerPage, page, this.state.externalSortColumn, this.state.externalSortAscending, this.state.filterText);
     }
 
     onSortChange(sortName, sortOrder) {
-        debugger;
         this.getExternalData(this.state.externalResultsPerPage, 1, sortName, sortOrder, this.state.filterText)
     }
 
     //onFilterChange(filterObj, colInfos) {}
 
     onSearchChange(searchText, colInfos, multiColumnSearch) {
-        debugger;
         if (searchText === "") {
             this.getExternalData(this.state.externalResultsPerPage, 1, this.state.externalSortColumn, this.state.externalSortAscending, null);
         } else {

@@ -8,7 +8,6 @@ import {render} from 'react-dom';
 
 class Todo extends Component {
     constructor(props) {
-        debugger;
         super(props);
         this.props = props;
         this.state = {
@@ -41,7 +40,6 @@ class Todo extends Component {
     }
     renderActions() {
         if (this.state.isEditing) {
-            debugger;
             return (
                 <div>
                     <button

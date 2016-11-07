@@ -37,7 +37,6 @@ class GriddleGrid extends Component {
         this.setState({isLoading: true});
 
         api(pageSize, page, sortColumn, sortasc, filter).then(function (data) {
-            debugger;
             let pageSize = that.state.externalResultsPerPage;
             that.setState({
                 results: data.data,
