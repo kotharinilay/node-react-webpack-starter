@@ -1,21 +1,25 @@
 var axios = require('axios');
 var jslinq = require('jslinq');
 
-function HomeController() {}
+function HomeController() { }
 
 function get(req, res, next) {
+  debugger;
+  var functionName = req.params.functionName;
+  console.log(functionName);
   axios
-    .get('https://jsonplaceholder.typicode.com/comments')
+    .get('https://jsonplaceholder.typicode.com/' + functionName)
     .then(function (resd) {
-      var pagesize = req.params.pagesize || 10;
-      var pageindex = req.params.pageindex || 1;
-      var sortcolumn = req.params.sortcolumn;
-      var sortasc = req.params.sortasc == null
-        ? true
-        : req.params.sortasc;
-      var searchtext = req.params.searchtext;
-      var skipRec = pagesize * pageindex;
-
+      var a = req.query;
+      var pagesize = req.query.pagesize || 10;
+      var pageindex = req.query.pageindex || 1;
+      var sortcolumn = req.query.sortcolumn;
+      var sortasc = req.query.sortasc == null
+        ? 'asc'
+        : req.query.sortasc;
+      var searchtext = req.query.searchtext;
+      var skipRec = pagesize * (pageindex - 1);
+      var filterObj = req.query.filterObj;
       var queryObj = jslinq(resd.data);
       var result
 
@@ -37,11 +41,27 @@ function get(req, res, next) {
           return el
             .name
             .indexOf(searchtext) != -1 || el
-            .email
-            .indexOf(searchtext) != -1 || el
-            .body
-            .indexOf(searchtext) != -1;
+              .email
+              .indexOf(searchtext) != -1 || el
+                .body
+                .indexOf(searchtext) != -1;
         }).toList();
+      }
+
+      if (!result) {
+        result = queryObj.toList();
+      }
+
+      if (filterObj) {
+        filterObj = JSON.parse(filterObj);
+        var keys = Object.keys(filterObj);
+        for (var key of keys) {
+          queryObj = jslinq(result);
+          result = queryObj.where(function (el) {
+            return el[key]
+              .indexOf(filterObj[key].value) != -1
+          }).toList();
+        }
       }
 
       var total = result.length || 0;
@@ -57,9 +77,9 @@ function get(req, res, next) {
       res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
       res
         .status(200)
-        .json({"data": result, "total": total});
+        .json({ "data": result, "total": total });
     })
-    .catch(function (error) {});
+    .catch(function (error) { });
 }
 
 HomeController.prototype = {

@@ -21,7 +21,7 @@ module.exports = [
   {
     entry: [
       // setup the hot mobule loading
-      'webpack-dev-server/client?http://localhost:8080',
+      'webpack-dev-server/client?http://localhost:3010',
       'webpack/hot/only-dev-server',
       // our entry file
       './app/main.js'
@@ -35,7 +35,8 @@ module.exports = [
       // proxy calls to api to our own node server backend
       proxy: {
         '/api/*': 'http://localhost:5000/'
-      }
+      },
+      port: 3010
     },
     module: {
       loaders: commonConfig

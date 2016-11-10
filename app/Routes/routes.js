@@ -6,7 +6,8 @@ import Home from '../Components/Home';
 import App from '../Components/App';
 import NotFound from '../Components/NotFount';
 import GriddleGrid from '../Components/GriddleGrid';
-import BGrid from '../Components/BGrid';
+import Comments from '../Components/Comments';
+
 
 let routes = (
     <Route component={Container}>
@@ -14,7 +15,7 @@ let routes = (
         <Route path="/home" component={Home}></Route>
         <Route path="/todo" component={App}></Route>
         <Route path="/griddle" component={GriddleGrid}></Route>
-        <Route path="/bgrid" component={BGrid}></Route>
+        <Route path="/bgrid" component={Comments}></Route>
         <Route path="*" component={NotFound}></Route>
     </Route >
 )

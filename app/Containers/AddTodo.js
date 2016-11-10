@@ -1,10 +1,9 @@
-import {connect} from 'react-redux';
-import React, {Component} from 'react';
-import {addTodo} from '../Actions/todoActions';
+import { connect } from 'react-redux';
+import React, { Component } from 'react';
+import { addTodo } from '../Actions/todoActions';
 
 class AddTodo extends Component {
-    constructor(props)
-    {
+    constructor(props) {
         super(props)
         this.props = props
     }
@@ -15,19 +14,15 @@ class AddTodo extends Component {
             <div>
                 <form
                     onSubmit={e => {
-                    e.preventDefault();
-                    if (!input.value.trim()) {
-                        return;
-                    }
-                    this
-                        .props
-                        .dispatch(addTodo(input.value));
-                    input.value = '';
-                }}>
+                        e.preventDefault();
+                        if (!input.value.trim()) {
+                            return;
+                        }
+                        this.props.dispatch(addTodo(input.value));
+                        input.value = '';
+                    } }>
                     <input
-                        ref={node => {
-                        input = node
-                    }}/>
+                        ref={node => { input = node } } />
                     <button type='submit'>
                         Add Post
                     </button>
