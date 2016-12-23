@@ -1,0 +1,1 @@
+This repo consist static resource for app such as images, css, js etc  

@@ -1,0 +1,71 @@
+Information regarding packages are installed for the app (source:package.json)
+
+------------------------------------------------------------------------------------------------------------------------------
+dependencies 
+------------------------------------------------------------------------------------------------------------------------------
+
+aws-sdk             = The official AWS SDK for JavaScript, available for browsers and mobile devices, or NodeJS backends
+axios               = Promise based HTTP client for the browser and NodeJS  
+bluebird            = Fully featured promise library  
+body-parser         = Parse incoming request bodies in a middleware before your handlers, availabe under the req.body property
+compression         = Compression middleware for gzip|deflate
+debug               = NodeJS debugging utility
+dotenv              = Loads environment variables from a .env file into process.env
+express             = Minimalist web framework
+express-handlebars  = Handlebars view engine for Express 
+helmet              = Secure express apps by setting various HTTP headers
+immutable           = Data collection, data cannot be changed once created, but instead always yields new updated data.
+jquery              = Javascript library for DOM manipulation/operation
+lodash              = JavaScript utility library delivering modularity, performance & extras
+moment              = Lightweight JavaScript date library for parsing, validating, manipulating, and formatting dates
+multer              = Middleware for handling multipart/form-data, which is primarily used for uploading files
+mysql               = NodeJS driver for mysql
+nodemailer          = Send email from NodeJS app
+numeral             = Javascript library for formatting and manipulating numbers
+react               = JavaScript library for building user interfaces
+react-dom           = React package for working with the DOM
+react-redux         = State container for javascript apps conjuction with react
+react-router        = Routing library for react
+redux               = State container for javascript apps
+redux-logger        = Console logging mixin for react 
+redux-thunk         = Allows to write action creators that return a function instead of an action. action creator that returns a function to perform asynchronous dispatch.
+sequelize           = Multi dialect & promise based ORM for NodeJS
+streamifier         = Converts a Buffer/String into a readable stream
+validator           = Library of string validators and sanitizers
+
+------------------------------------------------------------------------------------------------------------------------------
+devDependencies
+------------------------------------------------------------------------------------------------------------------------------
+
+autoprefixer-loader = 
+babel-cli           = Babel cli which can be used to compile files from command line
+babel-loader        = 
+babel-preset-es2015 =
+babel-preset-react  =
+babel-register      =
+chalk               =
+css-loader          =
+eslint-friendly-formatter   =  
+extract-text-webpack-plugin =
+file-loader                 =
+grunt
+grunt-babel
+grunt-contrib-clean
+grunt-contrib-compress
+grunt-contrib-copy
+grunt-contrib-watch
+grunt-nodemon
+grunt-shell
+grunt-webpack
+gruntify-eslint
+json-loader
+load-grunt-tasks
+nodemon
+strip-loader
+style-loader
+webpack
+webpack-dev-server
+
+------------------------------------------------------------------------------------------------------------------------------
+peerDependencies
+------------------------------------------------------------------------------------------------------------------------------

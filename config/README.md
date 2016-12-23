@@ -1,0 +1,1 @@
+This repo should only consist app environment configuration such as Grunt,Webpack,Settings,Error logging etc

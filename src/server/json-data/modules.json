@@ -1,0 +1,68 @@
+{
+    "modules": [
+        {
+            "name": "Livestock",
+            "icon": "./static/images/live-stoct-dropmenu.png",
+            "icon-hover": "./static/images/live-stoct-icon.png",
+            "sub-modules": [
+                {
+                    "name": "Livestock",
+                    "icon": "./static/images/live-stoct-icon.png",
+                    "icon-hover": "./static/images/live-stoct-icon-hover.png"
+                },
+                {
+                    "name": "eNVD",
+                    "icon": "./static/images/envd-icon.png",
+                    "icon-hover": "./static/images/envd-icon-hover.png"
+                },
+                {
+                    "name": "Property",
+                    "icon": "./static/images/property-icon.png",
+                    "icon-hover": "./static/images/property-icon-hover.png"
+                },
+                {
+                    "name": "Business",
+                    "icon": "./static/images/bu-icon.png",
+                    "icon-hover": "./static/images/bu-icon-hover.png"
+                },
+                {
+                    "name": "Contact",
+                    "icon": "./static/images/conact-icon.png",
+                    "icon-hover": "./static/images/conact-icon-hover.png"
+                },
+                {
+                    "name": "Report",
+                    "icon": "./static/images/support-icon.png",
+                    "icon-hover": "./static/images/support-icon-hover.png"
+                }
+            ]
+        },
+        {
+            "name": "Grain & Fodder",
+            "icon": "./static/images/grain-icon.png",
+            "icon-hover": "./static/images/grain-icon-hover.png",
+            "sub-modules": [
+                {
+                    "name": "Feed Setup",
+                    "icon": "./static/images/live-stoct-icon.png",
+                    "icon-hover": "./static/images/live-stoct-icon-hover.png"
+                },
+                {
+                    "name": "Record Feed",
+                    "icon": "./static/images/envd-icon.png",
+                    "icon-hover": "./static/images/envd-icon-hover.png"
+                }
+            ]
+        },
+        {
+            "name": "Security",
+            "icon": "./static/images/lock-icon.png",
+            "icon-hover": "./static/images/lock-icon-hover.png"
+        },
+        {
+            "name": "Setting & Setup",
+            "icon": "./static/images/setting-icon.png",
+            "icon-hover": "./static/images/setting-icon-hover.png"
+        }
+    ]
+}

@@ -1,9 +1,0 @@
-{
-  "routes": [
-    {
-      "route": "/api/home/:functionName",
-      "method": "GET",
-      "controller": "../controllers/home-controller"
-    }
-  ]
-}

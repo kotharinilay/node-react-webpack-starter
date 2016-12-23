@@ -1,0 +1,1 @@
+This repo should only consists database schema files and sequelize instance object 
