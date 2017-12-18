@@ -4,165 +4,184 @@
  * Dropdown list component
  * *************************************/
 
-import React from 'react'
-import PureComponent from '../wrapper-components/PureComponent';
-import lodash from 'lodash';
+import React, { Component } from 'react';
+import { omit, map, find, values, isEqual } from 'lodash';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+import { mandatory } from '../../lib/index';
+import { dropdownStyle, errorStyle } from '../../../../assets/js/mui-theme';
 
-class Select extends PureComponent {
+class DropdownComponent extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            value: null,
+            visited: false,
             error: this.props.eReq
         }
-        this.changeSelect = this.changeSelect.bind(this);
-        this.data = lodash.values(this.props.dataSource);
+        this.fieldStatus = {
+            visited: false,
+            dirty: false,
+            valid: false,
+            value: ''
+        }
+        this.onChange = this.onChange.bind(this);
+        this.data = [...this.props.dataSource];
     }
 
     // Perform validation of selected values
-    validInput(value, text) {
+    validInput(value) {
         let props = this.props;
-        if (value == props.inputProps.placeholder)
+        if (!value)
             return props.eReq;
-        else if (props.eServerValidation)
-            return props.eServerValidation(value, text)
+        else if (props.eClientValidation)
+            return props.eClientValidation(value)
         return null;
     }
 
     // Update error state based on input
-    updateErrorState(value, text) {
-        let isValid = false;
-        let validInput = this.validInput(value, text);
-        if (validInput) {
-            this.setState({ error: validInput });
-        }
-        else {
-            this.setState({ error: null });
-            isValid = true;
-        }
+    updateErrorState(value) {
+        let isValid = true;
+        let errorMessage = this.validInput(value);
+        if (errorMessage)
+            isValid = false;
+        this.setState({ error: (isValid ? null : errorMessage) });
         return isValid;
     }
 
     // Handle onChange event
-    changeSelect(e) {
-        let select = this.refs.refSelect;
-        let value = select.options[select.selectedIndex].value;
-        let text = select.options[select.selectedIndex].text;
-
-        let isValid = this.updateErrorState(value, text);
-        this.props.formSetValue(this.props.inputProps.name, value, isValid, true, text);
+    onChange(e, index, value) {
+        this.fieldStatus.dirty = true;
+        this.fieldStatus.visited = true;
+        this.fieldStatus.value = value;
+        this.fieldStatus.valid = this.updateErrorState(this.fieldStatus.value);
+        this.updateToStore();
+        this.setState({ value: value, visited: true });
+        if (this.fieldStatus.valid || this.props.callOnChange) {
+            if (this.props.onSelectionChange) {
+                this.props.onSelectionChange(this.fieldStatus.value, e.target.textContent);
+            }
+        }
     }
 
-    // Add placeholder to dataSource
-    bindPlaceholder() {
+    // Update store values - (name, value, valid, dirty, visited)
+    updateToStore() {
+        if (this.props.formSetValue)
+            this.props.formSetValue(this.props.inputProps.name, this.fieldStatus.value, this.fieldStatus.valid, this.fieldStatus.dirty, this.fieldStatus.visited);
+    }
+
+    // Add hintText to dataSource
+    bindHintText() {
         let props = this.props;
         const valueField = props.valueField;
         const textField = props.textField;
-        const iPH = props.inputProps.placeholder;
-        if (iPH) {
-            if (!lodash.find(this.data, d => d[valueField] === iPH)) {
+        const hintText = props.inputProps.hintText;
+        if (hintText) {
+            if (!find(this.data, d => d[textField] === hintText)) {
                 this.data.unshift({
-                    [valueField]: iPH,
-                    [textField]: iPH
+                    [valueField]: null,
+                    [textField]: hintText
                 });
             }
         }
     }
 
+    // Update fieldStatus of input
+    updateDropdownStatus(errorMessage) {
+        this.fieldStatus.valid = errorMessage ? false : true;
+        this.setState({ error: (this.fieldStatus.valid ? null : errorMessage) });
+        this.updateToStore();
+    }
+
     // Check component need rerender based on props and state
     shouldComponentUpdate(nextProps, nextState) {
-        let props = this.props;
         let isChanged = false;
-        const iPH = props.inputProps.placeholder;
-        const select = this.refs.refSelect;
-        let value = select.options[select.selectedIndex].value;
-        if (iPH && value == iPH)
-            value = "";
+        let props = this.props;
+        let state = this.state;
 
-        if (props.inputProps.value != value || props.isDirty != nextProps.isDirty || props.isClicked != nextProps.isClicked)
+        if (state.value != nextState.value || state.error != nextState.error || state.visited != nextState.visited || props.isClicked != nextProps.isClicked)
             isChanged = true;
-        if (!_.isEqual(props.dataSource, nextProps.dataSource))
+        if (!isEqual(props.dataSource, nextProps.dataSource))
             isChanged = true;
         return isChanged;
     }
 
     // To update component based on predefine values
-    componentDidMount() {
+    componentWillMount() {
         let props = this.props;
-        const select = this.refs.refSelect;
+        let isUpdateToStore = false;
+        let value = null;
+
+        if (props.inputProps.value)
+            value = props.inputProps.value;
+
         if (!props.eReq) {
-            props.formSetValue(props.inputProps.name, '', true, false);
+            isUpdateToStore = true;
+            this.fieldStatus.valid = true;
         }
-        if (!props.inputProps.placeholder) {
-            const value = select.options[select.selectedIndex].value;
-            const text = select.options[select.selectedIndex].text;
-            this.updateErrorState(value, text);
-            props.formSetValue(props.inputProps.name, value, true, false, text);
+        if (value) {
+            isUpdateToStore = true;
+            this.fieldStatus.valid = true;
+            this.fieldStatus.value = value;
+            this.setState({ value: value, error: null });
         }
-        if (props.iSelectedIndex && this.data.length > props.iSelectedIndex) {
-            select.selectedIndex = props.iSelectedIndex;
-            const value = select.options[select.selectedIndex].value;
-            const text = select.options[select.selectedIndex].text;
-            this.updateErrorState(value, text);
-            props.formSetValue(props.inputProps.name, value, true, false, text);
-        }
-        if (props.iSelectedValue && lodash.find(this.data, d => d[props.valueField] === props.iSelectedValue)) {
-            select.value = props.iSelectedValue
-            const value = select.options[select.selectedIndex].value;
-            const text = select.options[select.selectedIndex].text;
-            this.updateErrorState(value, text);
-            props.formSetValue(props.inputProps.name, value, true, false, text);
-        }
-        if (props.iSelectedText) {
-            const data = lodash.find(this.data, d => d[props.textField] === props.iSelectedText);
-            if (data) {
-                select.value = data[props.valueField];
-                const value = select.options[select.selectedIndex].value;
-                const text = select.options[select.selectedIndex].text;
-                this.updateErrorState(value, text);
-                props.formSetValue(props.inputProps.name, value, true, false, text);
-            }
-        }
+
+        if (isUpdateToStore)
+            this.updateToStore();
     }
 
     // Render items from dataSource
     renderItems() {
         return (
-            lodash.map(
+            map(
                 this.data,
                 (d, index) =>
-                    <option key={index} value={d[this.props.valueField]}>{d[this.props.textField]}</option>
+                    <MenuItem key={index} value={d[this.props.valueField]} primaryText={d[this.props.textField]} />
             )
         );
     }
 
     // Render component with error message
     render() {
-        this.data = lodash.values(this.props.dataSource);
-        this.bindPlaceholder();
+        let props = this.props;
+        let state = this.state;
+
+        this.data = [...props.dataSource];
+        const inputProps = omit(props.inputProps, ['value']);
+        let manipulateProps = Object.assign({}, inputProps);
+
+        if (props.eReq != null && props.hideStar == false) {
+            manipulateProps.hintText = mandatory(manipulateProps.hintText);
+        }
+        this.bindHintText();
         return (
-            <div className="form-group caret-img">
-                <select className="form-control"
-                    {...this.props.inputProps}
-                    onChange={this.changeSelect}
-                    ref="refSelect">
-                    {this.renderItems()}
-                </select>
-                <span className={(this.state.error != null && (this.props.isDirty || this.props.isClicked)) ? 'error-message' : 'hidden'}>{this.state.error}</span>
-            </div>
+            <SelectField
+                {...dropdownStyle}
+                {...manipulateProps}
+                floatingLabelFixed={true}
+                value={state.value}
+                fullWidth={props.fullWidth}
+                onChange={this.onChange}
+                maxHeight={200}
+                autoWidth={true}
+                errorStyle={errorStyle}
+                errorText={(state.error != null && (state.visited || props.isClicked)) ? state.error : ''}>
+                {props.renderItems ? props.renderItems(this.data, props.valueField, props.textField) : this.renderItems()}
+            </SelectField>
         )
     }
 }
 
 // Define propTypes of dropdown
-Select.propTypes = {
+DropdownComponent.propTypes = {
     inputProps: React.PropTypes.shape({
         name: React.PropTypes.string.isRequired,
-        id: React.PropTypes.string.isRequired,
-        value: React.PropTypes.string.isRequired,
-        placeholder: React.PropTypes.string,
-        disabled: React.PropTypes.bool
-    }),
-    isDirty: React.PropTypes.bool.isRequired,
+        value: React.PropTypes.any,
+        hintText: React.PropTypes.node,
+        disabled: React.PropTypes.bool,
+        floatingLabelText: React.PropTypes.node
+    }).isRequired,
+    fullWidth: React.PropTypes.bool,
     isClicked: React.PropTypes.bool.isRequired,
     textField: React.PropTypes.string.isRequired,
     valueField: React.PropTypes.string.isRequired,
@@ -170,12 +189,22 @@ Select.propTypes = {
         React.PropTypes.string,
         React.PropTypes.bool,
     ]),
-    eServerValidation: React.PropTypes.func,
-    dataSource: React.PropTypes.object.isRequired,
-    formSetValue: React.PropTypes.func.isRequired,
-    iSelectedIndex: React.PropTypes.number,
-    iSelectedValue: React.PropTypes.string,
-    iSelectedText: React.PropTypes.string
-};
+    eClientValidation: React.PropTypes.func,
+    formSetValue: React.PropTypes.func,
+    onSelectionChange: React.PropTypes.func,
+    callOnChange: React.PropTypes.bool,
+    hideStar: React.PropTypes.bool,
+    renderItems: React.PropTypes.func
+}
 
-export default Select
+// Define defaultProps of dropdown
+DropdownComponent.defaultProps = {
+    fullWidth: true,
+    eReq: null,
+    isClicked: true,
+    callOnChange: false,
+    hideStar: false,
+    dataSource: []
+}
+
+export default DropdownComponent

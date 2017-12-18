@@ -4,52 +4,47 @@
  * Button component
  * *************************************/
 
-import React from 'react';
+import React from 'react'; 
+import { browserHistory } from 'react-router';
 import PureComponent from '../wrapper-components/PureComponent';
-import lodash from 'lodash';
+import { omit } from 'lodash';
+import IconButton from 'material-ui/IconButton';
+import RaisedButton from 'material-ui/RaisedButton';
+import { raisedButtonStyle } from '../../../../assets/js/mui-theme';
+import Promise from 'bluebird';
 
 class Button extends PureComponent {
-
     constructor(props) {
         super(props);
-        if (this.props.loading) {
-            this.state = {
-                isLoading: false
-            }
-        }
+        this.onClickEvent = this.onClickEvent.bind(this);
     }
 
     // Handle button click
-    onClickEvent(e) {        
-        let {loading, buttonClick} = this.props;
-        e.preventDefault();
-        if (loading) {
-            this.setState({ isLoading: true });
-            setTimeout(function () {
-                buttonClick();
-                this.setState({ isLoading: false });
-            }.bind(this), 10)
-        }
-        else
-            buttonClick();
+    onClickEvent(e, data = null) {        
+        let onClick = this.props.onClick;
+        if (onClick)
+            onClick(e, data);
     }
 
     // Render button component with loading effect
     render() {
-        const inputProps = lodash.omit(this.props.inputProps, ['disabled', 'value']);
+       
+        const inputProps = omit(this.props.inputProps, ['disabled', 'label']);
         let props = this.props;
-        let isLoading = props.loading ? this.state.isLoading : false;
+
         return (
-            <button
-                type="button"
-                {...inputProps}
-                disabled={this.props.inputProps.disabled || isLoading}
-                onClick={this.onClickEvent.bind(this)}>
-                <div className={isLoading ? 'loading-zone' : 'hidden'}>
-                    <div className='loading'></div>
-                </div>
-                {isLoading ? (props.loadingText ? props.loadingText : 'Loading...') : props.inputProps.value}
-            </button>
+            <div className="display-inline">
+                <RaisedButton
+                    {...raisedButtonStyle}
+                    {...inputProps}
+                    label={this.props.inputProps.label}
+                    fullWidth={props.fullWidth}
+                    primary={props.primary}
+                    icon={props.icon}
+                    disabled={props.inputProps.disabled}
+                    onClick={this.onClickEvent}>
+                </RaisedButton>
+            </div>
         )
     }
 }
@@ -58,22 +53,19 @@ class Button extends PureComponent {
 Button.propTypes = {
     inputProps: React.PropTypes.shape({
         name: React.PropTypes.string.isRequired,
-        id: React.PropTypes.string.isRequired,
-        value: React.PropTypes.string.isRequired,
+        label: React.PropTypes.string.isRequired,
         disabled: React.PropTypes.bool,
         className: React.PropTypes.string
     }),
-    loading: React.PropTypes.bool,
-    loadingText: React.PropTypes.string,
-    buttonClick: React.PropTypes.func.isRequired
+    icon: React.PropTypes.object,
+    backgroundColor: React.PropTypes.string,
+    labelColor: React.PropTypes.string,
+    fullWidth: React.PropTypes.bool
 }
 
+// Define defaultProps of button
 Button.defaultProps = {
-    inputProps: {
-        disabled: false,
-        className: ''
-    },
-    loading: false
+    fullWidth: false
 }
 
 export default Button

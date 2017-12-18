@@ -6,15 +6,24 @@
 
 import React from 'react'
 import PureComponent from '../wrapper-components/PureComponent';
-import lodash from 'lodash';
+import { omit } from 'lodash';
+import Checkbox from 'material-ui/Checkbox';
+import { checkBoxStyle } from '../../../../assets/js/mui-theme';
 
 class Input extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
+            visited: false,
             error: this.props.eReq
         }
-        this.changeInput = this.changeInput.bind(this);
+        this.fieldStatus = {
+            visited: false,
+            dirty: false,
+            valid: false,
+            value: false
+        }
+        this.onCheck = this.onCheck.bind(this);
     }
 
     // Perform checkbox validation
@@ -27,54 +36,77 @@ class Input extends PureComponent {
 
     // Update error state based on input
     updateErrorState(value) {
-        let isValid = false;
-       let validInput = this.validInput(value);        
-        if (validInput) {
-            this.setState({ error: validInput });
-        }
-        else {
-            this.setState({ error: null });
-            isValid = true;
-        }
+        let isValid = true;
+        let errorMessage = this.validInput(value);
+        if (errorMessage)
+            isValid = false;
+        this.setState({ error: (isValid ? null : errorMessage) });
         return isValid;
     }
 
     // Handle onChange event
-    changeInput(e) {
-        let value = this.refs.refInput.checked;
-        let isValid = this.updateErrorState(value);
-        this.props.formSetValue(this.props.inputProps.name, value, isValid, true);
+    onCheck(e) {        
+          
+        let value = e.target.checked;
+        this.fieldStatus.dirty = true;
+        this.fieldStatus.visited = true;
+        this.fieldStatus.value = value;
+        this.fieldStatus.valid = this.updateErrorState(this.fieldStatus.value);
+        this.updateToStore();
+        if (!this.state.visited)
+            this.setState({ visited: true });
+
+        if (e.type == 'change' && this.props.onCheck) {                        
+            this.props.onCheck(value);
+        }
     }
 
-    // To update component based on predefine values such as eReq, checked etc...
-    componentDidMount() {
+    // Update store values - (name, value, valid, dirty, visited)
+    updateToStore() {
+        if (this.props.formSetValue)
+            this.props.formSetValue(this.props.inputProps.name, this.fieldStatus.value, this.fieldStatus.valid, this.fieldStatus.dirty, this.fieldStatus.visited);
+    }
+
+    // To update component based on predefine values such as eReq, defaultChecked etc...
+    componentWillMount() {
         let props = this.props;
+        let isUpdateToStore = false;
+        let value = false;
+
+        if (props.inputProps.defaultChecked)
+            value = props.inputProps.defaultChecked;
+
         if (!props.eReq) {
-            props.formSetValue(props.inputProps.name, props.inputProps.checked, true, false);
+            isUpdateToStore = true;
+            this.fieldStatus.valid = true;
         }
-        else if (props.inputProps.checked) {
-            this.updateErrorState(props.inputProps.checked);
+        if (value) {
+            isUpdateToStore = true;
+            this.fieldStatus.valid = true;
+            this.fieldStatus.value = value;
+            this.setState({ error: null });
         }
+
+        if (isUpdateToStore)
+            this.updateToStore();
     }
 
     // Render checkbox component with error message
     render() {
-        const inputProps = lodash.omit(this.props.inputProps, ['text']);
+        let props = this.props;
+        let state = this.state;
+        const inputProps = omit(props.inputProps, ['label']);
         return (
             <div>
-                <div className="check-btn">
-                    <div className="checkbox">
-                        <label>
-                            <input type="checkbox" ref="refInput"
-                                {...inputProps}
-                                onChange={this.changeInput} />
-                            <span className="checkbox-material"></span>
-                            <span className="checkbox-material"></span>
-                            <b>{this.props.inputProps.text}</b>
-                        </label>
-                    </div>
-                </div>
-                <span className={(this.state.error != null && (this.props.isDirty || this.props.isClicked)) ? 'error-message' : 'hidden'}>{this.state.error}</span>
+                <Checkbox
+                    {...checkBoxStyle}
+                    {...inputProps}
+                    className={props.className + " checkboxStyle"}
+                    onCheck={this.onCheck}
+                    label={props.inputProps.label}
+                    labelPosition={props.labelPosition}
+                    iconStyle={{ marginRight: '5px' }} />
+                <span className={(state.error != null && (state.visited || props.isClicked)) ? 'error-message' : 'hidden'}>{state.error}</span>
             </div>
         )
     }
@@ -84,21 +116,27 @@ class Input extends PureComponent {
 Input.propTypes = {
     inputProps: React.PropTypes.shape({
         name: React.PropTypes.string.isRequired,
-        id: React.PropTypes.string.isRequired,
-        text: React.PropTypes.string.isRequired,
+        label: React.PropTypes.string,
         disabled: React.PropTypes.bool,
-        checked: React.PropTypes.oneOfType([
-            React.PropTypes.string,
-            React.PropTypes.bool,
-        ])
-    }),
-    isDirty: React.PropTypes.bool.isRequired,
-    isClicked: React.PropTypes.bool.isRequired,
+        defaultChecked: React.PropTypes.bool
+    }).isRequired,
+    labelPosition: React.PropTypes.string.isRequired,
+    isClicked: React.PropTypes.bool,
     eReq: React.PropTypes.oneOfType([
         React.PropTypes.string,
         React.PropTypes.bool,
     ]),
-    formSetValue: React.PropTypes.func.isRequired
+    formSetValue: React.PropTypes.func
+}
+
+// Define defaultProps of checkbox
+Input.defaultProps = {
+    eReq: null,
+    labelPosition: 'right',
+    isClicked: true,
+    inputProps: {
+        label: null
+    }
 }
 
 export default Input

@@ -3,3 +3,10 @@ node_modules/
 bower_components/
 .svn
 babel_cache/
+bundle/
+log/
+.vscode
+debug.log
+release/
+assets/error-log
+ecosystem/

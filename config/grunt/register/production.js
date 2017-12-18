@@ -12,12 +12,13 @@ module.exports = function(grunt) {
     // task order is important
     grunt.registerTask('prod_build',
         [
-            'clean:all',
-            'webpack:build',            
-            'shell:prod_build',
+            //'clean:all',
+            'webpack:build',         
+            'cssmin',
+            //'shell:prod_build',
             'copy',
             'clean:readme',
-            'compress'
+           // 'compress'
         ]);
     grunt.registerTask('watch_prod_build', ['prod_build', 'nodemon']);
     grunt.registerTask('default', ['prod_build']);

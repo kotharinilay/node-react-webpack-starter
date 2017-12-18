@@ -6,16 +6,27 @@
  * *************************************/
 
 import React from 'react'
+import TextField from 'material-ui/TextField';
 import PureComponent from '../wrapper-components/PureComponent'
+import { textFieldStyle,errorStyle } from '../../../../assets/js/mui-theme';
+import PasswordStrength from './PasswordStrength';
+import { mandatory } from '../../lib/index';
 
 class Password extends PureComponent {
     constructor(props) {
         super(props)
         this.state = {
             error: this.props.eReq,
-            isFocus: false,
+            visited: false,
             errorCP: this.props.eReqCP,
-            isFocusCP: false
+            visitedCP: false
+        }
+        this.fieldStatus = {
+            visited: false,
+            dirty: false,
+            valid: false,
+            value: '',
+            valueCP: ''
         }
         this.changePassword = this.changePassword.bind(this);
         this.changeConfirmPassword = this.changeConfirmPassword.bind(this);
@@ -23,56 +34,17 @@ class Password extends PureComponent {
 
     // Validate password
     validPassword(input) {
-        if (!input) {
+        if (!input)
             return this.props.eReq;
+        else if (this.props.eLength) {
+            let inputLength = input.length;
+            let {minLength, maxLength} = this.props;
+            if ((minLength && maxLength && inputLength < minLength && inputLength > maxLength) ||
+                (minLength && inputLength < minLength) ||
+                (maxLength && inputLength > maxLength))
+                return this.props.eLength;
         }
         return null;
-    }
-
-    // Update error state based on Password
-    updateErrorState(type, password) {
-        let isValid = false;
-        const validInput = this.validPassword(password);
-        if (validInput && type == 'blur') {
-            this.setState({ error: validInput });
-        }
-        else {
-            if (type == 'blur')
-                this.setState({ error: null });
-            isValid = true;
-        }
-        return isValid;
-    }
-
-    // Update error state based on ConfirmPassword
-    updateErrorStateCP(type, password, confirmPassword) {
-        let isValid = false;
-        let validInput = this.validConfirmPassword(confirmPassword, password);
-        if (validInput && type == 'blur') {
-            this.setState({ errorCP: validInput });
-        }
-        else {
-            if (type == 'blur')
-                this.setState({ errorCP: null });
-            isValid = true;
-        }
-        return isValid;
-    }
-
-    // Validate when onBlur event handle by Password
-    checkConfirmPassword(password, confirmPassword) {
-        let props = this.props;
-        if (confirmPassword) {
-            let isValid = false;
-            if (confirmPassword != password) {
-                this.setState({ errorCP: props.eCPNotMatch });
-            }
-            else {
-                this.setState({ errorCP: null });
-                isValid = true;
-            }
-            props.formSetValue(props.inputPropsCP.name, confirmPassword, isValid);
-        }
     }
 
     // Validate when onChange/onBlur event handle by ConfirmPassword
@@ -85,73 +57,156 @@ class Password extends PureComponent {
         return null;
     }
 
+    // Update error state based on Password
+    updateErrorState(type, password) {
+        let isValid = true;
+        let errorMessage = this.validPassword(password);
+        if (errorMessage)
+            isValid = false;
+        if (type == 'blur')
+            this.setState({ error: (isValid ? null : errorMessage) });
+        return isValid;
+    }
+
+    // Update error state based on ConfirmPassword
+    updateErrorStateCP(type, password, confirmPassword) {
+        let isValid = true;
+        let errorMessage = this.validConfirmPassword(confirmPassword, password);
+        if (errorMessage)
+            isValid = false;
+        if (type == 'blur')
+            this.setState({ errorCP: (isValid ? null : errorMessage) });
+        return isValid;
+    }
+
+    // Validate when onBlur event handle by Password
+    checkConfirmPassword(password, confirmPassword) {
+        if (confirmPassword) {
+            let props = this.props;
+            let isValid = true;
+            let errorMessage = null;
+            if (confirmPassword != password) {
+                isValid = false;
+                errorMessage = props.eCPNotMatch;
+            }
+            this.setState({ errorCP: errorMessage });
+
+            this.fieldStatus.visited = true;
+            this.fieldStatus.dirty = true;
+            this.fieldStatus.valid = isValid;
+            this.fieldStatus.value = password;
+
+            this.updateToStore();
+        }
+    }
+
     // Handle onChange/onBlur events by Password
     changePassword(e) {
         let props = this.props;
-        let password = this.refs.passwordInput.value;
+        let password = e.target.value;
         let isValid = this.updateErrorState(e.type, password);
-        props.formSetValue(props.inputProps.name, password, isValid, true);
         if (e.type == 'blur') {
-            this.checkConfirmPassword(password, props.inputPropsCP.value);
-            if (!this.state.isFocus) {
-                this.setState({ isFocus: true });
+            this.fieldStatus.visited = true;
+            this.checkConfirmPassword(password, this.fieldStatus.valueCP);
+            if (!this.state.visited) {
+                this.setState({ visited: true });
             }
         }
+        else {
+            this.fieldStatus.dirty = true;
+            if (this.props.strengthBar) {
+                this.refs.PWStrength.checkPasswordStrength(password);
+            }
+        }
+
+        this.fieldStatus.valid = isValid;
+        this.fieldStatus.value = password;
+        this.updateToStore();
     }
 
     // Handle onChange/onBlur events by ConfirmPassword
     changeConfirmPassword(e) {
         let props = this.props;
-        let confirmPassword = this.refs.confirmPasswordInput.value;
-        let isValid = this.updateErrorStateCP(e.type, props.inputProps.value, confirmPassword);
-        props.formSetValue(props.inputPropsCP.name, confirmPassword, isValid, true);
-        if (e.type == 'blur' && !this.state.isFocusCP) {
-            this.setState({ isFocusCP: true });
+        let confirmPassword = e.target.value;
+        let isValid = this.updateErrorStateCP(e.type, this.fieldStatus.value, confirmPassword);
+        if (e.type == 'blur' && !this.state.visitedCP) {
+            this.setState({ visitedCP: true });
         }
+
+        this.fieldStatus.valid = isValid;
+        this.fieldStatus.valueCP = confirmPassword;
+        this.updateToStore();
+    }
+
+    // Update store values - (name, value, valid, dirty, visited)
+    updateToStore() {
+        if (this.props.formSetValue)
+            this.props.formSetValue(this.props.inputProps.name, this.fieldStatus.value, this.fieldStatus.valid, this.fieldStatus.dirty, this.fieldStatus.visited);
     }
 
     // To update both component based on predefine values
-    componentDidMount() {
+    componentWillMount() {
         let props = this.props;
-        let val = this.refs.passwordInput.value;
-        let valCP = this.refs.confirmPasswordInput.value;
+        let isUpdateToStore = false;
+        let value = props.defaultValue;
 
         if (!props.eReq) {
-            props.formSetValue(props.inputProps.name, '', true, false);
+            isUpdateToStore = true;
+            this.fieldStatus.valid = true;
         }
-        else if (val) {
-            this.updateErrorState('blur', val);
-            this.checkConfirmPassword(val, valCP);
+        if (value) {
+            isUpdateToStore = true;
+            this.fieldStatus.valid = true;
+            this.fieldStatus.value = value;
+            this.fieldStatus.valueCP = value;
+            this.setState({ error: null, errorCP: null });
         }
 
-        if (!props.eReqCP) {
-            props.formSetValue(props.inputPropsCP.name, '', true, false);
-        }
-        else if (valCP) {
-            this.updateErrorStateCP('blur', val, valCP);
-        }
+        if (isUpdateToStore)
+            this.updateToStore();
+
     }
 
     // Render both component with error message
     render() {
+        let props = this.props;
+        let state = this.state;
+
+        let manipulateProps = Object.assign({},props.inputProps);
+        if(props.eReq != null){
+            manipulateProps.floatingLabelText = mandatory(manipulateProps.floatingLabelText);
+        }
+
+        let manipulatePropsCP = Object.assign({},props.inputPropsCP);
+        if(props.eReqCP != null){
+            manipulatePropsCP.floatingLabelText = mandatory(manipulatePropsCP.floatingLabelText);
+        }
+
         return (
-            <div>
-                <div>
-                    <input
-                        {...this.props.inputProps}
-                        className="form-control" type="password" ref="passwordInput"
-                        onChange={this.changePassword}
-                        onBlur={this.changePassword} />
-                    <span className={(this.state.error != null && (this.state.isFocus || this.props.isClicked)) ? 'error-message' : 'hidden'}>{this.state.error}</span>
-                </div>
-                <div>
-                    <input
-                        {...this.props.inputPropsCP}
-                        className="form-control" type="password" ref="confirmPasswordInput"
-                        onChange={this.changeConfirmPassword}
-                        onBlur={this.changeConfirmPassword} />
-                    <span className={(this.state.errorCP != null && (this.state.isFocus || this.state.isFocusCP || this.props.isClicked)) ? 'error-message' : 'hidden'}>{this.state.errorCP}</span>
-                </div>
+            <div style={{ position: 'relative' }}>
+                <TextField
+                    {...textFieldStyle}
+                    {...manipulateProps}
+                    className={props.inputProps.floatingLabelText ? 'inputStyle inputStyle2 ' + props.className : 'inputStyle ' + props.className}
+                    defaultValue={props.defaultValue}
+                    type="password"
+                    fullWidth={props.fullWidth}
+                    errorText={(state.error != null && (state.visited || props.isClicked)) ? state.error : ''}
+                    onBlur={this.changePassword}
+                    errorStyle={errorStyle}
+                    onChange={this.changePassword} />
+                {props.strengthBar ? <PasswordStrength ref="PWStrength" /> : null}
+                <TextField
+                    {...textFieldStyle}
+                    {...manipulatePropsCP}
+                    className={props.inputProps.floatingLabelText ? 'inputStyle inputStyle2 ' + props.classNameCP : 'inputStyle ' + props.classNameCP}
+                    defaultValue={props.defaultValue}
+                    type="password"
+                    fullWidth={props.fullWidth}
+                    errorText={(state.errorCP != null && ((state.visited && state.visitedCP) || props.isClicked)) ? state.errorCP : ''}
+                    errorStyle={errorStyle}
+                    onBlur={this.changeConfirmPassword}
+                    onChange={this.changeConfirmPassword} />
             </div>
         );
     }
@@ -161,16 +216,22 @@ class Password extends PureComponent {
 Password.propTypes = {
     inputProps: React.PropTypes.shape({
         name: React.PropTypes.string.isRequired,
-        id: React.PropTypes.string.isRequired,
-        placeholder: React.PropTypes.string,
-        value: React.PropTypes.string.isRequired
-    }),
+        hintText: React.PropTypes.string,
+        floatingLabelText: React.PropTypes.node
+    }).isRequired,
     inputPropsCP: React.PropTypes.shape({
         name: React.PropTypes.string.isRequired,
-        id: React.PropTypes.string.isRequired,
-        placeholder: React.PropTypes.string,
-        value: React.PropTypes.string.isRequired
-    }),
+        hintText: React.PropTypes.string,
+        floatingLabelText: React.PropTypes.node
+    }).isRequired,
+    className: React.PropTypes.string,
+    classNameCP: React.PropTypes.string,
+    minLength: React.PropTypes.number,
+    maxLength: React.PropTypes.number,
+    eLength: React.PropTypes.string.isRequired,
+    defaultValue: React.PropTypes.string,
+    fullWidth: React.PropTypes.bool,
+    isClicked: React.PropTypes.bool.isRequired,
     eReq: React.PropTypes.oneOfType([
         React.PropTypes.string,
         React.PropTypes.bool,
@@ -180,8 +241,18 @@ Password.propTypes = {
         React.PropTypes.bool,
     ]),
     eCPNotMatch: React.PropTypes.string,
-    isClicked: React.PropTypes.bool.isRequired,
-    formSetValue: React.PropTypes.func.isRequired
+    formSetValue: React.PropTypes.func,
+    strengthBar: React.PropTypes.bool
 };
+
+//Define defaultProps
+Password.defaultProps = {
+    fullWidth: true,
+    isClicked: true,
+    eCPNotMatch: 'Password not match',
+    strengthBar: false,
+    className: '',
+    classNameCP: ''
+}
 
 export default Password

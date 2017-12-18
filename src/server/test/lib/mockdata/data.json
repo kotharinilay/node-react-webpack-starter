@@ -1,0 +1,107 @@
+{
+  "contactData": {
+    "firstname": "Jay",
+    "lastname": "Patel",
+    "username": "jay.patel",
+    "email": "jayk.patel@zealousys.local",
+    "password": "123456789",
+    "newPassword": "1234567899",
+    "dummyPassword": "123456",
+    "dummyEmail": "dummy.jayk.patel@zealousys.local",
+    "invalidEmail": "jayk.patel@zealousys.local@invalid"
+  },
+  "preferredWidgets": [
+    "Livestock",
+    true
+  ],
+  "emailData": {
+    "from": "nilay.kothari@zealousys.local",
+    "to": "jayk.patel@zealousys.local",
+    "subject": "Testing subject",
+    "message": "This is testing message from mocha test."
+  },
+  "passwordStrength": {
+    "Weak": "123456",
+    "Good": "abc123",
+    "Strong": "abc@12",
+    "Great": "abc@123456"
+  },
+  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJjb250YWN0SWQiOiJlYTYyMzdiMC1kM2RjLTExZTYtYjFlNS05MzA2MGM4NDA1MDMiLCJpYXQiOjE0ODUzMjQ3NzksImV4cCI6MTQ4NTkyOTU3OX0.t56ITV18D3n4JLjBYkDHUKVwjzjQf677aErMwG_2uDA",
+  "resetPasswordKey": "1d90d8b0d7423b88bfca4799219b4775fbed89ad4c2d485103982bcb514139ea5343f2a6f43710b992e404c51314fab01f6a463ba77a745a6d0b84618e3dee17",
+  "resetPassExpiredKey": "1d90d8b0d7423b88bfca4799219b4775fbed89ad4c2d485103982bcb514139ea5343f2a6f43710b992e404c51314fab01f6a463ba77a745a6d0b84618e3dee17",
+  "formatString": {
+    "contains": {
+      "str1": "test string",
+      "seed1": "test",
+      "seed2": "test123"
+    },
+    "isDate": {
+      "dt1": "2012/11-04 14:55:45d"
+    },
+    "isEmpty": {
+      "emptyStr": "",
+      "whiteSpace": " ",
+      "str1": "test"
+    },
+    "isEmail": {
+      "email1": "jayk.patel@zealousys.local",
+      "email2": "jayk.patel@zealousys.local.valid",
+      "invalidEmail1": "#jayk.patel@zealousys.local",
+      "invalidEmail2": "jayk.patel@zealousys.local@invalid",
+      "invalidEmail3": "jayk.patel#@zealousys.local.invalid"
+    },
+    "isJSON": {
+      "json1": "{\"key1\": \"val1\",\"key2\": \"val2\"}",
+      "invalidJSON": "{ \"val1\",\"key2\": \"val2\"}"
+    },
+    "isNumeric": {
+      "num1": "123456",
+      "num2": "test",
+      "numEmpty": ""
+    },
+    "isUUID": {
+      "uuid1": "ca4d4b30-d7e3-11e6-86f4-b5756a924ac6",
+      "uuid2": "ca4d4b30-d7e3-11e6-86f4-b5756a924ac6zzz",
+      "uuid3": "ca4d4b30-d7e3-11e6-86f4-b5756a924zzz",
+      "uuidEmpty": ""
+    },
+    "isURL": {
+      "url1": "http://www.zealousys.com/",
+      "url2": "www.zealousys.com",
+      "url3": "zealousys.com",
+      "url4": "zealousys..com",
+      "url5": "zealousys@com"
+    },
+    "trim": {
+      "str1": "test ",
+      "str2": " test",
+      "str3": " test ",
+      "str4": "test string",
+      "str5": ""
+    },
+    "escape": {
+      "str1": "test",
+      "str2": "<p>test</p>"
+    },
+    "unescape": {
+      "str1": "test",
+      "str2": "&lt;p&gt;test&lt;&#x2F;p&gt;"
+    },
+    "toEmptyStr": {
+      "str1": "test",
+      "str2": "",
+      "str3": null,
+      "param2": "-"
+    },
+    "getFirstChar": {
+      "str1": "test string",
+      "str2": "",
+      "str3": null
+    },
+    "getLastChar": {
+      "str1": "test string",
+      "str2": "",
+      "str3": null
+    }
+  }
+}

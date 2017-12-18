@@ -6,23 +6,29 @@
  * *************************************/
 
 import React from 'react';
-import PureComponent from '../wrapper-components/PureComponent';
 import Select from 'react-select';
-import axios from 'axios';
+import { values, map } from 'lodash';
+import { get } from '../../lib/http/http-service';
+import PureComponent from '../wrapper-components/PureComponent';
+import { mandatory } from '../../lib/index';
 
 class Multipicker extends PureComponent {
     constructor(props) {
         super(props);
-        if (!this.props.inputProps.value) {
-            this.props.inputProps.value = [];
-        }
         this.state = {
-            isFocus: false,
+            value: [],
+            visited: false,
             error: this.props.eReq
         }
+        this.fieldStatus = {
+            visited: false,
+            dirty: false,
+            valid: false,
+            value: []
+        }
+
         this.onChange = this.onChange.bind(this);
         this.onBlur = this.onBlur.bind(this);
-        this.getData = this.getData.bind(this);
     }
 
     // Validate input value
@@ -33,71 +39,87 @@ class Multipicker extends PureComponent {
         return null;
     }
 
-    // Handle onChange event
-    onChange(value, isDirty) {
-        let isValid = false;
-        let validInput = this.validInput(value);
-        if (!validInput) {
-            isValid = true;
-        }
-
-        if (isDirty === undefined) {
-            isDirty = true;
-            this.setState({ isFocus: true });
-        }        
-
-        this.props.formSetValue(this.props.inputProps.name, value, isValid, isDirty);
+    // Handle onBlur events
+    onBlur(e) {
+        this.fieldStatus.visited = true;
+        this.fieldStatus.valid = this.updateErrorState(e.type, this.fieldStatus.value);
+        this.updateToStore();
+        this.setState({ value: this.fieldStatus.value, visited: this.fieldStatus.visited });
     }
 
-    // Handle onBlur event
-    onBlur() {
-        let validInput = this.validInput(this.refs.refInput.props.value);
-        if (validInput) {
-            this.setState({ error: validInput });
-        }
-        else {
-            this.setState({ error: null });
-        }
+    // Handle onChange events
+    onChange(value) {
+        this.fieldStatus.dirty = true;
+        this.fieldStatus.value = [];
+        map(value, (d, index) => this.fieldStatus.value.push(d[this.props.valueField]));
+        this.fieldStatus.valid = this.updateErrorState('change', this.fieldStatus.value);
+        this.updateToStore();
+        this.setState({ value: this.fieldStatus.value });
     }
 
-    // Get list of data from api from given URL
-    getData(input) {
-        if (!input) {
-            return Promise.resolve({ options: [] });
-        }
-        return axios.get(this.props.apiUrl.replace('$$$', input))
-            .then((response) => {
-                return { options: response.data.results };
-            })
-            .catch(function (error) {
-                reject(error);
-            });
+
+    // Update error state based on input
+    updateErrorState(type, value) {
+        let isValid = true;
+        let errorMessage = this.validInput(value);
+        if (errorMessage)
+            isValid = false;
+        if (type == 'blur')
+            this.setState({ error: (isValid ? null : errorMessage) });
+        return isValid;
     }
 
     // To update component based on predefine values
-    componentDidMount() {
+    componentWillMount() {
         let props = this.props;
+        let isUpdateToStore = false;
+        let value = [];
+
+        if (props.inputProps.defaultValue && props.inputProps.defaultValue.length > 0)
+            value = props.inputProps.defaultValue;
+
         if (!props.eReq) {
-            props.formSetValue(props.inputProps.name, [], true, false);
+            isUpdateToStore = true;
+            this.fieldStatus.valid = true;
         }
-        if (props.iSelectedValueText) {
-            this.onChange(props.iSelectedValueText, false);
+        if (value.length > 0) {
+            isUpdateToStore = true;
+            this.fieldStatus.valid = true;
+            this.fieldStatus.value = value;
+            this.setState({ value: value, error: null });
         }
+
+        if (isUpdateToStore)
+            this.updateToStore();
+    }
+
+    // Update store values - (name, value, valid, dirty, visited)
+    updateToStore() {
+        if (this.props.formSetValue)
+            this.props.formSetValue(this.props.inputProps.name, this.fieldStatus.value, this.fieldStatus.valid, this.fieldStatus.dirty, this.fieldStatus.visited);
     }
 
     // Render component with error message
     render() {
+
+        let manipulateProps = Object.assign({}, this.props.inputProps);
+
+        if ( this.props.eReq != null) {
+            manipulateProps.placeholder = mandatory(manipulateProps.placeholder);
+        }
+
         return (
             <div>
-                <Select.Async ref="refInput"
+                <div className="custom-label">{this.props.inputProps.label}</div>
+                <Select
+                    {...manipulateProps}
+                    value={this.state.value}
+                    ref="refInput" matchPos="start"
                     valueKey={this.props.valueField} labelKey={this.props.textField}
-                    {...this.props.inputProps}
                     multi={true} backspaceRemoves={true}
-                    onChange={this.onChange}
-                    onBlur={this.onBlur}
-                    loadOptions={this.getData}
-                    />
-                <span className={(this.state.error != null && (this.state.isFocus || this.props.isClicked)) ? 'error-message' : 'hidden'}>{this.state.error}</span>
+                    onChange={this.onChange} onBlur={this.onBlur}
+                    options={this.props.dataSource} />
+                <span className={(this.state.error != null && (this.state.visited || this.props.isClicked)) ? 'error-message' : 'hidden'}>{this.state.error}</span>
             </div>
         )
     }
@@ -107,23 +129,19 @@ class Multipicker extends PureComponent {
 Multipicker.propTypes = {
     inputProps: React.PropTypes.shape({
         name: React.PropTypes.string.isRequired,
-        id: React.PropTypes.string.isRequired,
-        placeholder: React.PropTypes.string,
-        value: React.PropTypes.oneOfType([
-            React.PropTypes.string,
-            React.PropTypes.array
-        ]).isRequired
+        placeholder: React.PropTypes.node,
+        defaultValue: React.PropTypes.array
     }),
     eReq: React.PropTypes.oneOfType([
         React.PropTypes.string,
         React.PropTypes.bool,
     ]),
+    dataSource: React.PropTypes.array,
     isClicked: React.PropTypes.bool.isRequired,
-    apiUrl: React.PropTypes.string.isRequired,
     textField: React.PropTypes.string.isRequired,
     valueField: React.PropTypes.string.isRequired,
     iSelectedValueText: React.PropTypes.array,
-    formSetValue: React.PropTypes.func.isRequired
+    formSetValue: React.PropTypes.func
 }
 
 export default Multipicker

@@ -7,19 +7,28 @@
 
 import React from 'react';
 import Datetime from 'react-datetime';
-import lodash from 'lodash';
+import { omit } from 'lodash';
 import PureComponent from '../wrapper-components/PureComponent';
-import moment from '../../../shared/format/date';
+import { isValid, currentDateTime, formatDateTime, localToUTC } from '../../../shared/format/date';
 
 class DatetimePicker extends PureComponent {
     constructor(props) {
         super(props)
         this.state = {
-            error: null
+            visited: false,
+            isLoading: false,
+            error: this.props.eReq
+        }
+        this.fieldStatus = {
+            visited: false,
+            dirty: false,
+            valid: false,
+            value: ''
         }
         this.validDate = this.validDate.bind(this);
         this.changeInput = this.changeInput.bind(this);
         this.blurInput = this.blurInput.bind(this);
+
     }
 
     // Validate input values
@@ -27,7 +36,7 @@ class DatetimePicker extends PureComponent {
         let props = this.props;
         if (!input)
             return props.eReq;
-        else if (!moment.isValid(input))
+        else if (!isValid(input))
             return props.eInvalid;
         return null;
     }
@@ -36,7 +45,7 @@ class DatetimePicker extends PureComponent {
     validDate(current) {
         let props = this.props.dateFilter;
         if (props) {
-            let date = moment.currentDateTime().DateTimeFormat;
+            let date = currentDateTime().DateTimeMoment;
             if (props.isBefore) {
                 if (!props.isIncludeToday)
                     date = date.subtract(1, 'day');
@@ -52,50 +61,73 @@ class DatetimePicker extends PureComponent {
     }
 
     // Handle onChange event
-    changeInput(val, isDirty) {
-        let isValid = false;
-        let validInput = this.validInput(val);
-        if (validInput) {
-            this.setState({ error: validInput });
+    changeInput(e, isDirty = true) {
+        let isValid = true;
+        this.fieldStatus.dirty = isDirty;
+        let errorMessage = this.validInput(e);
+
+        if (errorMessage) {
+            isValid = false;
+            this.fieldStatus.valid = false;
         }
         else {
-            this.setState({ error: null });
-            isValid = true;
-        }
-        
-        if (isDirty === undefined)
-            isDirty = true;
 
-        this.props.formSetValue(this.props.inputProps.name, val, isValid, isDirty);
+            this.fieldStatus.value = e._d;
+            this.fieldStatus.valid = true;
+            this.updateToStore();
+        }
+        this.setState({ error: (isValid ? null : errorMessage) });
     }
 
     // Handle onBlur event
     blurInput(val) {
-        let validInput = this.validInput(val);
-        if (validInput != this.state.error) {
-            this.setState({ error: validInput });
-        }
+        this.fieldStatus.visited = true;
+        if (!this.state.visited)
+            this.setState({ visited: true });
+        //let errorMessage = this.validInput(val);
+    }
+
+    // Update store values - (name, value, valid, dirty, visited)
+    updateToStore() {
+        if (this.props.formSetValue)
+            this.props.formSetValue(this.props.inputProps.name, this.fieldStatus.value, this.fieldStatus.valid, this.fieldStatus.dirty, this.fieldStatus.visited);
     }
 
     // To update component based on predefine values
-    componentDidMount() {
+    componentWillMount() {
         let props = this.props;
+        let isUpdateToStore = false;
+        let value = null;
+
+        if (props.defaultValue)
+            value = props.defaultValue;
+
         if (!props.eReq) {
-            props.formSetValue(props.inputProps.name, props.value, true, false);
+            isUpdateToStore = true;
+            this.fieldStatus.valid = true;
         }
-        else if (props.defaultValue) {
-            this.changeInput(moment.dateTime(props.defaultValue).ValueOf, false);
+        if (value) {
+            isUpdateToStore = true;
+            this.fieldStatus.valid = true;
+            this.fieldStatus.value = value;
+            this.setState({ error: null });
+            this.changeInput(formatDateTime(value).DateTimeMoment, false);
         }
+
+        if (isUpdateToStore)
+            this.updateToStore();
     }
 
     // Render component with error message
     render() {
-        let props = lodash.omit(this.props, ['formSetValue', 'inputProps', 'dateFilter']);
+        let props = omit(this.props, ['formSetValue', 'inputProps', 'dateFilter']);
         return (
-            <div>
+            <div className="custom-input-outer">
+                <div className="custom-label">{this.props.inputProps.label}</div>
                 <Datetime
                     {...props}
-                    {...this.props.inputProps}
+                    className={this.state.error != null ? 'errorBorder' : ''}
+                    inputProps={this.props.inputProps}
                     {...this.props.dateFilter}
                     isValidDate={this.validDate}
                     onChange={this.changeInput}
@@ -108,10 +140,11 @@ class DatetimePicker extends PureComponent {
 
 // Define propTypes of DatetimePicker
 DatetimePicker.propTypes = {
-    value: React.PropTypes.any.isRequired,
+    value: React.PropTypes.any,
     inputProps: React.PropTypes.shape({
         name: React.PropTypes.string.isRequired,
         placeholder: React.PropTypes.string,
+        label: React.PropTypes.string,
         disabled: React.PropTypes.bool
     }).isRequired,
     dateFormat: React.PropTypes.oneOfType([
@@ -122,7 +155,7 @@ DatetimePicker.propTypes = {
         React.PropTypes.string, //http://momentjs.com/docs/#/displaying/format/
         React.PropTypes.bool,
     ]),
-    defaultValue: React.PropTypes.any.isRequired,
+    defaultValue: React.PropTypes.any,
     open: React.PropTypes.bool,
     viewMode: React.PropTypes.oneOfType([
         React.PropTypes.string, //'years', 'months', 'days', 'time'
@@ -153,13 +186,14 @@ DatetimePicker.propTypes = {
         React.PropTypes.bool,
     ]),
     eInvalid: React.PropTypes.string.isRequired,
-    formSetValue: React.PropTypes.func.isRequired
+    formSetValue: React.PropTypes.func
 }
 
 // Set defaultProps of DatetimePicker
 DatetimePicker.defaultProps = {
     closeOnSelect: true,
     dateFormat: 'DD-MM-YYYY',
+    timeFormat: 'hh:mm A',
     eInvalid: 'Invalid input'
 }
 

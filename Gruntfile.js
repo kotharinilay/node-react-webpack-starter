@@ -8,7 +8,7 @@
 module.exports = function(grunt) {    
 
     // set environment mode    
-    require('dotenv').config();   
+    require('./load.env')();
     
     const env = process.env.NODE_ENV;
 
@@ -21,6 +21,7 @@ module.exports = function(grunt) {
     // configure tasks to grunt object    
     function invokeConfig(grunt, tasks) {
         for (let taskName in tasks) {
+            console.log(taskName);
             if (tasks.hasOwnProperty(taskName)) {
                 tasks[taskName](grunt);
             }

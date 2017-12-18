@@ -8,7 +8,7 @@
 .rdtPicker {
   display: none;
   position: absolute;
-  width: 250px;
+  width: 230px;
   padding: 4px;
   margin-top: 1px;
   z-index: 99999 !important;
@@ -35,17 +35,19 @@
 .rdtPicker td,
 .rdtPicker th {
   text-align: center;
-  line-height: 28px;
+  line-height: 27px;
+  font-size: 12px;
 }
 .rdtPicker td {
-  cursor: pointer;
+  cursor: pointer;  
 }
 .rdtPicker td.rdtDay:hover,
 .rdtPicker td.rdtHour:hover,
 .rdtPicker td.rdtMinute:hover,
 .rdtPicker td.rdtSecond:hover,
 .rdtPicker .rdtTimeToggle:hover {
-  background: #eeeeee;
+  background: #646389;
+  color: #fff;
   cursor: pointer;
 }
 .rdtPicker td.rdtOld,
@@ -59,7 +61,7 @@
   content: '';
   display: inline-block;
   border-left: 7px solid transparent;
-  border-bottom: 7px solid #428bca;
+  border-bottom: 7px solid #c35f4b;
   border-top-color: rgba(0, 0, 0, 0.2);
   position: absolute;
   bottom: 4px;
@@ -67,7 +69,7 @@
 }
 .rdtPicker td.rdtActive,
 .rdtPicker td.rdtActive:hover {
-  background-color: #428bca;
+  background-color: #c35f4b;
   color: #fff;
   text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
 }
@@ -156,7 +158,8 @@ td.rdtYear {
 }
 td.rdtMonth:hover,
 td.rdtYear:hover {
-  background: #eee;
+  background: #646389;
+  color:#fff;
 }
 
 .rdtCounters {
@@ -180,8 +183,8 @@ td.rdtYear:hover {
 }
 
 .rdtCounter .rdtBtn {
-  height: 40%;
-  line-height: 40px;
+  height: 30%;
+  line-height: 30px;
   cursor: pointer;
   display: block;
 
@@ -193,7 +196,8 @@ td.rdtYear:hover {
   user-select: none;
 }
 .rdtCounter .rdtBtn:hover {
-  background: #eee;
+  background: #646389;
+  color:#fff;
 }
 .rdtCounter .rdtCount {
   height: 20%;

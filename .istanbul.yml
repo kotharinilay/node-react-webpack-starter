@@ -1,0 +1,19 @@
+instrumentation:
+    root: .
+    default-excludes: true
+    excludes: [
+        'load.env.js',
+        'ecosystem/*.js',
+        # 'src/shared/*.js',
+        'src/shared/uuid/v1.js',
+        'src/server/auth/*.js',
+        # 'src/server/lib/*.js',
+        'src/server/repository/*.js',
+        'src/server/schema/*.js',
+        'src/server/schema/**/*.js'
+    ]
+reporting:
+    print: summary
+    reports:
+        - lcov
+    dir: ./coverage

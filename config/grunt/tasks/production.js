@@ -13,20 +13,21 @@ module.exports = function (grunt) {
     // remove files and folders   
     grunt.config.set('clean', {
         all: build_path + '*',         // clean all files within build folder 
-        readme: build_path+ '**/*.md'    // remove all files having .md ext   
+        readme: build_path + '**/*.md'    // remove all files having .md ext   
     });
     // copy required source folders
     grunt.config.set('copy', {
         main: {
             files: [
-                { expand: true, src: ['.ebextensions/**'], dest: build_path },
-                { expand: true, src: ['bin/**'], dest: build_path },
-                { expand: true, src: ['client/views/**'], dest: build_path },
+                { expand: true, src: ['src/**'], dest: build_path },
                 { expand: true, src: ['assets/**'], dest: build_path },
                 { expand: true, src: ['aws/**'], dest: build_path },
-                { expand: true, src: ['schema/**'], dest: build_path },
-                { src: ['.env'], dest: build_path },
+                { expand: true, src: ['ecosystem/client.js'], dest: build_path },
+                { expand: true, src: ['ecosystem/server.js'], dest: build_path },
+                { src: ['.babelrc'], dest: build_path },
+                { src: ['load.env.js'], dest: build_path },
                 { src: ['package.json'], dest: build_path },
+                { src: ['bower.json'], dest: build_path },
             ]
         }
     });
@@ -39,9 +40,9 @@ module.exports = function (grunt) {
         // convert folders to ES5 format and copy to build
         prod_build: {
             command: [
-                'babel client --out-dir ' + build_path + 'client',
-                'babel server --out-dir ' + build_path + 'server',
-                'babel shared --out-dir ' + build_path + 'shared'
+                'babel assets --out-dir ' + build_path + 'assets --presets=react,es2015,stage-0',
+                'babel src --out-dir ' + build_path + 'aws --presets=react,es2015,stage-0',
+                'babel src --out-dir ' + build_path + 'src --presets=react,es2015,stage-0'
             ].join('&&')
         }
     });
@@ -49,13 +50,12 @@ module.exports = function (grunt) {
     grunt.config.set('compress', {
         main: {
             options: {
-                archive: function() {
+                archive: function () {
                     var timestamp = (require('moment')(new Date()).format('DDMMYYYY-hh.mm.ss.SSS'));
                     return dist_path + timestamp + '.zip';
                 }
             },
             files: [
-                { expand: true, src: '.ebextensions/*', cwd: build_path },
                 { expand: true, src: '**/*', cwd: build_path }
             ]
         }

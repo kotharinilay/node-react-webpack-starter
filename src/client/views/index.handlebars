@@ -1,49 +1,96 @@
 <!DOCTYPE html>
-
 <html>
 
 <head>
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Aglive V3 web app</title>
+  <title>Aglive v3</title>
 
-  <!-- Favicon -->
-  <link href="./static/images/favicon.ico" rel="icon" type="image/x-icon" />
+  {{!--
+  <link rel="stylesheet" href="{{{SiteUrl}}}/static/css/pace.css" />--}}
 
   <!-- Bootstrap/Material Styles -->
-  <link rel="stylesheet" href="./bower_components/bootstrap/dist/css/bootstrap.min.css" />
-  <link rel="stylesheet" href="./bower_components/bootstrap-material-design/dist/css/bootstrap-material-design.min.css" />
-  <link rel="stylesheet" href="./bower_components/bootstrap-material-design/dist/css/ripples.min.css" />
+  <link rel="stylesheet" href="{{{SiteUrl}}}/bower_components/bootstrap/dist/css/bootstrap.min.css" /> {{!--
+  <script data-pace-options='{ "restartOnPushState": false, "ajax": false }' src="{{{SiteUrl}}}/static/js/pace.min.js"></script>--}}
 
+  <!-- Favicon -->
+  <link href="{{{SiteUrl}}}/static/images/favicon.ico" rel="icon" type="image/x-icon" />
   <!-- Custom Styles -->
-  <link rel="stylesheet" href="./static/css/style.css" />
-  <link rel="stylesheet" href="./static/css/dash-table.css" />
-  <link rel="stylesheet" href="./static/css/responsive.css" />
-  <link rel="stylesheet" type="text/css" href="./static/font/font-family.css">
+
+  <link rel="stylesheet" href="{{{SiteUrl}}}/static/css/style.css" />
+  <link rel="stylesheet" href="{{{SiteUrl}}}/static/css/dash-table.css" />
+  <link rel="stylesheet" href="{{{SiteUrl}}}/static/css/responsive.css" />
+
+  <link rel="stylesheet" href="{{{SiteUrl}}}/static/css/react-datetime.css" />
+  <link rel="stylesheet" href="{{{SiteUrl}}}/static/css/react-select.css" />
 
   <!-- Material Design fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Roboto:300i,400,500,700,900" rel="stylesheet">
-  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Roboto:300i,400,500,700,900" rel="stylesheet" />
+  <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Roboto:300,400,500,700" type="text/css" />
 
-  <!-- Scripts -->
-  <script src="./bower_components/jquery/dist/jquery.min.js"></script>
-  <script src="./bower_components/tether/dist/js/tether.js"></script>
-  <script src="./bower_components/bootstrap/dist/js/bootstrap.js"></script>
-  <script src="./bower_components/bootstrap-material-design/dist/js/material.js"></script>
-  <script src="./bower_components/bootstrap-material-design/dist/js/ripples.js"></script>
+  <script src="{{{SiteUrl}}}/bower_components/jquery/dist/jquery.min.js"></script>
+  <script src="{{{SiteUrl}}}/bower_components/tether/dist/js/tether.js"></script>
+  <script src="{{{SiteUrl}}}/bower_components/bootstrap/dist/js/bootstrap.js"></script>
 
 </head>
 
 <body>
   <div id="main" class="main-wrapper">
-    <div> {{{markup}}}</div>
   </div>
-  <script type="text/javascript " charset="utf-8 ">
-          //window.__REDUX_STATE__ = JSON.stringify({{{reduxState}}}); //{{{reduxState}}};         
-      </script>
-<script src="./static/bundle-main.js "></script>
+  {{!-- Application Init Loader --}} {{!--
+  <div class="app-init-loader">
+    <svg class="circular" viewBox="25 25 50 50">
+      <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="3" stroke-miterlimit="10" />
+    </svg>
+  </div>--}}
+
+  <!-- Modal -->
+  <div class="modal fade" id="global_modal" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">{{title}}</h4>
+        </div>
+        <div class="modal-body">
+          <p>{{message}}</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="cancel-btn" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </body>
+
+<script type="text/javascript " charset="utf-8 ">
+  // app global variables
+    window.__SITE_URL__ = "{{SiteUrl}}";
+    window.__REDUX_STATE__ = {{{ReduxState}}};    
+    //window.__MENUS__ = {{{Menus}}};
+
+    // show material loader 
+    // when percentage count started 
+    /*Pace.on("start", function () {
+      $(".app-init-loader").show();
+    });    
+
+    // hide material loader 
+    // when percentage reaches to 100
+    Pace.on("done", function () {
+      $(".app-init-loader").hide();
+    });   */
+
+    $('#global_modal').on('hidden.bs.modal', function (e) {           
+      if(window.location.pathname.indexOf('/login')==-1){
+        window.location = "/login?redirect="+window.location.pathname;
+      }
+    });
+
+</script>
+{{!--this file should be loaded at last after all initializations--}}
+<script src="{{{SiteUrl}}}/static/bundle-main.js "></script>
 
 </html>

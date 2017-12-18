@@ -1,0 +1,32 @@
+[
+    {
+        "Key": "Livestock",
+        "Title": "Livestock",
+        "Bgclass": "green-bg",
+        "Image": ""
+    },
+    {
+        "Key": "NVD",
+        "Title": "eNVD(s)",
+        "Bgclass": "light-blk-bg",
+        "Image": ""
+    },
+    {
+        "Key": "PIC",
+        "Title": "PIC Detail",
+        "Bgclass": "light-org-bg",
+        "Image": ""
+    },
+    {
+        "Key": "Business",
+        "Title": "Business Stats",
+        "Bgclass": "purple-bg",
+        "Image": ""
+    },
+    {
+        "Key": "Report",
+        "Title": "Report",
+        "Bgclass": "yellow-bg",
+        "Image": "star-icon.png"
+    }    
+]

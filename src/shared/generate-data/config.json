@@ -1,0 +1,638 @@
+{
+    "default": {
+        "user": {
+            "firstname": "Nilay",
+            "lastname": "Kothari",
+            "email": "kothari_nilay@yahoo.co.in",
+            "password": "Nk@12345"
+        },
+        "client": {
+            "name": "Aglive Webapp V3",
+            "clientId": "webapp",
+            "clientSecret": "aglivev3webapp"
+        },
+        "company": {
+            "CompanyType": "C",
+            "Name": "Zealous System",
+            "ShortCode": "ZS"
+        },
+        "uomTypes": [
+            {
+                "SystemCode": "WT7",
+                "UoMTypeCode": "WGHT",
+                "UoMTypeName": "Weight"
+            },
+            {
+                "SystemCode": "AA8",
+                "UoMTypeCode": "ARA",
+                "UoMTypeName": "Area"
+            }
+        ],
+        "country": [
+            {
+                "SystemCode": "AA1",
+                "CountryCode": "AUS",
+                "CountryName": "Australia"
+            },
+            {
+                "SystemCode": "NZ",
+                "CountryCode": "ND2",
+                "CountryName": "New Zealand"
+            }
+        ],
+        "chemicalCategory": [
+            {
+                "SystemCode": "VM1",
+                "ChemicalCategoryCode": "VChem",
+                "ChemicalCategoryName": "VetChem"
+            },
+            {
+                "SystemCode": "VE2",
+                "ChemicalCategoryCode": "VPest",
+                "ChemicalCategoryName": "Veterinary Pesticide"
+            },
+            {
+                "SystemCode": "VD3",
+                "ChemicalCategoryCode": "VList",
+                "ChemicalCategoryName": "Veterinary Listed"
+            }
+        ],
+        "chemicalproductactivity": [
+            {
+                "SystemCode": "MT1",
+                "ActivityName": "Meat"
+            },
+            {
+                "SystemCode": "AP2",
+                "ActivityName": "ActivityP"
+            },
+            {
+                "SystemCode": "AM3",
+                "ActivityName": "ActivityM"
+            }
+        ],
+        "state": [
+            {
+                "SystemCode": "TA1",
+                "StateCode": "TAS",
+                "StateName": "Tasmania"
+            },
+            {
+                "SystemCode": "NS2",
+                "StateCode": "NSW",
+                "StateName": "New South Wales"
+            },
+            {
+                "SystemCode": "AY3",
+                "StateCode": "ACT",
+                "StateName": "Australian Capital Territory"
+            },
+            {
+                "SystemCode": "QD4",
+                "StateCode": "QLD",
+                "StateName": "Queensland"
+            },
+            {
+                "SystemCode": "NY5",
+                "StateCode": "NT",
+                "StateName": "Northern Territory"
+            },
+            {
+                "SystemCode": "SA6",
+                "StateCode": "SA",
+                "StateName": "South Australia"
+            },
+            {
+                "SystemCode": "WA7",
+                "StateCode": "WA",
+                "StateName": "Western Australia"
+            },
+            {
+                "SystemCode": "VA8",
+                "StateCode": "Vic",
+                "StateName": "Victoria"
+            }
+        ],
+        "suburb": [
+            {
+                "Name": "SUNDERLAND BAY",
+                "StateId": "fd3e9660-f341-11e6-a34d-3fa1e93038b2",
+                "PostCode": "3922"
+            },
+            {
+                "Name": "THRINGTON",
+                "StateId": "fd1f9cb0-f341-11e6-a34d-3fa1e93038b2",
+                "PostCode": "5552"
+            },
+            {
+                "Name": "BEND OF ISLANDS",
+                "StateId": "fd3e9660-f341-11e6-a34d-3fa1e93038b2",
+                "PostCode": "3097"
+            },
+            {
+                "Name": "LITTLE SANDY DESERT",
+                "StateId": "fd2f0600-f341-11e6-a34d-3fa1e93038b2",
+                "PostCode": "6646"
+            },
+            {
+                "Name": "ROSEHILL",
+                "StateId": "fd00a300-f341-11e6-a34d-3fa1e93038b2",
+                "PostCode": "4370"
+            },
+            {
+                "Name": "WAKERLEY",
+                "StateId": "fd00a300-f341-11e6-a34d-3fa1e93038b2",
+                "PostCode": "4154"
+            },
+            {
+                "Name": "BACKMEDE",
+                "StateId": "fce18240-f341-11e6-a34d-3fa1e93038b2",
+                "PostCode": "2470"
+            },
+            {
+                "Name": "SYMONSTON",
+                "StateId": "fcf0eb90-f341-11e6-a34d-3fa1e93038b2",
+                "PostCode": "2609"
+            }
+        ],
+        "property": [
+            {
+                "PIC": "SB424981",
+                "Name": "R_Redgums",
+                "PropertyTypeId": "25ce4c80-ed37-11e6-86a5-874f4447a5ac",
+                "SuburbId": "30e6cf90-f343-11e6-8b04-0d7a03fc8e91",
+                "Area": "32.85",
+                "CompanyId": "89443c60-fca6-11e6-910c-4b6c72da44c5"
+            },
+            {
+                "PIC": "3CLBB006",
+                "Name": "P_P&M Prime",
+                "PropertyTypeId": "369c3590-ed37-11e6-86a5-874f4447a5ac",
+                "SuburbId": "30f74a50-f343-11e6-8b04-0d7a03fc8e91",
+                "Area": "59.36",
+                "CompanyId": "a20c13d0-fca6-11e6-ba2c-47975f99871e"
+            },
+            {
+                "PIC": "WIAL0012",
+                "Name": "H_HARVEY BEEF ABATTOIR",
+                "PropertyTypeId": "25ce4c80-ed37-11e6-86a5-874f4447a5ac",
+                "SuburbId": "3106dab0-f343-11e6-8b04-0d7a03fc8e91",
+                "Area": null,
+                "CompanyId": "f74ddfc0-fca8-11e6-adad-2db7b003c47c"
+            },
+            {
+                "PIC": "3GMSJ001",
+                "Name": "M_MEADOWBANK",
+                "PropertyTypeId": "369c3590-ed37-11e6-86a5-874f4447a5ac",
+                "SuburbId": "3116b930-f343-11e6-8b04-0d7a03fc8e91",
+                "Area": null,
+                "CompanyId": "0a0960a0-fcac-11e6-9357-031873f7a4a2"
+            },
+            {
+                "PIC": "SA246931",
+                "Name": "S_SD & DP Gommers",
+                "PropertyTypeId": "25ce4c80-ed37-11e6-86a5-874f4447a5ac",
+                "SuburbId": "31264990-f343-11e6-8b04-0d7a03fc8e91",
+                "Area": "40.29",
+                "CompanyId": "124d9e70-fcac-11e6-a025-8b6d831b3e21"
+            },
+            {
+                "PIC": "SA115093",
+                "Name": "B_Bonney View",
+                "PropertyTypeId": "369c3590-ed37-11e6-86a5-874f4447a5ac",
+                "SuburbId": "31360100-f343-11e6-8b04-0d7a03fc8e91",
+                "Area": "13.94",
+                "CompanyId": "3315f3f0-fcac-11e6-8c77-0d5eb21543d8"
+            },
+            {
+                "PIC": "SA115095",
+                "Name": "V_View Bonney",
+                "PropertyTypeId": "369c3590-ed37-11e6-86a5-874f4447a5ac",
+                "SuburbId": "31360100-f343-11e6-8b04-0d7a03fc8e91",
+                "Area": "10.94",
+                "CompanyId": "bb4b5670-fcac-11e6-90ba-4f8e2c2661d2"
+            }
+        ],
+        "contacttypes": [
+            {
+                "SystemCode": "UR1",
+                "TypeCode": "USR",
+                "TypeName": "User"
+            },
+            {
+                "SystemCode": "BR2",
+                "TypeCode": "BM",
+                "TypeName": "Business Manager"
+            },
+            {
+                "SystemCode": "PR3",
+                "TypeCode": "PM",
+                "TypeName": "Property Manager"
+            },
+            {
+                "SystemCode": "RR4",
+                "TypeCode": "RM",
+                "TypeName": "Region Manager"
+            },
+            {
+                "SystemCode": "MK5",
+                "TypeCode": "ML",
+                "TypeName": "Manage Livestock"
+            }
+        ],
+        "contactroles": [
+            {
+                "company": "09970b77-f439-11e6-a9cd-000c294e9305",
+                "contacttype": "20277830-fa64-11e6-8ba1-ad0417f40dc9"
+            },
+            {
+                "company": "727cf6a5-f439-11e6-a9cd-000c294e9305",
+                "contacttype": "2040cc90-fa64-11e6-8ba1-ad0417f40dc9"
+            },
+            {
+                "company": "0cb13c6d-f503-11e6-a9cd-000c294e9305",
+                "contacttype": "20500ed0-fa64-11e6-8ba1-ad0417f40dc9"
+            },
+            {
+                "company": "a4fdd81c-f502-11e6-a9cd-000c294e9305",
+                "contacttype": "205fc640-fa64-11e6-8ba1-ad0417f40dc9"
+            },
+            {
+                "company": "ed029b7b-fa5f-11e6-af21-000c294e9305",
+                "contacttype": "206f0880-fa64-11e6-8ba1-ad0417f40dc9"
+            }
+        ],
+        "propertyaccess": [
+            {
+                "property": "09a72220-f345-11e6-bfed-2519c72d397a",
+                "ValidFromDate": "2016-10-12",
+                "ValidToDate": "2018-02-25"
+            },
+            {
+                "property": "09c6b810-f345-11e6-bfed-2519c72d397a",
+                "ValidFromDate": "2016-07-06",
+                "ValidToDate": "2017-06-17"
+            },
+            {
+                "property": "09e58ab0-f345-11e6-bfed-2519c72d397a",
+                "ValidFromDate": "2017-01-25",
+                "ValidToDate": "2017-02-15"
+            }
+        ],
+        "menugroup": [
+            {
+                "SystemCode": "SS1",
+                "GroupName": "Species",
+                "Icon": "group-species.png",
+                "HoverIcon": null,
+                "SortOrder": 1
+            },
+            {
+                "SystemCode": "TT2",
+                "GroupName": "Treatment",
+                "Icon": "group-treatment.png",
+                "HoverIcon": null,
+                "SortOrder": 2
+            },
+            {
+                "SystemCode": "LK3",
+                "GroupName": "Livestock",
+                "Icon": "group-livestock.png",
+                "HoverIcon": null,
+                "SortOrder": 3
+            },
+            {
+                "SystemCode": "CN4",
+                "GroupName": "Configuration",
+                "Icon": "group-configuration.png",
+                "HoverIcon": null,
+                "SortOrder": 4
+            },
+            {
+                "SystemCode": "PY5",
+                "GroupName": "Property",
+                "Icon": "group-property.png",
+                "HoverIcon": null,
+                "SortOrder": 5
+            },
+            {
+                "SystemCode": "SN6",
+                "GroupName": "Subscription",
+                "Icon": "group-subscription.png",
+                "HoverIcon": null,
+                "SortOrder": 6
+            },
+            {
+                "SystemCode": "SY7",
+                "GroupName": "Security",
+                "Icon": "group-security.png",
+                "HoverIcon": null,
+                "SortOrder": 7
+            }
+        ],
+        "controlmenu": [
+            {
+                "SystemCode": "LK1",
+                "Name": "Livestock",
+                "Icon": "control-livestock.png",
+                "HoverIcon": "control-livestock-hover.png",
+                "RedirectURL": "/dashboard",
+                "ModuleId": "33d2ee80-f98f-11e6-b179-d7c06e3b519a",
+                "SortOrder": 1
+            },
+            {
+                "SystemCode": "ED2",
+                "Name": "eNVD",
+                "Icon": "control-envd.png",
+                "HoverIcon": "control-envd-hover.png",
+                "ModuleId": "33d2ee80-f98f-11e6-b179-d7c06e3b519a",
+                "SortOrder": 2
+            },
+            {
+                "SystemCode": "PY3",
+                "Name": "Property",
+                "Icon": "control-property.png",
+                "HoverIcon": "control-property-hover.png",
+                "ModuleId": "33d2ee80-f98f-11e6-b179-d7c06e3b519a",
+                "SortOrder": 3
+            },
+            {
+                "SystemCode": "CY4",
+                "Name": "Company",
+                "Icon": "control-company.png",
+                "HoverIcon": "control-company-hover.png",
+                "ModuleId": "33d2ee80-f98f-11e6-b179-d7c06e3b519a",
+                "SortOrder": 4
+            },
+            {
+                "SystemCode": "CT5",
+                "Name": "Contact",
+                "Icon": "control-contact.png",
+                "HoverIcon": "control-contact-hover.png",
+                "ModuleId": "33d2ee80-f98f-11e6-b179-d7c06e3b519a",
+                "SortOrder": 5
+            },
+            {
+                "SystemCode": "RT6",
+                "Name": "Report",
+                "Icon": "control-report.png",
+                "HoverIcon": "control-report-hover.png",
+                "ModuleId": "33d2ee80-f98f-11e6-b179-d7c06e3b519a",
+                "SortOrder": 6
+            },
+            {
+                "SystemCode": "FD7",
+                "Name": "Feed",
+                "Icon": "control-feed.png",
+                "HoverIcon": "control-feed-hover.png",
+                "RedirectURL": "/feed",
+                "ModuleId": "33d33ca0-f98f-11e6-b179-d7c06e3b519a",
+                "SortOrder": 7
+            },
+            {
+                "SystemCode": "ED8",
+                "Name": "eCVD",
+                "Icon": "control-ecvd.png",
+                "HoverIcon": "control-ecvd-hover.png",
+                "ModuleId": "33d33ca0-f98f-11e6-b179-d7c06e3b519a",
+                "SortOrder": 8
+            },
+            {
+                "SystemCode": "PY3",
+                "Name": "Property",
+                "Icon": "control-property.png",
+                "HoverIcon": "control-property-hover.png",
+                "ModuleId": "33d33ca0-f98f-11e6-b179-d7c06e3b519a",
+                "SortOrder": 9
+            },
+            {
+                "SystemCode": "RT10",
+                "Name": "Report",
+                "Icon": "control-Report.png",
+                "HoverIcon": "control-Report-hover.png",
+                "ModuleId": "33d33ca0-f98f-11e6-b179-d7c06e3b519a",
+                "SortOrder": 10
+            },
+            {
+                "SystemCode": "CY11",
+                "Name": "Company",
+                "Icon": "control-company.png",
+                "HoverIcon": "control-company-hover.png",
+                "RedirectURL": "/dashboard1",
+                "ModuleId": "33d33ca1-f98f-11e6-b179-d7c06e3b519a",
+                "SortOrder": 11
+            },
+            {
+                "SystemCode": "PY12",
+                "Name": "Property",
+                "Icon": "control-property.png",
+                "HoverIcon": "control-property-hover.png",
+                "ModuleId": "33d33ca1-f98f-11e6-b179-d7c06e3b519a",
+                "SortOrder": 12
+            },
+            {
+                "SystemCode": "CT13",
+                "Name": "Contact",
+                "Icon": "control-contact.png",
+                "HoverIcon": "control-contact-hover.png",
+                "ModuleId": "33d33ca1-f98f-11e6-b179-d7c06e3b519a",
+                "SortOrder": 13
+            },
+            {
+                "SystemCode": "ME14",
+                "Name": "Module",
+                "Icon": "control-module.png",
+                "HoverIcon": "control-module-hover.png",
+                "ModuleId": "33d33ca1-f98f-11e6-b179-d7c06e3b519a",
+                "SortOrder": 14
+            },
+            {
+                "SystemCode": "SN15",
+                "Name": "Subscription",
+                "Icon": "control-subscription.png",
+                "HoverIcon": "control-subscription-hover.png",
+                "ModuleId": "33d33ca1-f98f-11e6-b179-d7c06e3b519a",
+                "SortOrder": 15
+            },
+            {
+                "SystemCode": "RT16",
+                "Name": "Report",
+                "Icon": "control-report.png",
+                "HoverIcon": "control-report-hover.png",
+                "ModuleId": "33d33ca1-f98f-11e6-b179-d7c06e3b519a",
+                "SortOrder": 16
+            },
+            {
+                "SystemCode": "SG17",
+                "Name": "Setting",
+                "Icon": "control-setting.png",
+                "HoverIcon": "control-setting-hover.png",
+                "ModuleId": "33d33ca2-f98f-11e6-b179-d7c06e3b519a",
+                "SortOrder": 17
+            }
+        ],
+        "setupmenu": [
+            {
+                "SystemCode": "SS18",
+                "Name": "Species",
+                "RedirectURL": "/adminsetup/species",
+                "SortOrder": 18,
+                "GroupId": "5fb50450-fb21-11e6-b184-c9743fd1e8bb"
+            },
+            {
+                "SystemCode": "SE19",
+                "Name": "Species Type",
+                "RedirectURL": "/adminsetup/speciestype",
+                "SortOrder": 19,
+                "GroupId": "5fb50450-fb21-11e6-b184-c9743fd1e8bb"
+            },
+            {
+                "SystemCode": "SS20",
+                "Name": "Maturity",
+                "RedirectURL": "/adminsetup/maturity",
+                "SortOrder": 20,
+                "GroupId": "5fb50450-fb21-11e6-b184-c9743fd1e8bb"
+            },
+            {
+                "SystemCode": "BE21",
+                "Name": "Breed Type",
+                "RedirectURL": "/adminsetup/breedtype",
+                "SortOrder": 21,
+                "GroupId": "5fb50450-fb21-11e6-b184-c9743fd1e8bb"
+            },
+            {
+                "SystemCode": "BD22",
+                "Name": "Breed",
+                "RedirectURL": "/adminsetup/breed",
+                "SortOrder": 22,
+                "GroupId": "5fb50450-fb21-11e6-b184-c9743fd1e8bb"
+            },
+            {
+                "SystemCode": "GR23",
+                "Name": "Gender",
+                "RedirectURL": "/adminsetup/gender",
+                "SortOrder": 23,
+                "GroupId": "5fb50450-fb21-11e6-b184-c9743fd1e8bb"
+            },
+            {
+                "SystemCode": "CY24",
+                "Name": "Chemical Category",
+                "RedirectURL": "/adminsetup/chemicalcategory",
+                "SortOrder": 24,
+                "GroupId": "5fb57980-fb21-11e6-b184-c9743fd1e8bb"
+            },
+            {
+                "SystemCode": "CT25",
+                "Name": "Chemical Product",
+                "RedirectURL": "/setup/chemicalproduct",
+                "SortOrder": 25,
+                "GroupId": "5fb57980-fb21-11e6-b184-c9743fd1e8bb"
+            },
+            {
+                "SystemCode": "CE26",
+                "Name": "Dose by Measure",
+                "RedirectURL": "/adminsetup/dosebymeasure",
+                "SortOrder": 26,
+                "GroupId": "5fb57980-fb21-11e6-b184-c9743fd1e8bb"
+            },
+            {
+                "SystemCode": "TD27",
+                "Name": "Treat Method",
+                "RedirectURL": "/adminsetup/treatmentmethod",
+                "SortOrder": 27,
+                "GroupId": "5fb57980-fb21-11e6-b184-c9743fd1e8bb"
+            },
+            {
+                "SystemCode": "TE28",
+                "Name": "Treatment Type",
+                "RedirectURL": "/adminsetup/treatmenttype",
+                "SortOrder": 28,
+                "GroupId": "5fb57980-fb21-11e6-b184-c9743fd1e8bb"
+            },
+            {
+                "SystemCode": "DN29",
+                "Name": "Death Reason",
+                "RedirectURL": "/adminsetup/deathreason",
+                "SortOrder": 29,
+                "GroupId": "5fb5a090-fb21-11e6-b184-c9743fd1e8bb"
+            },
+            {
+                "SystemCode": "GP30",
+                "Name": "Group",
+                "RedirectURL": "/adminsetup/group",
+                "SortOrder": 30,
+                "GroupId": "5fb5a090-fb21-11e6-b184-c9743fd1e8bb"
+            },
+            {
+                "SystemCode": "LR31",
+                "Name": "Livestock Colour",
+                "RedirectURL": "/adminsetup/livestockcolour",
+                "SortOrder": 31,
+                "GroupId": "5fb5a090-fb21-11e6-b184-c9743fd1e8bb"
+            },
+            {
+                "SystemCode": "SE32",
+                "Name": "Enclosure Type",
+                "RedirectURL": "/adminsetup/enclosuretype",
+                "SortOrder": 32,
+                "GroupId": "5fb5a091-fb21-11e6-b184-c9743fd1e8bb"
+            },
+            {
+                "SystemCode": "PE33",
+                "Name": "Property Type",
+                "RedirectURL": "/adminsetup/propertytype",
+                "SortOrder": 33,
+                "GroupId": "5fb5a091-fb21-11e6-b184-c9743fd1e8bb"
+            },
+            {
+                "SystemCode": "SE34",
+                "Name": "Service Type",
+                "RedirectURL": "/adminsetup/servicetype",
+                "SortOrder": 34,
+                "GroupId": "5fb5a091-fb21-11e6-b184-c9743fd1e8bb"
+            },
+            {
+                "SystemCode": "UE35",
+                "Name": "Unit of Measure",
+                "RedirectURL": "/adminsetup/uom",
+                "SortOrder": 35,
+                "GroupId": "5fb5a091-fb21-11e6-b184-c9743fd1e8bb"
+            },
+            {
+                "SystemCode": "UN36",
+                "Name": "UoM Conversion",
+                "RedirectURL": "/adminsetup/uomconversion",
+                "SortOrder": 36,
+                "GroupId": "5fb5a091-fb21-11e6-b184-c9743fd1e8bb"
+            },
+            {
+                "SystemCode": "AM37",
+                "Name": "Accreditation Program",
+                "RedirectURL": "/adminsetup/accreditationprogram",
+                "SortOrder": 37,
+                "GroupId": "5fb5a092-fb21-11e6-b184-c9743fd1e8bb"
+            },
+            {
+                "SystemCode": "AT38",
+                "Name": "Account",
+                "RedirectURL": null,
+                "SortOrder": 38,
+                "GroupId": "5fb5eeb0-fb21-11e6-b184-c9743fd1e8bb"
+            },
+            {
+                "SystemCode": "SN39",
+                "Name": "Subscription",
+                "RedirectURL": null,
+                "SortOrder": 39,
+                "GroupId": "5fb5eeb0-fb21-11e6-b184-c9743fd1e8bb"
+            },
+            {
+                "SystemCode": "GN40",
+                "Name": "Grant Permission",
+                "RedirectURL": null,
+                "SortOrder": 40,
+                "GroupId": "5fb5eeb1-fb21-11e6-b184-c9743fd1e8bb"
+            }
+        ]
+    }
+}

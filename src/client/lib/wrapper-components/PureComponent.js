@@ -7,12 +7,12 @@
  * *************************************/
 
 import React, { Component } from 'react'
-import lodash from 'lodash';
+import {isEqual} from 'lodash';
 //import shallowCompare from 'react-addons-shallow-compare'
 
 export default class PureComponent extends Component {
     shouldComponentUpdate(nextProps, nextState) {
         //return shallowCompare(this, nextProps, nextState);
-        return !lodash.isEqual(this.props, nextProps) || !lodash.isEqual(this.state, nextState);
+        return !isEqual(this.props, nextProps) || !isEqual(this.state, nextState);
     }
 }

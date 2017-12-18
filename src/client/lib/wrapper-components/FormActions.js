@@ -5,10 +5,23 @@
  * such as signup form, login form etc...
  * *************************************/
 
-import lodash from 'lodash'
-import uid from '../../../shared/uuid/index'
+import { assign, pickBy } from 'lodash';
+import { randomInteger } from '../../../shared/random';
+import { NOTIFY_WARNING } from '../../app/common/actiontypes';
 
-export function initForm(fields, extraObj = {}) {
+module.exports = {
+    initForm: initForm,
+    setFormValue: setFormValue,
+    isValidForm: isValidForm,
+    getForm: getForm,
+    resetForm: resetForm,
+    gridActionNotify: gridActionNotify,
+    loadRecaptchaScript: loadRecaptchaScript
+}
+
+// Init form object
+function initForm(fields, extraObj = {}) {
+
     const arrayObj = fields.map(function (el) {
         return {
             [el]: {
@@ -19,11 +32,13 @@ export function initForm(fields, extraObj = {}) {
         };
     });
     const obj1 = Object.assign({}, ...arrayObj);
-    const obj2 = { formId: uid.newUUID(), is_validForm: false };
-    return lodash.assign(obj1, obj2, extraObj);
+    const obj2 = { formId: randomInteger(), is_validForm: false };
+
+    return assign(obj1, obj2, extraObj);
 }
 
-export function setFormValue(state, action) {
+// Update form value in store
+function setFormValue(state, action) {
     state[action.key]['value'] = action.value;
     state[action.key]['isValid'] = action.isValid;
     state[action.key]['isDirty'] = action.isDirty;
@@ -31,29 +46,78 @@ export function setFormValue(state, action) {
     return state;
 }
 
-export function isValidForm(state) {
-    let is_validForm = !has(state, false);
+// Check form is valid
+function isValidForm(state, refs) {
+    let is_validForm = !has(state, refs);
     return is_validForm;
 }
 
-function has(obj, value) {
-    for (var id in obj) {
-        if (obj[id]['isValid'] == value) {
-            return true;
+function has(obj, refs) {
+    if (refs) {
+        for (var formField in obj) {
+            if (refs[obj[formField]].fieldStatus['valid'] == false) {
+                return true;
+            }
         }
+        return false;
     }
-    return false;
+    else {
+        for (var id in obj) {
+            if (obj[id]['isValid'] == false) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
 
-export function getForm(state) {
+// Return form object
+function getForm(state, refs) {
     let obj = {};
-    lodash.pickBy(state, (val, key) => {
-        if (val['value'] != undefined)
-            obj = Object.assign({}, obj, { [key]: val['value'] });
-    });
+    if (refs) {
+        for (var formField in state) {            
+            let key = state[formField];          
+            let value = refs[key].fieldStatus['value'] ? refs[key].fieldStatus['value'] : null;
+            obj = Object.assign({}, obj, { [key]: value });
+        }
+    }
+    else {
+        pickBy(state, (val, key) => {
+            if (val['value'] != undefined)
+                obj = Object.assign({}, obj, { [key]: val['value'] });
+        });
+    }
     return obj;
 }
 
-export function resetForm(init) {
-    return Object.assign({}, init, init.formId = uid.newUUID());
+// Reset all controls inside the form
+function resetForm(init) {
+    return Object.assign({}, init, init.formId = randomInteger());
+}
+
+/*************************************
+ * For delete -> atLeastOne = true, onlyOne = false
+ * For edit -> atLeastOne = true, onlyOne = true
+ * *************************************/
+function gridActionNotify(strings, notify, selectedRows, atLeastOne = false, onlyOne = false) {
+    if (atLeastOne && selectedRows == 0) {
+        notify(NOTIFY_WARNING, { message: strings.COMMON.SELECT_AT_LEAST_ONE });
+        return false;
+    }
+    else if (onlyOne && selectedRows != 1) {
+        notify(NOTIFY_WARNING, { message: strings.COMMON.SELECT_ONLY_ONE });
+        return false;
+    }
+    else {
+        return true;
+    }
+}
+
+// Load recaptcha script to page
+function loadRecaptchaScript() {
+    const script = document.createElement("script");
+    script.src = "https://www.google.com/recaptcha/api.js?render=explicit";
+    script.async = true;
+    script.defer = true;
+    document.body.appendChild(script);
 }

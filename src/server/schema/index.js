@@ -23,6 +23,10 @@ var sequelize = new Sequelize(
         host: process.env.DB_HOST,
         port: process.env.DB_PORT,
         dialect: process.env.DB_DIALECT,
+        //query: { raw: true },
+        dialectOptions: {
+            multipleStatements: true
+        },
         define:
         {
             timestamps: false // disabled timestamp to ignore createdAt, updatedAt fields 
@@ -41,7 +45,7 @@ fs
         return (file.indexOf('.') !== 0);
     })
     .forEach(function (file) {
-        var model = sequelize.import(path.join(models, file));        
+        var model = sequelize.import(path.join(models, file));
         db[model.name] = model;
         db.models.push(model.name);
     });
@@ -58,6 +62,3 @@ db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
 module.exports = db;
-
-
-

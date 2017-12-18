@@ -1,68 +1,210 @@
-{
-    "modules": [
-        {
-            "name": "Livestock",
-            "icon": "./static/images/live-stoct-dropmenu.png",
-            "icon-hover": "./static/images/live-stoct-icon.png",
-            "sub-modules": [
-                {
-                    "name": "Livestock",
-                    "icon": "./static/images/live-stoct-icon.png",
-                    "icon-hover": "./static/images/live-stoct-icon-hover.png"
-                },
-                {
-                    "name": "eNVD",
-                    "icon": "./static/images/envd-icon.png",
-                    "icon-hover": "./static/images/envd-icon-hover.png"
-                },
-                {
-                    "name": "Property",
-                    "icon": "./static/images/property-icon.png",
-                    "icon-hover": "./static/images/property-icon-hover.png"
-                },
-                {
-                    "name": "Business",
-                    "icon": "./static/images/bu-icon.png",
-                    "icon-hover": "./static/images/bu-icon-hover.png"
-                },
-                {
-                    "name": "Contact",
-                    "icon": "./static/images/conact-icon.png",
-                    "icon-hover": "./static/images/conact-icon-hover.png"
-                },
-                {
-                    "name": "Report",
-                    "icon": "./static/images/support-icon.png",
-                    "icon-hover": "./static/images/support-icon-hover.png"
-                }
-            ]
-        },
-        {
-            "name": "Grain & Fodder",
-            "icon": "./static/images/grain-icon.png",
-            "icon-hover": "./static/images/grain-icon-hover.png",
-            "sub-modules": [
-                {
-                    "name": "Feed Setup",
-                    "icon": "./static/images/live-stoct-icon.png",
-                    "icon-hover": "./static/images/live-stoct-icon-hover.png"
-                },
-                {
-                    "name": "Record Feed",
-                    "icon": "./static/images/envd-icon.png",
-                    "icon-hover": "./static/images/envd-icon-hover.png"
-                }
-            ]
-        },
-        {
-            "name": "Security",
-            "icon": "./static/images/lock-icon.png",
-            "icon-hover": "./static/images/lock-icon-hover.png"
-        },
-        {
-            "name": "Setting & Setup",
-            "icon": "./static/images/setting-icon.png",
-            "icon-hover": "./static/images/setting-icon-hover.png"
-        }
-    ]
-}
+[
+    {
+        "Key": "LivestockModule",
+        "name": "Livestock",
+        "icon": "/static/images/live-stoct-dropmenu.png",
+        "icon-hover": "/static/images/live-stoct-icon.png",
+        "sub-modules": [
+            {
+                "name": "Livestock",
+                "icon": "/static/images/support-icon-hover.png"
+            }
+        ]
+    },
+    {
+        "Key": "GrainFodderModule",
+        "name": "Grain & Fodder",
+        "icon": "/static/images/grain-icon.png",
+        "icon-hover": "/static/images/grain-icon-hover.png",
+        "sub-modules": [
+            {
+                "name": "Feed Setup",
+                "icon": "/static/images/envd-icon-hover.png"
+            }
+        ]
+    },
+    {
+        "Key": "SecurityModule",
+        "name": "Security",
+        "icon": "/static/images/lock-icon.png",
+        "icon-hover": "/static/images/lock-icon-hover.png"
+    },
+    {
+        "Key": "SettingSetupModule",
+        "Name": "Setting & Setup",
+        "Icon": "/static/images/setting-icon.png",
+        "Icon-hover": "/static/images/setting-icon-hover.png",
+        "SetupMenu": [
+            {
+                "Key": "SpeciesTitle",
+                "Name": "Species",
+                "Icon": "/static/images/stock-icon.png",
+                "SubMenu": [
+                    {
+                        "Key": "SetupSpecies",
+                        "Name": "Species",
+                        "RedirectURL": "/adminsetup/species"
+                    },
+                    {
+                        "Key": "SetupSpeciesType",
+                        "Name": "Species Type",
+                        "RedirectURL": "/adminsetup/speciestype"
+                    },
+                    {
+                        "Key": "SetupMaturity",
+                        "Name": "Maturity",
+                        "RedirectURL": "/adminsetup/maturity"
+                    },
+                    {
+                        "Key": "SetupBreedType",
+                        "Name": "Breed Type",
+                        "RedirectURL": "/adminsetup/breedtype"
+                    },
+                    {
+                        "Key": "SetupBreed",
+                        "Name": "Breed",
+                        "RedirectURL": "/adminsetup/breed"
+                    },
+                    {
+                        "Key": "SetupGender",
+                        "Name": "Gender",
+                        "RedirectURL": "/adminsetup/gender"
+                    }
+                ]
+            },
+            {
+                "Key": "TreatmentTitle",
+                "Name": "Treatment",
+                "Icon": "/static/images/stock-icon.png",
+                "SubMenu": [
+                    {
+                        "Key": "SetupChemicalCategory",
+                        "Name": "Chemical Category",
+                        "RedirectURL": "/adminsetup/chemicalcategory"
+                    },
+                    {
+                        "Key": "SetupChemicalProduct",
+                        "Name": "Chemical Product",
+                        "RedirectURL": "/setup/chemicalproduct"
+                    },
+                    {
+                        "Key": "SetupDoseByMeasure",
+                        "Name": "Dose by Measure",
+                        "RedirectURL": "/adminsetup/dosebymeasure"
+                    },
+                    {
+                        "Key": "SetupTreatmentMethod",
+                        "Name": "Treat Method",
+                        "RedirectURL": "/adminsetup/treatmentmethod"
+                    },
+                    {
+                        "Key": "SetupTreatmentType",
+                        "Name": "Treatment Type",
+                        "RedirectURL": "/adminsetup/treatmenttype"
+                    }
+                ]
+            },
+            {
+                "Key": "LivestockTitle",
+                "Name": "Livestock",
+                "Icon": "/static/images/stock-icon.png",
+                "SubMenu": [
+                    {
+                        "Key": "SetupDeathReason",
+                        "Name": "Death Reason",
+                        "RedirectURL": "/adminsetup/deathreason"
+                    },
+                    {
+                        "Key": "SetupGroup",
+                        "Name": "Group",
+                        "RedirectURL": "/adminsetup/group"
+                    },
+                    {
+                        "Key": "SetupLivestockColour",
+                        "Name": "Livestock Colour",
+                        "RedirectURL": "/adminsetup/livestockcolour"
+                    }
+                ]
+            },
+            {
+                "Key": "ConfigurationTitle",
+                "Name": "Configuration",
+                "Icon": "/static/images/set-blue.png",
+                "SubMenu": [
+                    {
+                        "Key": "SetupEnclosureType",
+                        "Name": "Enclosure Type",
+                        "RedirectURL": "/adminsetup/enclosuretype"
+                    },
+                    {
+                        "Key": "SetupPropertyType",
+                        "Name": "Property Type",
+                        "RedirectURL": "/adminsetup/propertytype"
+                    },
+                    {
+                        "Key": "SetupServiceType",
+                        "Name": "Service Type",
+                        "RedirectURL": "/adminsetup/servicetype"
+                    },
+                    {
+                        "Key": "SetupUom",
+                        "Name": "Unit of Measure",
+                        "RedirectURL": "/adminsetup/uom"
+                    },
+                    {
+                        "Key": "SetupUomConversion",
+                        "Name": "UoM Conversion",
+                        "RedirectURL": "/adminsetup/uomconversion"
+                    }
+                ]
+            },
+            {
+                "Key": "PropertyTitle",
+                "Name": "Property",
+                "Icon": "/static/images/stock-icon.png",
+                "SubMenu": [
+                    {
+                        "Key": "SetupAccreditationProgram",
+                        "Name": "Accreditation Program",
+                        "RedirectURL": "/adminsetup/accreditationprogram"
+                    }
+                ]
+            },
+            {
+                "Key": "SubscriptionTitle",
+                "Name": "Subscription",
+                "Icon": "/static/images/subscription.png",
+                "SubMenu": [
+                    {
+                        "Key": "Account",
+                        "Name": "Account",
+                        "RedirectURL": "#"
+                    },
+                    {
+                        "Key": "Subscription",
+                        "Name": "Subscription",
+                        "RedirectURL": "#"
+                    }
+                ]
+            },
+            {
+                "Key": "SecurityTitle",
+                "Name": "Security",
+                "Icon": "/static/images/lock-icon2.png",
+                "SubMenu": [
+                    {
+                        "Key": "GrantPermission",
+                        "Name": "Grant Permission",
+                        "RedirectURL": "#"
+                    }
+                ]
+            },
+            {
+                "Key": "StockTitle",
+                "Name": "Stock",
+                "Icon": "/static/images/stock-icon.png",
+                "SubMenu": []
+            }
+        ]
+    }
+]

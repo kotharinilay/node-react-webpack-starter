@@ -4,6 +4,9 @@
  * register grunt task for [development] 
  * *****************************************/
 
-module.exports = function(grunt) {    
+module.exports = function (grunt) {
     grunt.registerTask('schema', ['shell:generate_schema']);
-    grunt.registerTask('default', ['webpack','nodemon','watch']); };
+    grunt.registerTask('test', ['shell:mocha']);
+    grunt.registerTask('coverage', ['shell:istanbul']);
+    grunt.registerTask('default', ['shell:dev'])
+};

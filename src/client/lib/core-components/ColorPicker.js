@@ -1,11 +1,11 @@
- 'use strict';
+'use strict';
 
 /*************************************
  * Color picker component
  * *************************************/
 
 import React, { Component } from 'react';
-import ColorPicker from 'rc-color-picker';
+import { Panel as ColorPickerPanel } from 'rc-color-picker';
 
 // import css of color picker
 import 'rc-color-picker/assets/index.css';
@@ -18,12 +18,14 @@ class ColorPickerComponent extends Component {
     // Render ColorPicker component
     render() {
         return (
-            <div style={{ textAlign: 'center' }}>
-                <ColorPicker
+            <div style={{ textAlign: 'left', ...this.props.style }} className={this.props.className}>
+                <ColorPickerPanel
+
                     color={this.props.color}
+                    alpha={this.props.alpha}
+                    mode="RGB"
                     onChange={this.props.changeHandler}>
-                    <span className="react-custom-trigger">Choose Color</span>
-                </ColorPicker>
+                </ColorPickerPanel>
             </div>
         )
     }
@@ -37,7 +39,9 @@ ColorPickerComponent.propTypes = {
 
 // Set defaultProps of ColorPicker
 ColorPickerComponent.defaultProps = {
-    color: '#000000'
+    color: '#36c',
+    alpha: 100,
+    className: ''
 }
 
 export default ColorPickerComponent;
