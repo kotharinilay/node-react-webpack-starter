@@ -15,6 +15,9 @@ const externalStyle = {
     checkbox: {
         checkedColor: primaryColor,
         boxColor: '#898c8e'
+    },
+    zIndex: {
+        layer: 9999
     }
 }
 
@@ -86,13 +89,19 @@ export const radioButtonStyle = {
         marginRight: '20px'
     },
     iconStyle: {
-        marginRight: '5px'
+        marginRight: '5px',
+        width: '20px',
+        height: '20px'
     },
     labelStyle: {
-        width: 'auto'
+        width: 'auto',
+        color: '#37444b',
+        fontWeight: 'normal',
+        fontSize: '13px'
     },
     radioButtonGroupStyle: {
-        display: 'flex'
+        display: 'flex',
+        flexWrap: 'wrap'
     }
 }
 

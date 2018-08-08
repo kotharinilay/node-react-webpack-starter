@@ -15,8 +15,7 @@
 /********wizard page************/
 
 .consi-pro-main { margin: 0 35px 0 0;}
-.pre-main {margin: 0 25px 0 0; }
-.trans-main {display:inline-block; float: left; margin:0 25px 25px 15px;}
+.trans-main {display:inline-block; float: left; }
 
 .trans-main:last-child{float: left;}
 .setup-head span {margin-left: 278px;}
@@ -60,8 +59,8 @@ h2{font-size:18px; margin-bottom:35px;}
 .dash-right-top{padding-left:70px;}
 
 
-ul.action-menu{max-width:300px; padding:15px 0;}
-ul.action-menu li{width:100%; float:left; margin:0 0 20px;}
+ul.action-menu{max-width:650px; padding:15px 0;}
+ul.action-menu li{width:50%; float:left; margin:0 0 20px;}
 .mega-dropdown-menu > li > ul{margin:0 0 20px;}
 ul.action-menu .dropdown-header{margin:0 0 15px;}
 ul.action-menu > li > ul > li{margin:0 0 5px;}
@@ -72,9 +71,7 @@ ul.action-menu > li > ul > li{margin:0 0 5px;}
 
 /********wizard page************/
 .cattle-text span{font-size:13px;}
-.consi-pro-main { margin: 0 35px 0 0; width:181px;}
-.pre-main {margin: 0 25px 0 0; width:181px;}
-.trans-main {display:inline-block; float: left; margin:0 25px 25px 15px;}
+.trans-main {display:inline-block; float: left;}
 .setup-head span {margin-left: 240px; font-size: 13px;}
 .header-main{margin:0; padding:132px 0 100px; float:left; width:100%; }
 .sign-in-acc{padding-bottom:130px;}
@@ -90,6 +87,7 @@ ul.action-menu > li > ul > li{margin:0 0 5px;}
 		
 	.react-bs-table-pagination .row{max-height:inherit;}	
 .dropdown-input{margin-top:0;}
+.multipicker-input{margin-top:0;}
 .custom-input-outer{margin-top:10px;}	
 .btnNext{margin-bottom:10px;}	
 .btnPrev{margin-left:0;}

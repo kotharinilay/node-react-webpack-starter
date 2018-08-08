@@ -6,7 +6,7 @@ import { map } from 'lodash';
 import Button from '../../../../lib/core-components/Button';
 import BusyButton from '../../../../lib/wrapper-components/BusyButton';
 import ToggleSwitch from '../../../../lib/core-components/ToggleSwitch';
-import CircularProgress from '../../../../lib/core-components/CircularProgress';
+import LoadingIndicator from '../../../../lib/core-components/LoadingIndicator';
 
 import { getPreferredWidgets, updatePreferredWidgets } from '../../../../services/private/dashboard';
 import { NOTIFY_SUCCESS, NOTIFY_ERROR } from '../../../common/actiontypes';
@@ -20,7 +20,7 @@ class ConfigureDashboard extends Component {
         this.siteURL = window.__SITE_URL__;
 
         this.state = {
-            dataFatch: false
+            dataFetch: false
         }
         this.widgets = [];
         this.maxOrder = 0;
@@ -85,7 +85,7 @@ class ConfigureDashboard extends Component {
             if (res.success) {
                 _this.maxOrder = res.maxOrder;
                 _this.widgets = res.widgets;
-                _this.stateSet({ dataFatch: true });
+                _this.stateSet({ dataFetch: true });
             }
             else if (res.badRequest) {
                 _this.props.notifyToaster(NOTIFY_ERROR, { message: res.error, strings: strings });
@@ -93,14 +93,14 @@ class ConfigureDashboard extends Component {
                 _this.widgets = [];
             }
         }).catch(function (err) {
-            _this.stateSet({ dataFatch: true });
+            _this.stateSet({ dataFetch: true });
             _this.props.notifyToaster(NOTIFY_ERROR);
         });
     }
 
     // Render widgets based on json file and user configure values
     renderWidgets(strings) {
-        if (this.state.dataFatch) {
+        if (this.state.dataFetch) {
             return (map(this.widgets, (d, index) =>
                 <div key={index} className="col-md-3">
                     <div className={"configure-livestock " + d['Bgclass']}>
@@ -121,9 +121,7 @@ class ConfigureDashboard extends Component {
                 </div>));
         }
         else {
-            return (<div>
-                <CircularProgress inputProps={{ size: 20, thickness: 3, className: 'mr5' }} /> Loading...
-                </div>);
+            return <LoadingIndicator onlyIndicator={true} />;
         }
     }
 

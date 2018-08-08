@@ -19,6 +19,7 @@ class ChangePassword extends PureComponent {
     constructor(props) {
         super(props);
         this.state = {
+            isOpen: true,
             isClicked: false,
             error: null,
         }
@@ -31,7 +32,11 @@ class ChangePassword extends PureComponent {
 
     // To hide modal popup
     hideModal() {
-        this.props.toggleChangePassword(false);
+        this.setState({ isOpen: false });
+        let _this = this;
+        setTimeout(function () {
+            _this.props.toggleChangePassword(false);
+        }, 1000);
     }
 
     // Handle ESC key
@@ -41,7 +46,7 @@ class ChangePassword extends PureComponent {
             e.preventDefault();
         }
     }
-    
+
     componentDidMount() {
         document.addEventListener('keydown', this.handleKeyDown);
     }
@@ -55,13 +60,13 @@ class ChangePassword extends PureComponent {
         try {
             let isFormValid = isValidForm(this.changePasswordSchema, this.refs);
             if (!isFormValid) {
-                if (!this.state.isClicked)
+                if (!this.state.isClicked && !this.refs.newPassword.fieldStatus.visited)
                     this.setState({ isClicked: true });
                 return false;
             }
             let obj = getForm(this.changePasswordSchema, this.refs);
             let _this = this;
-            let {strings} = this.props;
+            let { strings } = this.props;
             changePassword(obj.existingPassword, obj.newPassword).then(function (res) {
                 if (res.success) {
                     _this.props.notifyToaster(NOTIFY_SUCCESS, { message: strings.PASSWORD_CHANGE_SUCCESS });
@@ -82,9 +87,9 @@ class ChangePassword extends PureComponent {
 
     // Render popup
     render() {
-        let {strings} = this.props;
+        let { strings } = this.props;
         return (
-            <Modal isOpen={true} keyboard={false}>
+            <Modal isOpen={this.state.isOpen} keyboard={false}>
                 <ModalHeader>
                     <ModalClose onClick={this.hideModal} />
                     <h2> {strings.TITLE}</h2>

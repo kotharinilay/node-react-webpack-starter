@@ -1,0 +1,94 @@
+{
+    "method": "GET",
+    "body": {
+        "localTesting": true,
+        "firebaseKey": "123456",
+        "contactId": "ca4d4b30-d7e3-11e6-86f4-b5756a924ac6",
+        "language": "en",
+        "isSiteAdministrator": true,
+        "fileToProcess": "development/import-csv/import-tag/1493722305035xhbtjg/importTag_1.csv",
+        "offset": 1,
+        "bucket": "aglive",
+        "mapping": [
+            {
+                "CSVColumns": "EID",
+                "index": 0,
+                "mapColumn": "EID"
+            },
+            {
+                "CSVColumns": "NLIS ID",
+                "index": 1,
+                "mapColumn": "NLIS ID"
+            },
+            {
+                "CSVColumns": "Visual Tag",
+                "index": 2,
+                "mapColumn": "Visual Tag"
+            },
+            {
+                "CSVColumns": "Issue Date",
+                "index": 3,
+                "mapColumn": "Issue Date"
+            },
+            {
+                "CSVColumns": "Scan Date",
+                "index": 4,
+                "mapColumn": "Scan Date"
+            },
+            {
+                "CSVColumns": "Tag Year",
+                "index": 5,
+                "mapColumn": "Tag Year"
+            },
+            {
+                "CSVColumns": "PIC",
+                "index": 6,
+                "mapColumn": "PIC"
+            },
+            {
+                "CSVColumns": "Received Date",
+                "index": 7,
+                "mapColumn": "Received Date"
+            },
+            {
+                "CSVColumns": "Description",
+                "index": 8,
+                "mapColumn": "Description"
+            },
+            {
+                "CSVColumns": "Status",
+                "index": 9,
+                "mapColumn": "Status"
+            }
+        ],
+        "env": {
+            "DB_NAME": "aglive",
+            "DB_HOST_USERNAME": "root",
+            "DB_HOST_PASSWORD": "sqldba",
+            "DB_HOST": "192.168.1.95",
+            "DB_PORT": "3307",
+            "DB_DIALECT": "mariadb",
+            "AWS_ACCESS_KEY": "AKIAISARQPKIIRYVBMZA",
+            "AWS_SECRET_ACCESS_KEY": "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",
+            "AWS_REGION": "ap-southeast-2"
+        }
+    },
+    "headers": {
+        "CloudFront-Forwarded-Proto": "https",
+        "CloudFront-Is-Desktop-Viewer": "true",
+        "CloudFront-Is-Mobile-Viewer": "false",
+        "CloudFront-Is-SmartTV-Viewer": "false",
+        "CloudFront-Is-Tablet-Viewer": "false",
+        "CloudFront-Viewer-Country": "IN",
+        "Host": "dondr7xa68.execute-api.us-west-2.amazonaws.com",
+        "User-Agent": "Fiddler",
+        "Via": "1.1 e14935429e8b5cfb258b503fe0233feb.cloudfront.net (CloudFront)",
+        "X-Amz-Cf-Id": "KksI7vEtmGsIFkO_uP7fh9TRx8ZHMQ0fZBeZWkyLCbDoDS_vOHI0ZA==",
+        "x-api-key": "uUinfGxE4n7apsQyuRVb81hTbCpZtmT7D3o68iHh",
+        "X-Forwarded-For": "202.131.115.45, 204.246.166.144",
+        "X-Forwarded-Port": "443",
+        "X-Forwarded-Proto": "https"
+    },
+    "queryParams": {},
+    "pathParams": {}
+}

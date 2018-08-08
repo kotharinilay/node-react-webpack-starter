@@ -18,7 +18,7 @@ class ColumnVisible extends PureComponent {
     getDataSource() {
         var data = [];
         this.props.columns.map(column => {
-            if (column.displayName.indexOf('Id') == -1 && column.displayName)
+            if (!column.isKey && column.displayName)
                 data.push({ value: column.field, label: column.displayName, selected: column.visible });
         });
         return data;

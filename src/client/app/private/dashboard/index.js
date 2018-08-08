@@ -5,6 +5,7 @@
  ******************************************/
 
 import React, { Component } from 'react';
+import { browserHistory } from 'react-router';
 import { connect } from 'react-redux';
 import Home from './components/Home';
 import Configure from './components/Configure';
@@ -18,8 +19,16 @@ class Dashboard extends Component {
         super(props);
     }
 
-    render() {
+    // Perform header search
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.topSearch == undefined)
+            return;
+        else if (nextProps.topSearch.searchText == null)
+            return;
+        browserHistory.push('/livestock');
+    }
 
+    render() {
         let { strings } = this.props;
         let component = null;
 
@@ -46,7 +55,8 @@ class Dashboard extends Component {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        authUser: state.authUser
+        authUser: state.authUser,
+        topSearch: state.header.topSearch
     }
 }
 

@@ -56,6 +56,7 @@ module.exports = function (grunt) {
         },
         dev: {
             command: [
+                //'nodemon src/server/development.js',
                 'pm2 startOrRestart process.json',
                 'webpack'
             ].join('&&')

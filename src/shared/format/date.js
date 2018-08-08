@@ -10,8 +10,8 @@ var moment = require('moment-timezone');
 
 // Set locale as per client machine and preference
 var loadCulture = function () {
-    if (typeof (window) !== 'undefined') {        
-        
+    if (typeof (window) !== 'undefined') {
+
         let preference = null;
         if (typeof (Storage) !== 'undefined') {
             if (localStorage.getItem('lang') != null) {
@@ -20,7 +20,7 @@ var loadCulture = function () {
                     preference = "zh-CN";
                 }
             }
-        }        
+        }
         let locale = preference || (window.navigator.userLanguage || window.navigator.language);
         moment.locale(locale);
     }
@@ -35,33 +35,47 @@ var dtFormat = {
     DateTimeFormat: "DD-MM-YYYY hh:mm A",
     DateTimeSecondFormat: "DD-MM-YYYY hh:mm:ss A",
     YYYYMMDDFormat: "YYYY-MM-DD",
-    MMMYYYY: "MMM-YYYY"
+    MMMYYYY: "MMM-YYYY",
+    HHMMSS: "hh:mm:ss",
+    YYYYMMDD_HHMM: "YYYY-MM-DD hh:mm",
+    YYYY: 'YYYY',
+    YYYYMMDDHHMM: 'YYYYMMDDhhmm',
+    ReportDateFormat: "DD/MM/YYYY"
 }
 
 // Get current date time
 var currentDateTime = function () {
+    var m = moment();
     return {
-        DateTimeMoment: moment(),
-        ValueOf: moment().valueOf(),
-        ShortDate: formatDateTime(moment()).ShortDate,
-        DateTime: formatDateTime(moment()).DateTime,
-        DateTimeSecond: formatDateTime(moment()).DateTimeSecond,
-        YYYYMMDDFormat: formatDateTime(moment()).YYYYMMDDFormat
+        DateTimeMoment: m,
+        ValueOf: m.valueOf(),
+        ShortDate: formatDateTime(m).ShortDate,
+        DateTime: formatDateTime(m).DateTime,
+        DateTimeSecond: formatDateTime(m).DateTimeSecond,
+        YYYYMMDDFormat: formatDateTime(m).YYYYMMDDFormat,
+        HHMMSSFormat: formatDateTime(m).HHMMSS,
+        YYYYMMDD_HHMM: formatDateTime(m).YYYYMMDD_HHMM,
+        YYYY: formatDateTime(m).YYYY,
+        YYYYMMDDHHMM: formatDateTime(m).YYYYMMDDHHMM
     };
 }
 
-
-
 // Display datetime in proper format
 var formatDateTime = function (val) {
+    var m = moment(val);
+
     return {
-        DateTimeMoment: moment(val),
-        ValueOf: moment(val).valueOf(),
-        ShortDate: moment(val).format(dtFormat.ShortDateFormat),
-        DateTime: moment(val).format(dtFormat.DateTimeFormat),
-        DateTimeSecond: moment(val).format(dtFormat.DateTimeSecondFormat),
-        YYYYMMDDFormat: moment(val).format(dtFormat.YYYYMMDDFormat),
-        MMMYYYY: moment(val).format(dtFormat.MMMYYYY)
+        DateTimeMoment: m,
+        ValueOf: m.valueOf(),
+        ShortDate: m.format(dtFormat.ShortDateFormat),
+        DateTime: m.format(dtFormat.DateTimeFormat),
+        DateTimeSecond: m.format(dtFormat.DateTimeSecondFormat),
+        YYYYMMDDFormat: m.format(dtFormat.YYYYMMDDFormat),
+        MMMYYYY: m.format(dtFormat.MMMYYYY),
+        HHMMSS: m.format(dtFormat.HHMMSS),
+        YYYYMMDD_HHMM: m.format(dtFormat.YYYYMMDD_HHMM),
+        YYYY: m.format(dtFormat.YYYY),
+        YYYYMMDDHHMM: m.format(dtFormat.YYYYMMDDHHMM)
     };
 }
 
@@ -77,7 +91,7 @@ var localToUTC = function (val, inputFormat, outputFormat) {
     else {
         utcDate = moment(val).utc();
     }
-    
+
     if (outputFormat) {
         return utcDate.format(outputFormat);
     }
@@ -88,12 +102,16 @@ var localToUTC = function (val, inputFormat, outputFormat) {
 
 // Convert UTC date to local date format
 var utcToLocal = function (val) {
-    var offsetVal = moment(val).utcOffset(offset);
-    return {
-        ShortDate: offsetVal.format(dtFormat.ShortDateFormat),
-        DateTime: offsetVal.format(dtFormat.DateTimeFormat),
-        DateTimeSecond: offsetVal.format(dtFormat.DateTimeSecondFormat)
+    if (val) {
+        var offsetVal = moment(val).utcOffset(offset);
+        return {
+            ShortDate: offsetVal.format(dtFormat.ShortDateFormat),
+            DateTime: offsetVal.format(dtFormat.DateTimeFormat),
+            DateTimeSecond: offsetVal.format(dtFormat.DateTimeSecondFormat),
+            ReportDate: offsetVal.format(dtFormat.ReportDateFormat)
+        }
     }
+    return { ShortDate: null, DateTime: null, DateTimeSecond: null, ReportDate: null }
 }
 
 // Check datetime isValid
@@ -119,7 +137,40 @@ var isAfter = function (currentDate, afterDate) {
     return moment(currentDate).isAfter(afterDate);
 }
 
-module.exports = { loadCulture, dtFormat, currentDateTime, formatDateTime, localToUTC, utcToLocal, isValid, isBetween, isBefore, isAfter, moment }
+var dateFromString = function (dateStr) {
+    var datePart;
+    if (dateStr.indexOf('/') != -1)
+        datePart = dateStr.split('/');
+    else
+        datePart = dateStr.split('-');
+
+    return new Date(datePart[2], datePart[1] - 1, datePart[0]).toJSON().slice(0, 10).replace(/-/g, '/');
+}
+
+// calculate age of livestock
+var calculateAge = function (birthDate) {
+    var dt = formatDateTime(birthDate).YYYYMMDDFormat;
+    var years = moment().diff(dt, 'years');
+    var months = moment().diff(dt, 'months');
+    return years + '.' + (months - (years * 12));
+}
+
+// get name of month from number of month
+var getMonthName = function (number) {
+    return moment(number, 'MM').format('MMMM');
+}
+
+var dateDiffinDays = function (date) {
+    if (!date) return 0;
+    var dt = formatDateTime(date).YYYYMMDDFormat;
+    var days = moment().diff(dt, 'days');
+    return days;
+}
+
+module.exports = {
+    loadCulture, dtFormat, currentDateTime, formatDateTime, localToUTC, utcToLocal,
+    isValid, isBetween, isBefore, isAfter, moment, dateFromString, calculateAge, getMonthName, dateDiffinDays
+}
 
 /**********************************
  * Example.... 

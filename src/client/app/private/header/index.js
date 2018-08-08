@@ -80,9 +80,9 @@ class Header extends Component {
                     <SearchBar disableOnClickOutside={true} strings={strings.SEARCH_BAR} setSearch={this.props.search} notifyToaster={this.props.notifyToaster} />
                     <ModuleMenu disableOnClickOutside={true} strings={strings.MODULE_BAR} setModule={this.props.setModule} moduleId={this.props.moduleId} />
                     <div className='top-company-logo'>
-                        <span><img className="profile-icon" src={this.companyLogo} alt="user-icon" /></span>
+                        <span><img className="company-icon animated-img-bg" src={this.companyLogo} alt="user-icon" /></span>
                     </div>
-                    <PropertySearch disableOnClickOutside={true} strings={strings.PROPERTY_BAR} notifyToaster={this.props.notifyToaster} />
+                    <PropertySearch disableOnClickOutside={true} strings={strings.PROPERTY_BAR} setTopPIC={this.props.setTopPIC} topPIC={this.props.topPIC} notifyToaster={this.props.notifyToaster} />
                     <UserMenu disableOnClickOutside={true} strings={strings.USER_BAR} notifyToaster={this.props.notifyToaster}
                         setModule={this.props.setModule} moduleId={this.props.moduleId}
                         authUser={this.props.authUser}

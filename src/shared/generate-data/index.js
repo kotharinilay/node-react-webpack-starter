@@ -7,6 +7,8 @@
 var config = require('./config');
 var contact = require('../../server/repository/contact');
 var client = require('../../server/repository/client');
+var newUUID = require('../uuid').newUUID;
+var uuidToBuffer = require('../uuid').uuidToBuffer;
 var crypto = require('crypto');
 var encryptPassword = require('../../server/auth/password-auth').encryptPassword;
 //var firebase = require('firebase');
@@ -123,27 +125,27 @@ module.exports = function () {
     // });
 
 
-    // // Setup menu insertation in controlmenu
-    // var controlmenu = config.get("default:setupmenu");
-    // controlmenu.map((obj) => {
-    //     let uuid = newUUID();
-    //     let jsonObj = {
-    //         en: { Name: obj.Name }
-    //     }
-    //     let controlmenuObj = {
-    //         Id: uuidToBuffer(uuid),
-    //         UUID: uuid,
-    //         ModuleId: uuidToBuffer('33d33ca2-f98f-11e6-b179-d7c06e3b519a'),
-    //         ParentId: uuidToBuffer('d1305210-fcd4-11e6-a8a3-575637f1f77d'),
-    //         GroupId: uuidToBuffer(obj.GroupId),
-    //         SystemCode: obj.SystemCode,
-    //         LocalizedData: JSON.stringify(jsonObj),
-    //         RedirectURL: obj.RedirectURL,
-    //         SortOrder: obj.SortOrder,
-    //         IsSetupMenu: 1
-    //     }
-    //     models.controlmenu.create(controlmenuObj);
-    // });
+    // Setup menu insertation in controlmenu
+    var controlmenu = config.get("default:setupmenu");
+    controlmenu.map((obj) => {
+        let uuid = newUUID();
+        let jsonObj = {
+            en: { Name: obj.Name }
+        }
+        let controlmenuObj = {
+            Id: uuidToBuffer(uuid),
+            UUID: uuid,
+            ModuleId: uuidToBuffer('33d33ca2-f98f-11e6-b179-d7c06e3b519a'),
+            ParentId: uuidToBuffer('d1305210-fcd4-11e6-a8a3-575637f1f77d'),
+            GroupId: uuidToBuffer(obj.GroupId),
+            SystemCode: obj.SystemCode,
+            LocalizedData: JSON.stringify(jsonObj),
+            RedirectURL: obj.RedirectURL,
+            SortOrder: obj.SortOrder,
+            IsSetupMenu: 1
+        }
+        models.controlmenu.create(controlmenuObj);
+    });
 
 
 
@@ -328,14 +330,18 @@ module.exports = function () {
     //     models.uomtype.create(uomType);
     // });
 
+    var contactid = newUUID();
     var salt = crypto.randomBytes(32).toString('hex');
-    console.log('Email : ' + config.get("default:user:email"));
+    // console.log('Email : ' + config.get("default:user:email"));
     var contactObj = {
+        Id: uuidToBuffer(contactid),
         FirstName: config.get("default:user:firstname"),
         LastName: config.get("default:user:lastname"),
         Email: config.get("default:user:email"),
+        UserName: config.get("default:user:username"),
         PasswordSalt: salt,
-        PasswordHash: encryptPassword(salt, config.get("default:user:password"))
+        PasswordHash: encryptPassword(salt, config.get("default:user:password")),
+        UUID: contactid
     }
 
     models.contact.create(contactObj);
@@ -375,13 +381,17 @@ module.exports = function () {
 
     // });
 
+    // var clientid = newUUID();
     // var clientObj = {
+    //     Id: uuidToBuffer(clientid),
     //     Name: config.get("default:client:name"),
     //     ClientId: config.get("default:client:clientId"),
     //     ClientSecret: config.get("default:client:clientSecret")
     // }
 
-    // client.create1(clientObj).then(function (res, err) {
+    // models.client.create(clientObj);
+
+    // client.create(clientObj).then(function (res, err) {
     //     if (err)
     //         console.log("Error occured while creating contact : " + err);
     //     else

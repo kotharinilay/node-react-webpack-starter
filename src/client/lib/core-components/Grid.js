@@ -11,33 +11,40 @@ import Render from 'react-dom';
 import { map, find } from 'lodash';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import { getGridData } from '../../services/private/common';
-import { formatDateTime } from '../../../shared/format/date';
+import { formatDateTime, calculateAge, getMonthName } from '../../../shared/format/date';
 import { digitDecimal } from '../../../shared/format/number';
 
+import LoadingIndicator from '../core-components/LoadingIndicator';
+
 import ColumnVisible from './ColumnVisible'
+
+let initialState = (props) => {
+    return {
+        results: [],
+        currentPage: 1,
+        isLoading: false,
+        externalResultsPerPage: props.pageSize,
+        externalSortColumn: props.sortColumn || null,
+        externalSortAscending: props.sortOrder || 'asc',
+        searchText: props.searchText || null,
+        totalDataSize: 0,
+        filter: {},
+        columns: props.columns,
+        selected: props.selected || [],
+        unselectable: props.unselectable || []
+    }
+};
 
 class Grid extends Component {
     constructor(props) {
         super(props);
+
         this.siteURL = window.__SITE_URL__;
         this.mounted = false;
         this.stateSet = this.stateSet.bind(this);
 
-        this.state = {
-            results: [],
-            currentPage: 1,
-            isLoading: false,
-            externalResultsPerPage: 10,
-            externalSortColumn: this.props.sortColumn || null,
-            externalSortAscending: this.props.sortOrder || 'desc',
-            searchText: null,
-            totalDataSize: 0,
-            filter: {},
-            columns: this.props.columns,
-            selected: [],
-            unselectable: []
-        };
-        this.selectedRows = [];
+        this.state = initialState(this.props);
+        this.selectedRows = this.props.selectedRows || [];
 
         this.onPageChange = this.onPageChange.bind(this);
         this.onSortChange = this.onSortChange.bind(this);
@@ -53,12 +60,36 @@ class Grid extends Component {
         this.linkFormatter = this.linkFormatter.bind(this);
         this.selectFormatter = this.selectFormatter.bind(this);
         this.activeColFormatter = this.activeColFormatter.bind(this);
+        this.ageFormatter = this.ageFormatter.bind(this);
+        this.weightFormatter = this.weightFormatter.bind(this);
         this.updateSelectedIds = this.updateSelectedIds.bind(this);
-
+        this.setBGColor = this.setBGColor.bind(this);
+        this.expandColumnComponent = this.expandColumnComponent.bind(this);
         this.primaryColumn = this.props.columns.filter((column) => {
             return column.isKey;
         });
+
         this.primaryField = this.primaryColumn[0].field;
+    }
+
+    componentWillReceiveProps(nextProps) {
+        // It will be used in company species
+        if (this.props.selected && nextProps.selected && this.props.selected.length != nextProps.selected.length ||
+            this.props.unselectable && nextProps.unselectable && this.props.unselectable.length != nextProps.unselectable.length) {
+            this.setState({ selected: nextProps.selected || [], unselectable: nextProps.unselectable || [] });
+        }
+        if (this.props.selectedRows && nextProps.selectedRows && this.props.selectedRows.length != nextProps.selectedRows.length) {
+            this.selectedRows = nextProps.selectedRows;
+        }
+        if (JSON.stringify(this.props.filterObj) != JSON.stringify(nextProps.filterObj)) {
+            this.destroyState(nextProps);
+        }
+    }
+
+    componentDidUpdate(prevProps) {
+        if (JSON.stringify(prevProps.filterObj) != JSON.stringify(this.props.filterObj)) {
+            this.refreshDatasource();
+        }
     }
 
     stateSet(setObj) {
@@ -94,13 +125,46 @@ class Grid extends Component {
                 return this.percentageFormatter;
             case 'currencyformat':
                 return this.currencyFormatter;
+            case 'qtyformat':
+                return this.qtyFormatter;
             case 'decimalformat':
                 return this.decimalFormatter;
             case 'selectformat':
                 return this.selectFormatter;
             case 'activecolformat':
                 return this.activeColFormatter;
+            case 'ageformat':
+                return this.ageFormatter;
+            case 'weightformat':
+                return this.weightFormatter;
+            case 'booleanformat':
+                return this.booleanFormatter;
+            case 'monthformat':
+                return this.monthFormatter;
         }
+    }
+
+    monthFormatter(cell, row) {
+        if (cell == 0)
+            return 'Not known';
+        else
+            return getMonthName(cell);
+
+    }
+
+    booleanFormatter(cell, row) {
+        if (cell == 1)
+            return 'Yes'
+        else
+            return 'No';
+    }
+
+    ageFormatter(cell, row) {
+        return cell ? calculateAge(cell) + ' Years' : "";
+    }
+
+    weightFormatter(cell, row) {
+        return cell ? cell + ' KG' : "";
     }
 
     imageFormatter(cell, row) {
@@ -149,20 +213,18 @@ class Grid extends Component {
     }
 
     selectFormatter(cell, row) {
-        let selectClick = () => this.props.selectClick(cell);
-        return (<div>
-            <div >
-                <span onClick={selectClick}>
-                    <img src={this.siteURL + "/static/images/edit-icon.png"} alt="edit-icon" title="Edit" />
-                </span>
-            </div>
-        </div>);
+        let selectClick = () => this.props.selectClick(row);
+        return (
+            <span onClick={selectClick} style={{ cursor: 'pointer' }}>
+                <img src={this.siteURL + "/static/images/edit-icon.png"} alt="edit-icon" title="Edit" />
+            </span>
+        );
     }
 
     deleteFormatter(cell, row) {
         let deleteClick = () => this.props.deleteClick(cell);
         return (
-            <span onClick={deleteClick}>
+            <span onClick={deleteClick} style={{ cursor: 'pointer' }}>
                 <img src={this.siteURL + "/static/images/delete-icon.png"} alt="delete-icon" title="Delete" />
             </span>);
     }
@@ -180,7 +242,7 @@ class Grid extends Component {
     }
 
     datetimeFormatter(cell, row) {
-        return '<span>' + formatDateTime(cell).DateTime + '</span>';
+        return cell ? '<span>' + formatDateTime(cell).DateTime + '</span>' : null;
     }
 
     percentageFormatter(cell, row) {
@@ -188,7 +250,11 @@ class Grid extends Component {
     }
 
     currencyFormatter(cell, row) {
-        return digitDecimal(cell) + '$';
+        return '$' + digitDecimal(cell);
+    }
+
+    qtyFormatter(cell, row) {
+        return digitDecimal(cell) + ' Tonne';
     }
 
     decimalFormatter(cell, row) {
@@ -207,7 +273,8 @@ class Grid extends Component {
                 dataFormat={column.formatter ? column.formatter : (column.format ? this.columnFormates(column.format) : undefined)}
                 tdAttr={column.isExpand ? { 'className': 'expander-style' } : null}
                 filter={column.filter}
-                editable={column.editable}>
+                editable={column.editable}
+                dataAlign={column.dataAlign == undefined ? 'left' : column.dataAlign}>
                 {column.displayName}
             </TableHeaderColumn>
         }
@@ -220,6 +287,11 @@ class Grid extends Component {
         this.setState({
             columns: this.state.columns
         });
+    }
+
+    destroyState(nextProps) {
+        let state = initialState(nextProps);
+        this.setState({ ...state });
     }
 
     refreshDatasource() {
@@ -249,12 +321,26 @@ class Grid extends Component {
                 totalDataSize: data.total ? data.total : 0,
                 filter: filterObj
             });
+
+            if (that.props.getExternalData) {
+                that.props.getExternalData(data);
+            }
+
+            if (that.props.selectAll) {
+                let selectedData = [];
+                data.data.map(d => {
+                    let obj = that.props.selectedAllData.find(x => x.Id == d.Id);
+                    if (obj)
+                        selectedData.push(d);
+                });
+                that.onSelectAll(true, selectedData, true);
+            }
         });
     }
 
     componentDidMount() {
         if (this.props.isRemoteData)
-            this.getExternalData(this.state.externalResultsPerPage, this.state.currentPage, this.state.externalSortColumn, this.state.externalSortAscending);
+            this.getExternalData(this.state.externalResultsPerPage, this.state.currentPage, this.state.externalSortColumn, this.state.externalSortAscending, this.state.searchText);
     }
 
     onPageChange(page, sizePerPage) {
@@ -277,6 +363,7 @@ class Grid extends Component {
     }
 
     onSearchChange(searchText, colInfos, multiColumnSearch) {
+
         if (searchText === "") {
             this.getExternalData(this.state.externalResultsPerPage, 1, this.state.externalSortColumn,
                 this.state.externalSortAscending, null, this.state.filter);
@@ -302,18 +389,23 @@ class Grid extends Component {
             }
             this.updateSelectedIds(this.selectedRows);
         }
+
         if (this.props.onRowSelect) {
-            this.props.onRowSelect(this.selectedRows);
+            this.props.onRowSelect(this.selectedRows, row, isSelected);
         }
     }
 
-    onSelectAll(isSelected, currentDisplayAndSelectedData) {
+    onSelectAll(isSelected, currentDisplayAndSelectedData, skipChecking = false) {
         this.selectedRows = [];
+        let data = this.props.isRemoteData ? this.state.results : this.props.gridData;
+        if (data.length != currentDisplayAndSelectedData.length && !skipChecking) {
+            currentDisplayAndSelectedData = data;
+        }
+
         if (isSelected) {
             this.selectedRows = currentDisplayAndSelectedData;
         }
         else if (this.state.unselectable.length > 0) {
-            let data = this.props.isRemoteData ? this.state.results : this.props.gridData;
             let selectedRowsData = [];
             data.map(d => {
                 if (this.state.unselectable.includes(d[this.primaryField])) {
@@ -323,6 +415,10 @@ class Grid extends Component {
             this.selectedRows = selectedRowsData;
         }
         this.updateSelectedIds(this.selectedRows);
+
+        if (this.props.onRowSelect) {
+            this.props.onRowSelect(this.selectedRows, currentDisplayAndSelectedData, isSelected);
+        }
     }
 
     updateSelectedIds(selectedRows = []) {
@@ -357,9 +453,43 @@ class Grid extends Component {
         this.selectedRows = selectedObj;
     }
 
-    // <ColumnVisible columns={this.state.columns} changeEvent={this.columnVisibleChnage.bind(this)} />
+    // set row background color
+    setBGColor(row, isSelect) {
+        if (this.props.setBGColor && !isSelect) {
+            let color = this.props.setBGColor(row);
+            return color || "rgb(207, 206, 230)";
+        }
+        else
+            return "rgb(207, 206, 230)";
+    }
+
+    expandColumnComponent({ isExpanded }) {
+        let imgPath = this.siteURL + "/static/images/";
+        return (
+            <div> <img src={isExpanded ? imgPath + "collapse.png" : imgPath + "expand.png"} /></div>
+        );
+    }
+
+    handleExportToCSV() {
+        this.refs.table.handleExportCSV();
+    }
+
     render() {
         let props = this.props;
+        let selectRowObj = {
+            mode: props.selectRowMode,
+            clickToSelect: true,
+            clickToExpand: props.clickToExpand,
+            bgColor: "rgb(207, 206, 230)",
+            onSelect: this.onRowSelect,
+            onSelectAll: this.onSelectAll,
+            selected: this.state.selected,
+            unselectable: this.state.unselectable
+        }
+
+        if (props.setBGColor)
+            selectRowObj.bgColor = this.setBGColor;
+
         return (
             <div>
                 {this.props.columnVisible ?
@@ -377,24 +507,22 @@ class Grid extends Component {
                     search={props.enableSearch}
                     hover={true}
                     fetchInfo={{ dataTotalSize: this.state.totalDataSize }}
-                    selectRow={{
-                        mode: props.selectRowMode,
-                        clickToSelect: true,
-                        clickToExpand: props.clickToExpand,
-                        bgColor: "rgb(207, 206, 230)",
-                        onSelect: this.onRowSelect,
-                        onSelectAll: this.onSelectAll,
-                        selected: this.state.selected,
-                        unselectable: this.state.unselectable
-                    }}
+                    selectRow={selectRowObj}
                     exportCSV={props.exportCSV}
+                    csvFileName={props.csvFileName}
                     expandableRow={props.expandableRow}
                     expandComponent={props.expandComponent}
+                    expandColumnOptions={{
+                        expandColumnVisible: props.expandColumnVisible || false,
+                        expandColumnComponent: this.expandColumnComponent,
+                        columnWidth: 35
+                    }}
                     options={{
+                        noDataText: this.state.isLoading ? <LoadingIndicator color="#c35f4b" className="grid-loading" loadingText="Loading..." size={20} thickness={2} onlyIndicator={true} /> : <h1>There is no data to display</h1>,
                         sizePerPage: this.state.externalResultsPerPage,
-                        sizePerPageList: [10, 25, 50, 100],
+                        sizePerPageList: props.sizePerPageList,
                         page: this.state.currentPage,
-                        paginationSize: 10,
+                        paginationSize: props.pageSize,
                         paginationShowsTotal: true,
                         expandBy: props.expandBy,
                         onPageChange: props.isRemoteData ? this.onPageChange.bind(this) : null,
@@ -405,7 +533,7 @@ class Grid extends Component {
                     }}>
                     {this.bindColumns()}
                 </BootstrapTable>
-            </div>
+            </div >
         )
     }
 }
@@ -421,12 +549,16 @@ function checkGridData(props, propName, componentName) {
 // Define PropTypes
 Grid.propTypes = {
     isRemoteData: React.PropTypes.bool,
-    height: React.PropTypes.string,
+    height: React.PropTypes.oneOfType([
+        React.PropTypes.string,
+        React.PropTypes.number
+    ]),
     pagination: React.PropTypes.bool,
     enableSearch: React.PropTypes.bool,
     selectRowMode: React.PropTypes.string,
     clickToExpand: React.PropTypes.bool,
     exportCSV: React.PropTypes.bool,
+    csvFileName: React.PropTypes.string,
     expandableRow: React.PropTypes.func,
     expandComponent: React.PropTypes.func,
     expandBy: React.PropTypes.string,
@@ -435,6 +567,7 @@ Grid.propTypes = {
     editable: React.PropTypes.any,
     columnVisible: React.PropTypes.bool,
     onRowSelect: React.PropTypes.func,
+    selectAll: React.PropTypes.bool,
 };
 
 //Define defaultProps
@@ -448,7 +581,10 @@ Grid.defaultProps = {
     clickToExpand: false,
     exportCSV: false,
     editable: false,
-    columnVisible: false
+    columnVisible: false,
+    selectAll: false,
+    sizePerPageList: [10, 25, 50, 100],
+    pageSize: 10
 }
 
 export default Grid

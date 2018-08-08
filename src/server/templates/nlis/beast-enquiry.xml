@@ -1,0 +1,25 @@
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nlis="http://www.nlis.com.au/soap/ver2.0/nlis-soap.xsd">
+<SOAP-ENV:Header>
+<nlis:originator-grp>
+<nlis:user>[username]</nlis:user>
+<nlis:password>[password]</nlis:password>
+<nlis:email></nlis:email>
+</nlis:originator-grp>
+<nlis:create-date>[currentdate]</nlis:create-date>
+<nlis:create-time>[currenttime]</nlis:create-time>
+</SOAP-ENV:Header>
+<SOAP-ENV:Body>
+<nlis:Query>
+<nlis:query-type>report</nlis:query-type> 
+<nlis:sub-type>Complete Beast Enquiry</nlis:sub-type> 
+<nlis:output-type>web</nlis:output-type> 
+<nlis:delivery-method>onscreen</nlis:delivery-method> 
+<nlis:report-instance-grp>
+<nlis:parameter-list-grp>
+<nlis:param>[pic]</nlis:param> 
+[livestocks]
+</nlis:parameter-list-grp>
+</nlis:report-instance-grp>
+</nlis:Query>
+</SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

@@ -19,7 +19,7 @@ firebase.
     auth().
     signInWithEmailAndPassword(process.env.FIREBASE_AUTH_USERNAME, process.env.FIREBASE_AUTH_PASSWORD)
     .then(function (res) {
-        console.log("firebase logged in successfully !");
+        // console.log("firebase logged in successfully !");
     }).catch(function (err) {
-        console.log("error while logging firebase: " + err);
+        // console.log("error while logging firebase: " + err);
     });

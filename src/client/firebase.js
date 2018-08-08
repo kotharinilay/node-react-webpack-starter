@@ -17,7 +17,7 @@ module.exports = () => {
         firebase.initializeApp(config);
 
         firebase.database().ref().child("users/").on("child_changed", function (snap) {
-            console.log(snap.val());
+            // console.log(snap.val());
         });
 
         // 
@@ -25,20 +25,20 @@ module.exports = () => {
         connectedRef.on('value', onValueChanged);
 
         function onValueChanged(snap) {
-            // if (snap.val() === true) {// online                       
-            //     onReceiveUpdate();
-            // }
-            // else {
-            //     // offline work
-            // }
+            if (snap.val() === true) {// online                       
+                onReceiveUpdate();
+            }
+            else {
+                // offline work
+            }
         }
 
         function onReceiveUpdate() {
-            // var userId = "ca4d4b30-d7e3-11e6-86f4-b5756a924ac6";
-            // return firebase.database().ref('/users/' + userId).once('value').then(function (snapshot) {
-            //     var data = snapshot.val();
-            //     // update in local browser here            
-            // });
+            var userId = "ca4d4b30-d7e3-11e6-86f4-b5756a924ac6";
+            return firebase.database().ref('/users/' + userId).once('value').then(function (snapshot) {
+                var data = snapshot.val();
+                // update in local browser here            
+            });
         }
     }
 }

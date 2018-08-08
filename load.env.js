@@ -15,11 +15,9 @@ module.exports = () => {
     const ENVIRONMENT = DEV_ENV;
 
     var env = file.apps[ENVIRONMENT.index].env;
-    
-    Object.keys(env).forEach(function (key) {        
-        if (!process.env.hasOwnProperty(key)) {            
-            process.env[key] = env[key]
-        }
+
+    Object.keys(env).forEach(function (key) {
+        process.env[key] = env[key]
     });
 }
 

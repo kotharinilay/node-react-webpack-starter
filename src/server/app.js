@@ -7,6 +7,7 @@
  * *************************************/
 
 // load modules
+
 import Express from 'express';
 import path from 'path';
 import Handlebars from 'handlebars';
@@ -37,14 +38,21 @@ app.use(compression());
 
 // configure app to use bodyParser()
 // this will let us get the data from a POST
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ limit: '150mb', extended: true }));
+app.use(bodyParser.json({ limit: '150mb' }));
 
 // set view path
 app.set('views', path.join(__dirname, '../client/views'));
 app.engine('handlebars', exphbs());
 // setup handlebars for templating
 app.set('view engine', 'handlebars');
+
+// Add CORS on ExpressJS
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+});
 
 // static assets
 app.use("/static", Express.static(path.join(__dirname, '../../assets')));
@@ -63,9 +71,25 @@ app.use('/api/private',
 
 app.use('/api/public', publicApi);
 app.use('/oauth/token', oauth2.token);
+
+// open report viewer with provided arguments
+app.use('/report-viewer', function (req, res) {
+    return res.render("report-viewer", {
+        SiteUrl: process.env.SITE_URL
+    });
+});
+
+// download report from link in email
+app.use('/downloadreport', function (req, res) {
+    return res.render("download-report", {
+        SiteUrl: process.env.SITE_URL
+    });
+});
+
 // universal routing and rendering
 app.use(reactRouter);
 // error logging
+
 app.use(logging);
 
 module.exports = app;

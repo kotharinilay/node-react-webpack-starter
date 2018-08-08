@@ -8,8 +8,12 @@ import Promise from 'bluebird';
 import models from '../../schema';
 import { removeToken, getTokenByContactId } from '../../repository/token';
 import { encryptPassword, checkPassword } from '../../auth/password-auth';
-import { updateContact, getContactByCondition } from '../../repository/contact';
+import { getContactById } from '../../repository/contact';
+import { updateContact } from '../../business/private/common';
+import { getAllModule } from '../../repository/module';
+import { getControlMenuByModuleId } from '../../repository/controlmenu';
 import { getResponse, resMessages } from '../../lib/index';
+import { uuidToBuffer } from '../../../shared/uuid';
 import { removeArray } from '../../lib/cache-manager';
 import { map as _map, filter as _filter } from 'lodash';
 
@@ -35,7 +39,7 @@ let changePassword = (contactId, token, existingPassword, newPassword) => {
         return getResponse(400, 'NEW_OLD_PASSWORDS_SAME');
     }
 
-    return getContactByCondition({ Id: contactId }).then(function (contact) {
+    return getContactById(contactId).then(function (contact) {
         if (!contact) {
             return getResponse(401, resMessages.unauthorized);
         }
@@ -49,8 +53,10 @@ let changePassword = (contactId, token, existingPassword, newPassword) => {
         let contactObj = {
             PasswordHash: encryptPassword(contact.PasswordSalt, newPassword)
         }
+
+        var binContactId = uuidToBuffer(contactId);
         let condition = {
-            Id: contactId
+            Id: binContactId
         }
 
         return models.sequelize.transaction(function (t) {
@@ -59,13 +65,13 @@ let changePassword = (contactId, token, existingPassword, newPassword) => {
                 // remove all the token except current one 
                 // for respective contact
                 condition = {
-                    ContactId: contactId,
+                    ContactId: binContactId,
                     Token: {
                         $ne: token
                     }
                 };
 
-                return getTokenByContactId(contactId).then(function (data) {
+                return getTokenByContactId(binContactId).then(function (data) {
                     let filtered = _filter(data, function (f) {
                         return f.Token != token;
                     });
@@ -86,7 +92,27 @@ let changePassword = (contactId, token, existingPassword, newPassword) => {
     });
 }
 
+// get all module menus
+let getAllModuleMenu = () => {
+    return getAllModule().then(function (response) {
+        return getResponse(200, null, { data: response });
+    }).catch(function (err) {
+        return getResponse(500, err.toString());
+    });
+}
+
+// get all control menu by moduleId
+let getControlMenuDetail = (moduleId, language) => {
+    return getControlMenuByModuleId(moduleId, language).then(function (response) {
+        return getResponse(200, null, { data: response });
+    }).catch(function (err) {
+        return getResponse(500, err.toString());
+    });
+}
+
 module.exports = {
     logout: Promise.method(logout),
-    changePassword: Promise.method(changePassword)
+    changePassword: Promise.method(changePassword),
+    getAllModuleMenu: Promise.method(getAllModuleMenu),
+    getControlMenuDetail: Promise.method(getControlMenuDetail)
 }

@@ -15,7 +15,8 @@ import { sendEmail } from '../../lib/mailer';
 import CompileTemplate from '../../lib/compile-template';
 
 import { encryptPassword } from '../../auth/password-auth';
-import { updateContact, getContactByCondition } from '../../repository/contact';
+import { getContactByEmail, getContactById, getContactByUserName } from '../../repository/contact';
+import { updateContact } from '../../business/private/common';
 
 import { getResponse, resMessages } from '../../lib/index';
 
@@ -26,7 +27,7 @@ function sendForgotPasswordEmail(email) {
         return getResponse(400, resMessages.invalidInput);
     }
 
-    return getContactByCondition({ Email: email }).then(function (response) {
+    return getContactByUserName(email).then(function (response) {
         if (!response) {
             return getResponse(400, 'EMAIL_NOT_REG_MESSAGE');
         }
@@ -36,8 +37,7 @@ function sendForgotPasswordEmail(email) {
                 link: process.env.SITE_URL + "/resetpassword/" + encryptKey,
                 name: response.FirstName + " " + response.LastName
             };
-            let body = CompileTemplate("./assets/templates/setnewpassword.html", data);
-
+            let body = CompileTemplate("email/setnewpassword.html", data);
             return sendEmail(process.env.NO_REPLY_EMAIL, email, 'Aglive - Password Reset', body).then(function (res) {
                 return res;
             });
@@ -49,11 +49,12 @@ function sendForgotPasswordEmail(email) {
 
 // Check contact email exist
 function contactUsernameExist(email) {
+
     if (!isEmail(email)) {
         return getResponse(400, resMessages.invalidInput);
     }
 
-    return getContactByCondition({ Email: email }).then(function (res) {
+    return getContactByUserName(email).then(function (res) {
         if (!res) {
             return getResponse(400, 'EMAIL_NOT_REG_MESSAGE');
         }
@@ -90,7 +91,7 @@ function resetPassword(userId, password) {
         return getResponse(400, 'CONTROLS.MUST_CHAR_REQ_MESSAGE');
     }
 
-    return getContactByCondition({ Id: userId }).then(function (user) {
+    return getContactById(userId).then(function (user) {
         if (!user) {
             return getResponse(401, resMessages.unauthorized);
         }

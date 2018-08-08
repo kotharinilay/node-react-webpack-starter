@@ -7,6 +7,7 @@
 
 import passport from 'passport';
 import { getClientById } from '../repository/client';
+import { getContactById } from '../repository/contact';
 import { createToken, removeToken, updateToken } from '../repository/token';
 import { verifyToken, generateToken, decodeToken } from '../auth/jsonwebtoken';
 import cache from '../lib/cache-manager';
@@ -41,13 +42,14 @@ passport.use(new BearerStrategy(
     function (accessToken, done) {
 
         let tokenObj = verifyToken(accessToken);
-        cache.getAsync(accessToken).then(function (res) {            
-            
+        cache.getAsync(accessToken).then(function (res) {
+
             var data = JSON.parse(res);
             var returnObj = {
                 contactId: data.ContactId,
                 companyId: data.CompanyId,
                 isSiteAdministrator: data.IsSiteAdministrator,
+                isAgliveSupportAdmin: data.IsAgliveSupportAdmin,
                 isSuperUser: data.IsSuperUser
             };
 
@@ -55,7 +57,7 @@ passport.use(new BearerStrategy(
                 if (tokenObj.errMsg.indexOf('expire') != -1) {
                     //call for regenerate token
                     var newToken = generateToken();
-                    
+
                     // TODO: need to revise logic here
                     updateToken({ Token: newToken }, { Token: accessToken }).then(function () {
 

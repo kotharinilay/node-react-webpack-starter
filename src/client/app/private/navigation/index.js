@@ -11,9 +11,13 @@ import Translate from '../../../lib/wrapper-components/Translate';
 import Navigation from './components/SideBar';
 import Decorator from '../../../lib/wrapper-components/AbstractDecorator';
 import { setModule } from '../header/actions';
+import { notifyToaster } from '../../common/actions';
 
 const mapDispatchToProps = (dispatch) => {
     return {
+        notifyToaster: (type, options) => {
+            dispatch(notifyToaster(type, options))
+        },
         setModule: (moduleId, controlMenuId, setupMenuKey) => {
             dispatch(setModule(moduleId, controlMenuId, setupMenuKey));
         }

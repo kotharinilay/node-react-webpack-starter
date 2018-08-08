@@ -1,0 +1,27 @@
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nlis="http://www.nlis.com.au/soap/ver2.0/nlis-soap.xsd">
+<SOAP-ENV:Header>
+<nlis:originator-grp>
+  <nlis:user>2SALEAL1</nlis:user> 
+  <nlis:password>********</nlis:password> 
+  <nlis:email>nlis.support@nlis.mla.com.au</nlis:email> 
+  </nlis:originator-grp>
+  <nlis:create-date>20170522</nlis:create-date> 
+  <nlis:create-time>033958</nlis:create-time> 
+  </SOAP-ENV:Header>
+<SOAP-ENV:Body>
+<nlis:Query>
+  <nlis:query-type>report</nlis:query-type> 
+  <nlis:sub-type>View devices on my property</nlis:sub-type> 
+  <nlis:output-type>web</nlis:output-type> 
+  <nlis:delivery-method>onscreen</nlis:delivery-method> 
+<nlis:report-instance-grp>
+<nlis:parameter-list-grp>
+  <nlis:param>NA024565</nlis:param> 
+  <nlis:param>1</nlis:param> 
+  <nlis:param>20140522</nlis:param> 
+  <nlis:param>20170522</nlis:param> 
+  </nlis:parameter-list-grp>
+  </nlis:report-instance-grp>
+  </nlis:Query>
+  </SOAP-ENV:Body>
+  </SOAP-ENV:Envelope>

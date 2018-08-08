@@ -12,7 +12,7 @@ import { sortBy, map, debounce, find } from 'lodash';
 import WidgetContainer from './WidgetContainer';
 import AbsoluteGrid from '../../../../../../assets/js/react-absolute-grid/AbsoluteGrid';
 import { getPreferredWidgets, updatePreferredWidgets } from '../../../../services/private/dashboard';
-import { NOTIFY_ERROR } from '../../../common/actiontypes';
+import { NOTIFY_ERROR, NOTIFY_INFO } from '../../../common/actiontypes';
 
 class Home extends Component {
     constructor(props) {
@@ -137,7 +137,7 @@ class Home extends Component {
                             </Link>
                         </div>
                         <span className="left-trial-text"><b>29 Days</b> left in trial</span>
-                        <a className="btn ripple-effect btn-danger" href="javascript:void(0)">BUY NOW</a>
+                        <a className="btn ripple-effect btn-danger" href="javascript:void(0)" onClick={() => this.props.notifyToaster(NOTIFY_INFO, { message: 'Not implemented yet.' })}>BUY NOW</a>
                     </div>
                 </div>
                 <div className="mt30">
@@ -159,7 +159,7 @@ class Home extends Component {
                     }
                 </div>
                 <div className="clear"></div>
-            </div>
+            </div >
         );
     }
 }

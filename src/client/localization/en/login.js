@@ -14,9 +14,9 @@ module.exports = (params) => {
             REMEMBERME_LABEL: 'Remember Me',
             FORGOTPASSWORD_LABEL: 'Forgot Password?',
             SIGNIN_LABEL: 'SIGN IN',
-            EMAIL_PLACE_HOLDER: 'Enter email address',
+            EMAIL_PLACE_HOLDER: 'Enter Email',
             EMAIL_REQ_MESSAGE: 'Please enter Email',
-            EMAIL_VALIDATE_MESSAGE: 'Invalid email address',
+            EMAIL_VALIDATE_MESSAGE: 'Invalid Email',
             PASSWORD_PLACE_HOLDER: 'Enter Password',
             PASSWORD_REQ_MESSAGE: 'Please enter Password',
             SIGNUPNOW_LABEL: 'SIGNUP NOW'

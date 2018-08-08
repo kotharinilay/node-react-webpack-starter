@@ -12,6 +12,7 @@ import ContactDisplay from './components/display';
 
 import Decorator from '../../../lib/wrapper-components/AbstractDecorator';
 import { notifyToaster, openConfirmPopup, hideConfirmPopup, } from '../../common/actions';
+import { updateContact } from './actions';
 import { isUUID } from '../../../../shared/format/string';
 
 class Contact extends Component {
@@ -23,7 +24,7 @@ class Contact extends Component {
     render() {
         let { strings } = this.props;
         let component = null;
-        
+
         let hierarchyProps = {
             companyId: this.props.companyId,
             companyName: this.props.companyName,
@@ -35,9 +36,9 @@ class Contact extends Component {
             ((this.props.params.detail && (isUUID(this.props.params.detail) || this.props.params.detail == 'new')) ||
                 this.props.location.pathname.indexOf('editprofile') != -1
             ) ?
-                <EditProfile notifyToaster={this.props.notifyToaster} detail={this.props.params.detail}
+                <EditProfile notifyToaster={this.props.notifyToaster} detail={this.props.params.detail} updateContact={this.props.updateContact}
                     strings={{ ...strings.DETAIL, COMMON: strings.COMMON }} /> :
-                <ContactDisplay notifyToaster={this.props.notifyToaster} searchText={this.props.searchText}
+                <ContactDisplay notifyToaster={this.props.notifyToaster} topSearch={this.props.topSearch}
                     strings={{ ...strings.DISPLAY, COMMON: strings.COMMON }}
                     hierarchyProps={{ ...hierarchyProps }}
                     hideConfirmPopup={this.props.hideConfirmPopup}
@@ -48,7 +49,7 @@ class Contact extends Component {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        searchText: state.header.searchText,
+        topSearch: state.header.topSearch,
         companyId: state.authUser.CompanyId,
         companyName: state.authUser.CompanyName,
         isSiteAdmin: state.authUser.IsSiteAdministrator,
@@ -67,6 +68,9 @@ const mapDispatchToProps = (dispatch) => {
         hideConfirmPopup: (info) => {
             dispatch(hideConfirmPopup(info))
         },
+        updateContact: (payload) => {
+            dispatch(updateContact(payload))
+        }
     }
 }
 

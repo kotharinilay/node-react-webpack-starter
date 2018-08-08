@@ -52,6 +52,7 @@ var hideConfirmPopup = (payload = {}) => {
 }
 
 var notifyToaster = (type, payload) => {
+
     let level = null;
     let title = null;
 
@@ -80,8 +81,87 @@ var notifyToaster = (type, payload) => {
     };
 }
 
+// show find company popup 
+var openFindCompany = (payload) => {
+    return {
+        type: SHOW_FIND_COMPANY,
+        payload: {
+            ...payload,
+            counter: counter++,
+            isOpen: true
+        }
+    }
+}
+
+// hide find company
+var hideFindCompany = (payload) => {
+    return {
+        type: HIDE_FIND_COMPANY,
+        payload: {
+            ...payload,
+            counter: counter++,
+            isOpen: false
+        }
+    }
+}
+
+// show find contact popup 
+var openFindContact = (payload) => {
+    return {
+        type: SHOW_FIND_CONTACT,
+        payload: {
+            ...payload,
+            counter: counter++,
+            isOpen: true
+        }
+    }
+}
+
+// hide find contact
+var hideFindContact = (payload) => {
+    return {
+        type: HIDE_FIND_CONTACT,
+        payload: {
+            ...payload,
+            counter: counter++,
+            isOpen: false
+        }
+    }
+}
+
+// show find pic popup 
+var openFindPIC = (payload) => {
+    return {
+        type: SHOW_FIND_PIC,
+        payload: {
+            ...payload,
+            counter: counter++,
+            isOpen: true
+        }
+    }
+}
+
+// hide find contact
+var hideFindPIC = (payload) => {
+    return {
+        type: HIDE_FIND_PIC,
+        payload: {
+            ...payload,
+            counter: counter++,
+            isOpen: false
+        }
+    }
+}
+
+
 module.exports = {
     notifyToaster,
     openConfirmPopup,
-    hideConfirmPopup
+    hideConfirmPopup,
+    openFindCompany,
+    hideFindCompany,
+    openFindContact,
+    hideFindContact,
+    openFindPIC,
+    hideFindPIC
 };

@@ -6,6 +6,7 @@
 
 import React, { Component } from 'react';
 import Button from '../core-components/Button';
+import SignaturePad from '../core-components/SignaturePad';
 import { deleteFile, uploadFile } from '../../services/private/common';
 import { NOTIFY_SUCCESS, NOTIFY_ERROR } from '../../app/common/actiontypes';
 
@@ -16,6 +17,7 @@ class FileUpload extends Component {
 
         this.strings = this.props.strings;
         this.notifyToaster = this.props.notifyToaster;
+
         this.data = this.props.data || {
             FileId: null,
             FileName: '',
@@ -31,7 +33,8 @@ class FileUpload extends Component {
             deletedFile: null,
             filePreview: this.data && this.data['FilePath'] ?
                 this.data['FilePath'] + '?' + new Date() :
-                this.siteURL + '/static/images/no-image-available.png'
+                (this.props.isSignature ? this.siteURL + '/static/images/no-signature-icon.png' : this.siteURL + '/static/images/no-image-available.png'),
+            signatureData: null
         }
 
         this.file = null;
@@ -40,7 +43,27 @@ class FileUpload extends Component {
         this.uploadFileClick = this.uploadFileClick.bind(this);
         this.deleteFileClick = this.deleteFileClick.bind(this);
         this.fileChange = this.fileChange.bind(this);
+        this.openSignaturePad = this.openSignaturePad.bind(this);
+        this.saveSignature = this.saveSignature.bind(this);
+    }
 
+    componentWillMount() {
+        if (this.data.FilePath && this.props.isSignaturePad) {
+            let _this = this;
+            var xhr = new XMLHttpRequest();
+            xhr.open("GET", this.data.FilePath, true);
+            xhr.responseType = "blob";
+            xhr.onload = function (e) {
+                var reader = new FileReader();
+                reader.onload = function (event) {
+                    var res = event.target.result;
+                    _this.setState({ signatureData: res });
+                }
+                var file = this.response;
+                reader.readAsDataURL(file);
+            };
+            xhr.send();
+        }
     }
 
     // Handle upload file click event
@@ -63,8 +86,16 @@ class FileUpload extends Component {
                 _this.setState({
                     file: null,
                     deletedFile: deletedFile,
-                    filePreview: _this.siteURL + '/static/images/no-image-available.png'
+                    filePreview: _this.siteURL + '/static/images/no-image-available.png',
+                    signatureData: null
                 });
+
+                if (_this.props.getDataOnUpload)
+                    _this.props.getDataOnUpload({
+                        file: null,
+                        deletedFile: deletedFile,
+                        fileId: _this.data ? _this.data.FileId : null
+                    });
                 _this.notifyToaster(NOTIFY_SUCCESS, { message: _this.props.picDelSuccess });
             }
         }).catch(function (err) {
@@ -98,8 +129,15 @@ class FileUpload extends Component {
                     this.setState({
                         file: { name: file.name, type: file.type },
                         deletedFile: deletedFileContent,
-                        filePreview: reader.result
+                        filePreview: reader.result,
+                        signatureData: reader.result
                     });
+                    if (this.props.getDataOnUpload)
+                        this.props.getDataOnUpload({
+                            file: { name: file.name, type: file.type },
+                            deletedFile: deletedFileContent,
+                            fileId: this.data ? this.data.FileId : null
+                        });
                 }
             }
             reader.readAsDataURL(file);
@@ -116,42 +154,95 @@ class FileUpload extends Component {
         }
     }
 
+    // Open signature popup
+    openSignaturePad() {
+        this.refs.signPad.openModal();
+    }
+
+    saveSignature(data, name) {
+        let deletedFile = null;
+        if (this.data['FilePath']) {
+            deletedFile = {
+                name: this.data['FileName'],
+                type: this.data['MimeType']
+            }
+        }
+
+        if (this.state.file)
+            deleteFile(this.state.file.name, true);
+
+        this.setState({
+            file: { name: name, type: "image/png" },
+            deletedFile: deletedFile,
+            filePreview: data,
+            signatureData: data
+        });
+
+        if (this.props.getDataOnUpload)
+            this.props.getDataOnUpload({
+                file: { name: name, type: "image/png" },
+                deletedFile: deletedFile,
+                fileId: this.data ? this.data.FileId : null
+            });
+
+    }
+
     // Render component
     render() {
+
+        let imgClass = this.props.isSignature ? 'col-sm-5 pull-left sign-box' : '   pull-left';
+
         return (
             <div>
                 <div>
-                    <span className="control-label picture-lbl">{this.props.label}</span>
+                    <span className="control-label picture-lbl">{this.props.label || ''}</span>
                 </div>
                 <div className="row">
                     <div className="col-sm-12">
-                        <div className="pull-left mr20">
-                            <img className="no-image" src={this.state.filePreview} alt="no image" />
+                        <div className={imgClass}>
+                            <img className={this.props.isSignature ? "no-signature-image animated-img-bg" : "no-image animated-img-bg"} src={this.state.filePreview} alt="no image" />
                         </div>
-                        <div>
+                        <div className="col-sm-7 mt-10">
                             <input type="file" name="filePic" id="filePic" accept="image/*"
                                 ref={(fileFile) => { this.file = fileFile }} className="hidden"
                                 onChange={this.fileChange} />
-                            <div>
-                                <Button
-                                    inputProps={{
-                                        name: 'btnUploadFile',
-                                        label: this.strings.UPLOAD_LABEL,
-                                        className: 'button2Style button30Style upoload-button-width',
-                                    }}
-                                    onClick={this.uploadFileClick}></Button>
-                            </div>
-                            <div>
+                            <Button
+                                inputProps={{
+                                    name: 'btnUploadFile',
+                                    label: this.strings.UPLOAD_LABEL,
+                                    className: 'button2Style button30Style upoload-button-width mr10',
+                                    disabled: this.props.isDisabled
+                                }}
+                                onClick={this.uploadFileClick}></Button>
+                            {this.props.isSignaturePad ? null : <br />}
+                            <Button
+                                inputProps={{
+                                    name: 'btnDeleteFile',
+                                    label: this.strings.DELETE_LABEL,
+                                    className: 'button1Style button30Style upoload-button-width mt10',
+                                    disabled: !this.state.file || this.props.isDisabled
+                                }}
+                                onClick={this.deleteFileClick}></Button>
+
+                            {this.props.isSignaturePad ?
+
                                 <Button
                                     inputProps={{
                                         name: 'btnDeleteFile',
-                                        label: this.strings.DELETE_LABEL,
-                                        className: 'button1Style button30Style upoload-button-width mt10',
-                                        disabled: !this.state.file
+                                        label: 'Signature Pad',
+                                        className: 'button1Style button30Style mt10 btnsignature',
+                                        disabled: this.props.isDisabled
                                     }}
-                                    onClick={this.deleteFileClick}></Button>
-                            </div>
+                                    onClick={this.openSignaturePad}></Button>
+                                : null}
                         </div>
+                        {this.props.isSignaturePad ?
+                            <SignaturePad
+                                signatureData={this.state.signatureData}
+                                saveSign={this.saveSignature}
+                                strings={this.strings}
+                                deleteSign={this.deleteFileClick}
+                                ref="signPad" /> : null}
                     </div>
                 </div>
             </div>

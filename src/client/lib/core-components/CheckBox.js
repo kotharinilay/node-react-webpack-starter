@@ -45,8 +45,8 @@ class Input extends PureComponent {
     }
 
     // Handle onChange event
-    onCheck(e) {        
-          
+    onCheck(e) {
+        
         let value = e.target.checked;
         this.fieldStatus.dirty = true;
         this.fieldStatus.visited = true;
@@ -56,7 +56,7 @@ class Input extends PureComponent {
         if (!this.state.visited)
             this.setState({ visited: true });
 
-        if (e.type == 'change' && this.props.onCheck) {                        
+        if (e.type == 'change' && this.props.onCheck) {
             this.props.onCheck(value);
         }
     }
@@ -89,6 +89,17 @@ class Input extends PureComponent {
 
         if (isUpdateToStore)
             this.updateToStore();
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.inputProps.defaultChecked != nextProps.inputProps.defaultChecked && this.props.updateOnChange) {
+            let value = nextProps.inputProps.defaultChecked;
+            this.fieldStatus.dirty = true;
+            this.fieldStatus.visited = true;
+            this.fieldStatus.value = value;
+            this.fieldStatus.valid = this.updateErrorState(this.fieldStatus.value);
+            this.updateToStore();
+        }
     }
 
     // Render checkbox component with error message

@@ -28,6 +28,5 @@ let getById = (clientId) => {
 
 module.exports = {
     createClient: create,
-    getClientById: getById,
-    create1: Promise.method(create)
+    getClientById: getById
 }

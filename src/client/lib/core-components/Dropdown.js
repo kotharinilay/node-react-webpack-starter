@@ -35,7 +35,7 @@ class DropdownComponent extends Component {
         if (!value)
             return props.eReq;
         else if (props.eClientValidation)
-            return props.eClientValidation(value)
+            return props.eClientValidation(value, props.inputProps.floatingLabelText)
         return null;
     }
 
@@ -51,15 +51,17 @@ class DropdownComponent extends Component {
 
     // Handle onChange event
     onChange(e, index, value) {
-        this.fieldStatus.dirty = true;
-        this.fieldStatus.visited = true;
-        this.fieldStatus.value = value;
-        this.fieldStatus.valid = this.updateErrorState(this.fieldStatus.value);
-        this.updateToStore();
-        this.setState({ value: value, visited: true });
-        if (this.fieldStatus.valid || this.props.callOnChange) {
-            if (this.props.onSelectionChange) {
-                this.props.onSelectionChange(this.fieldStatus.value, e.target.textContent);
+        if (value != this.fieldStatus.value) {
+            this.fieldStatus.dirty = true;
+            this.fieldStatus.visited = true;
+            this.fieldStatus.value = value;
+            this.fieldStatus.valid = this.updateErrorState(this.fieldStatus.value);
+            this.updateToStore();
+            this.setState({ value: value, visited: true });
+            if (this.fieldStatus.valid || this.props.callOnChange) {
+                if (this.props.onSelectionChange) {
+                    this.props.onSelectionChange(this.fieldStatus.value, e.target.textContent);
+                }
             }
         }
     }
@@ -101,9 +103,20 @@ class DropdownComponent extends Component {
 
         if (state.value != nextState.value || state.error != nextState.error || state.visited != nextState.visited || props.isClicked != nextProps.isClicked)
             isChanged = true;
-        if (!isEqual(props.dataSource, nextProps.dataSource))
+        else if (!isEqual(props.dataSource, nextProps.dataSource))
             isChanged = true;
+        else if (props.inputProps.hintText != nextProps.inputProps.hintText)
+            isChanged = true;
+
         return isChanged;
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.inputProps.value != nextProps.inputProps.value) {
+            this.fieldStatus.valid = true;
+            this.fieldStatus.value = nextProps.inputProps.value;
+            this.setState({ value: nextProps.inputProps.value, error: null });
+        }
     }
 
     // To update component based on predefine values
@@ -126,6 +139,9 @@ class DropdownComponent extends Component {
             this.setState({ value: value, error: null });
         }
 
+        if (props.eClientValidation && props.isClicked)
+            this.setState({ error: props.eClientValidation(value, props.inputProps.floatingLabelText) });
+
         if (isUpdateToStore)
             this.updateToStore();
     }
@@ -143,6 +159,7 @@ class DropdownComponent extends Component {
 
     // Render component with error message
     render() {
+
         let props = this.props;
         let state = this.state;
 

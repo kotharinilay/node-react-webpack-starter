@@ -129,6 +129,7 @@ class Multipicker extends PureComponent {
 Multipicker.propTypes = {
     inputProps: React.PropTypes.shape({
         name: React.PropTypes.string.isRequired,
+        label: React.PropTypes.string,
         placeholder: React.PropTypes.node,
         defaultValue: React.PropTypes.array
     }),

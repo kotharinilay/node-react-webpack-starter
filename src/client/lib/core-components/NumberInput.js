@@ -8,10 +8,9 @@
 
 import React from 'react';
 import PureComponent from '../wrapper-components/PureComponent';
-import { trim } from '../../../shared/format/string';
 import TextField from 'material-ui/TextField';
 import CircularProgress from '../core-components/CircularProgress';
-import { textFieldStyle,errorStyle } from '../../../../assets/js/mui-theme';
+import { textFieldStyle, errorStyle } from '../../../../assets/js/mui-theme';
 import PasswordStrength from './PasswordStrength';
 import { mandatory } from '../../lib/index';
 
@@ -21,7 +20,8 @@ class NumberInput extends PureComponent {
         this.state = {
             visited: false,
             isLoading: false,
-            error: this.props.eReq
+            error: this.props.eReq,
+            value: this.props.initialValue || ''
         }
         this.fieldStatus = {
             visited: false,
@@ -65,21 +65,21 @@ class NumberInput extends PureComponent {
             return props.eReq;
         else if (props.eLength) {
             let inputLength = input.length;
-            let {minLength, maxLength} = props;
+            let { minLength, maxLength } = props;
             if ((minLength && maxLength && inputLength < minLength && inputLength > maxLength) ||
                 (minLength && inputLength < minLength) ||
                 (maxLength && inputLength > maxLength))
                 return props.eLength;
         }
         else if (props.eClientValidation)
-            return props.eClientValidation(input)
+            return props.eClientValidation(input, props.inputProps.floatingLabelText)
         return null;
     }
 
     // Update error state based on input
     updateErrorState(type, value) {
         let isValid = true;
-        let errorMessage = this.validInput(trim(value));
+        let errorMessage = this.validInput(value);
         if (errorMessage)
             isValid = false;
         if (type == 'blur')
@@ -91,13 +91,14 @@ class NumberInput extends PureComponent {
     changeInput(e) {
         let value = e.target.value;
         if (e.type == 'blur') {
-            value = trim(e.target.value);
+            value = e.target.value;
             this.fieldStatus.visited = true;
             if (!this.state.visited)
                 this.setState({ visited: true });
         }
         else {
             this.fieldStatus.dirty = true;
+            this.setState({ value: value })
         }
 
         this.fieldStatus.value = value;
@@ -136,8 +137,8 @@ class NumberInput extends PureComponent {
         let isUpdateToStore = false;
         let value = '';
 
-        if (props.inputProps.defaultValue)
-            value = trim(props.inputProps.defaultValue);
+        if (props.initialValue)
+            value = props.initialValue;
 
         if (!props.eReq) {
             isUpdateToStore = true;
@@ -150,17 +151,31 @@ class NumberInput extends PureComponent {
             this.setState({ error: null });
         }
 
+        if (props.eClientValidation && props.isClicked)
+            this.setState({ error: props.eClientValidation(value, props.inputProps.floatingLabelText) });
+
         if (isUpdateToStore)
             this.updateToStore();
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.initialValue != this.props.initialValue && this.props.updateOnChange) {
+            this.fieldStatus.value = nextProps.initialValue;
+            let errorMessage = this.validInput(nextProps.initialValue);
+            this.fieldStatus.valid = errorMessage ? false : true;
+            this.setState({ value: this.fieldStatus.value || '', error: errorMessage });
+            this.updateToStore();
+
+        }
     }
 
     // Render component with error message
     render() {
         let props = this.props;
         let state = this.state;
-        let manipulateProps = Object.assign({},props.inputProps);
+        let manipulateProps = Object.assign({}, props.inputProps);
 
-        if(props.eReq != null){
+        if (props.eReq != null) {
             manipulateProps.floatingLabelText = mandatory(manipulateProps.floatingLabelText);
         }
         return (
@@ -171,6 +186,7 @@ class NumberInput extends PureComponent {
                 <TextField
                     {...textFieldStyle}
                     {...manipulateProps}
+                    value={this.state.value}
                     className={props.inputProps.floatingLabelText ? 'inputStyle inputStyle2 ' + props.className : 'inputStyle ' + props.className}
                     minLength={props.minLength}
                     maxLength={props.maxLength}

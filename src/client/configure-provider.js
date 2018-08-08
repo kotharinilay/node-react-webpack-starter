@@ -31,7 +31,9 @@ import headerReducer from '../client/app/private/header/reducer';
 import commonReducer from '../client/app/common/reducer';
 
 import { setUserInfo } from '../client/app/public/login/actions';
+import { setModule, setTopPIC } from '../client/app/private/header/actions';
 import { getMenuIds } from '../shared/index';
+import { loadingBarReducer } from 'react-redux-loading-bar'
 
 // client store state in case of store exist
 let reduxState = {}
@@ -43,7 +45,6 @@ if (window.__REDUX_STATE__) {
 
 const store = configureStore(reduxState);
 
-
 //reducers required for app init
 if (reduxState.authUser) {
   injectAsyncReducer(store, 'authUser', login);
@@ -52,15 +53,19 @@ if (reduxState.authUser) {
 
 injectAsyncReducer(store, 'common', commonReducer);
 injectAsyncReducer(store, 'header', headerReducer);
+injectAsyncReducer(store, 'loadingBar', loadingBarReducer);
 
-// // store menu selection from based on loaded URL
-// if (window.__MENUS__.moduleMenu && window.__MENUS__.controlMenu) {
-//   try {
-//     let menuIds = getMenuIds(null, null, window.__MENUS__.moduleMenu, window.__MENUS__.controlMenu);
-//     store.dispatch(setModule(menuIds.moduleId, menuIds.controlMenuId, null));
-//   } catch (e) { }
-// }
+if (reduxState.topPIC) {
+  store.dispatch(setTopPIC(reduxState.topPIC));
+}
 
+// store menu selection from based on loaded URL
+if (window.__MENUS__.moduleMenu && window.__MENUS__.controlMenu) {
+  try {
+    let menuIds = getMenuIds(null, null, window.__MENUS__.moduleMenu, window.__MENUS__.controlMenu);
+    store.dispatch(setModule(menuIds.moduleId, menuIds.controlMenuId, null));
+  } catch (e) { }
+}
 
 localization.checkLanguage(store);  // set default language
 let routes = createRoutes(store);

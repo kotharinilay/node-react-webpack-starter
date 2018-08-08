@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta httpEquiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aglive - Report Viewer</title>
+    <link href="{{{SiteUrl}}}/static/css/stimulsoft.viewer.office2013.whiteblue.css" rel="stylesheet" />
+    <script src="{{{SiteUrl}}}/static/js/stimulsoft.reports.js"></script>
+    <script src="{{{SiteUrl}}}/static/js/stimulsoft.viewer.js"></script>
+    <script src="{{{SiteUrl}}}/bower_components/axios/dist/axios.min.js"></script>
+
+    <script type="text/javascript" charset="utf-8">
+        var params = location.search.slice(1);
+
+        //Create Viewer
+        var options = new Stimulsoft.Viewer.StiViewerOptions();
+        var viewer = new Stimulsoft.Viewer.StiViewer(options, "StiViewer", false);
+        //viewer.renderHtml();
+
+        let data = axios.request({
+            method: 'get',
+            url: '{{{SiteUrl}}}/api/public/downloadreport',
+            headers: {
+                'Accept-Language': 'en',
+                'Cache-Control': 'no-cache,no-store,must-revalidate,max-age=-1,private'
+            },
+            params: params
+        }).then(function (reportJson) {
+            if (reportJson.status == 200) {
+                let reportData = reportJson.data.dataObj;
+
+                document.title = "Aglive - " + reportData.Title;
+                var report = new Stimulsoft.Report.StiReport();
+                report.loadFile("{{{SiteUrl}}}/" + reportData.Url); // load report from url
+
+                report.dictionary.databases.clear();
+
+                // set single values
+                if (reportData.Variables.length > 0) {
+                    reportData.Variables.forEach(function (f) {
+                        let variable = report.dictionary.variables.getByName(f.Key);
+                        if (variable != null) {
+                            if (f.Value)
+                                variable.valueObject = f.Value;
+                            else if (f.ImgValue) {
+                                var imageData = new Stimulsoft.Base.Drawing.StiImageFromURL.loadImage(f.ImgValue);
+                                variable.valueObject = imageData;
+                            }
+                        }
+                    });
+                }
+
+                // assign data source to list
+                var dataSet = new Stimulsoft.System.Data.DataSet('DataSource');
+                let jsonSource = reportData.DataSource;
+                dataSet.readJson(jsonSource);
+                report.regData('DataSource', 'DataSource', dataSet);
+
+                report.render();
+                var settings = new Stimulsoft.Report.Export.StiPdfExportSettings();
+                // Create an PDF service instance.
+                var service = new Stimulsoft.Report.Export.StiPdfExportService();
+
+                var stream = new Stimulsoft.System.IO.MemoryStream();
+                // Export PDF using MemoryStream.
+                service.exportTo(report, stream, settings);
+
+                // Get PDF data from MemoryStream object
+                var data = stream.toArray();
+                // Get report file name
+                // Save data to file
+                Object.saveAs(data, `${reportJson.data.type}-${reportData.ReportData.eNVD.ReferenceNumber}.pdf`, "application/pdf");
+            }
+            else {
+                alert(reportJson.statusText);
+            }
+        }).catch(function (err) {
+            alert(err);
+        });
+    </script>
+</head>
+
+<body>
+</body>
+
+</html>

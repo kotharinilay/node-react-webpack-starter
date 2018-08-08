@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/' xmlns:nlis='http://www.nlis.com.au/soap/ver2.0/nlis-soap.xsd'>
+<SOAP-ENV:Header>
+<nlis:originator-grp>
+<nlis:user>[username]</nlis:user>
+<nlis:password>[password]</nlis:password>
+<nlis:email></nlis:email>
+</nlis:originator-grp>
+<nlis:create-date>[currentdate]</nlis:create-date>
+<nlis:create-time>[currenttime]</nlis:create-time>
+<nlis:processing-mode>async</nlis:processing-mode>
+</SOAP-ENV:Header>
+<SOAP-ENV:Body>
+<nlis:P2PTransfer>
+<nlis:transaction-name>[MLAReferenceNumber]</nlis:transaction-name>
+<nlis:transfer-date>[movementDate]</nlis:transfer-date>
+<nlis:buyer-pic>[consigneePIC]</nlis:buyer-pic>
+<nlis:free-text>transfer</nlis:free-text>
+<nlis:nvd-grp>
+<nlis:event-time>[eventTime]</nlis:event-time>
+<nlis:nvd-serial-no>[MLAReferenceNumber]</nlis:nvd-serial-no>
+<nlis:pic>[consignerPIC]</nlis:pic>
+<nlis:tag-list-grp>

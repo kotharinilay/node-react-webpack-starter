@@ -6,7 +6,7 @@
 
 import React from 'react';
 import PureComponent from '../wrapper-components/PureComponent';
-import  CircularProgress from 'material-ui/CircularProgress';
+import CircularProgress from 'material-ui/CircularProgress';
 import { circularProgressStyle } from '../../../../assets/js/mui-theme';
 
 class CircularProgressComponent extends PureComponent {
@@ -28,7 +28,8 @@ CircularProgressComponent.propTypes = {
     inputProps: React.PropTypes.shape({
         size: React.PropTypes.number.isRequired,
         thickness: React.PropTypes.number.isRequired,
-        className: React.PropTypes.string
+        className: React.PropTypes.string,
+        color: React.PropTypes.string
     }).isRequired
 };
 

@@ -1,10 +1,11 @@
 {
     "default": {
         "user": {
-            "firstname": "Nilay",
-            "lastname": "Kothari",
-            "email": "kothari_nilay@yahoo.co.in",
-            "password": "Nk@12345"
+            "firstname": "Romil",
+            "lastname": "Shah",
+            "username": "romil.shah",
+            "email": "romil.shah@zealousys.local",
+            "password": "ze@lous2012"
         },
         "client": {
             "name": "Aglive Webapp V3",

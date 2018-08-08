@@ -1,0 +1,274 @@
+{
+    "method": "GET",
+    "body": {
+        "localTesting": true,
+        "firebaseKey": "123456",
+        "isAgliveSupportAdmin": 1,
+        "companyId": "a20c13d0-fca6-11e6-ba2c-47975f99871e",
+        "language": "en",
+        "offset": 1,
+        "fileToProcess": "development/temp/property_1.csv",
+        "bucket": "aglive",
+        "mapping": [
+            {
+                "CSVColumns": "Company",
+                "index": 0,
+                "mapColumn": "Company"
+            },
+            {
+                "CSVColumns": "Region",
+                "index": 1,
+                "mapColumn": "Region"
+            },
+            {
+                "CSVColumns": "Business",
+                "index": 2,
+                "mapColumn": "Business"
+            },
+            {
+                "CSVColumns": "PIC",
+                "index": 3,
+                "mapColumn": "PIC"
+            },
+            {
+                "CSVColumns": "Property Name",
+                "index": 4,
+                "mapColumn": "Property Name"
+            },
+            {
+                "CSVColumns": "Property Type",
+                "index": 5,
+                "mapColumn": "Property Type"
+            },
+            {
+                "CSVColumns": "Address",
+                "index": 6,
+                "mapColumn": "Address"
+            },
+            {
+                "CSVColumns": "Suburb",
+                "index": 7,
+                "mapColumn": "Suburb"
+            },
+            {
+                "CSVColumns": "State",
+                "index": 8,
+                "mapColumn": "State"
+            },
+            {
+                "CSVColumns": "Postcode",
+                "index": 9,
+                "mapColumn": "Postcode"
+            },
+            {
+                "CSVColumns": "Property Manager",
+                "index": 10,
+                "mapColumn": "Property Manager"
+            },
+            {
+                "CSVColumns": "Brand Text",
+                "index": 11,
+                "mapColumn": "Brand Text"
+            },
+            {
+                "CSVColumns": "Earmark Text",
+                "index": 12,
+                "mapColumn": "Earmark Text"
+            },
+            {
+                "CSVColumns": "NLIS Username",
+                "index": 13,
+                "mapColumn": "NLIS Username"
+            },
+            {
+                "CSVColumns": "NLIS Password",
+                "index": 14,
+                "mapColumn": "NLIS Password"
+            },
+            {
+                "CSVColumns": "Export Eligibility",
+                "index": 15,
+                "mapColumn": "Export Eligibility"
+            },
+            {
+                "CSVColumns": "EU Accreditation License Number",
+                "index": 16,
+                "mapColumn": "EU Accreditation License Number"
+            },
+            {
+                "CSVColumns": "EU Accreditation Expiry Date",
+                "index": 17,
+                "mapColumn": "EU Accreditation Expiry Date"
+            },
+            {
+                "CSVColumns": "EU Accreditation State",
+                "index": 18,
+                "mapColumn": "EU Accreditation State"
+            },
+            {
+                "CSVColumns": "EU Accreditation Description",
+                "index": 19,
+                "mapColumn": "EU Accreditation Description"
+            },
+            {
+                "CSVColumns": "EU Accreditation Status",
+                "index": 20,
+                "mapColumn": "EU Accreditation Status"
+            },
+            {
+                "CSVColumns": "OBE Accreditation License Number",
+                "index": 21,
+                "mapColumn": "OBE Accreditation License Number"
+            },
+            {
+                "CSVColumns": "OBE Accreditation Expiry Date",
+                "index": 22,
+                "mapColumn": "OBE Accreditation Expiry Date"
+            },
+            {
+                "CSVColumns": "OBE Accreditation State",
+                "index": 23,
+                "mapColumn": "OBE Accreditation State"
+            },
+            {
+                "CSVColumns": "OBE Accreditation Description",
+                "index": 24,
+                "mapColumn": "OBE Accreditation Description"
+            },
+            {
+                "CSVColumns": "OBE Accreditation Status",
+                "index": 25,
+                "mapColumn": "OBE Accreditation Status"
+            },
+            {
+                "CSVColumns": "PCAS Accreditation License Number",
+                "index": 26,
+                "mapColumn": "PCAS Accreditation License Number"
+            },
+            {
+                "CSVColumns": "PCAS Accreditation Expiry Date",
+                "index": 27,
+                "mapColumn": "PCAS Accreditation Expiry Date"
+            },
+            {
+                "CSVColumns": "PCAS Accreditation State",
+                "index": 28,
+                "mapColumn": "PCAS Accreditation State"
+            },
+            {
+                "CSVColumns": "PCAS Accreditation Description",
+                "index": 29,
+                "mapColumn": "PCAS Accreditation Description"
+            },
+            {
+                "CSVColumns": "PCAS Accreditation Status",
+                "index": 30,
+                "mapColumn": "PCAS Accreditation Status"
+            },
+            {
+                "CSVColumns": "MSA Accreditation License Number",
+                "index": 31,
+                "mapColumn": "MSA Accreditation License Number"
+            },
+            {
+                "CSVColumns": "MSA Accreditation Expiry Date",
+                "index": 32,
+                "mapColumn": "MSA Accreditation Expiry Date"
+            },
+            {
+                "CSVColumns": "MSA Accreditation State",
+                "index": 33,
+                "mapColumn": "MSA Accreditation State"
+            },
+            {
+                "CSVColumns": "MSA Accreditation Description",
+                "index": 34,
+                "mapColumn": "MSA Accreditation Description"
+            },
+            {
+                "CSVColumns": "MSA Accreditation Status",
+                "index": 35,
+                "mapColumn": "MSA Accreditation Status"
+            },
+            {
+                "CSVColumns": "LPA Accreditation License Number",
+                "index": 36,
+                "mapColumn": "LPA Accreditation License Number"
+            },
+            {
+                "CSVColumns": "LPA Accreditation Expiry Date",
+                "index": 37,
+                "mapColumn": "LPA Accreditation Expiry Date"
+            },
+            {
+                "CSVColumns": "LPA Accreditation State",
+                "index": 38,
+                "mapColumn": "LPA Accreditation State"
+            },
+            {
+                "CSVColumns": "LPA Accreditation Description",
+                "index": 39,
+                "mapColumn": "LPA Accreditation Description"
+            },
+            {
+                "CSVColumns": "LPA Accreditation Status",
+                "index": 40,
+                "mapColumn": "LPA Accreditation Status"
+            },
+            {
+                "CSVColumns": "NT Accreditation License Number",
+                "index": 41,
+                "mapColumn": "NT Accreditation License Number"
+            },
+            {
+                "CSVColumns": "NT Accreditation Expiry Date",
+                "index": 42,
+                "mapColumn": "NT Accreditation Expiry Date"
+            },
+            {
+                "CSVColumns": "NT Accreditation State",
+                "index": 43,
+                "mapColumn": "NT Accreditation State"
+            },
+            {
+                "CSVColumns": "NT Accreditation Description",
+                "index": 44,
+                "mapColumn": "NT Accreditation Description"
+            },
+            {
+                "CSVColumns": "NT Accreditation Status",
+                "index": 45,
+                "mapColumn": "NT Accreditation Status"
+            }
+        ],
+        "env": {
+            "DB_NAME": "aglive",
+            "DB_HOST_USERNAME": "root",
+            "DB_HOST_PASSWORD": "sqldba",
+            "DB_HOST": "192.168.1.95",
+            "DB_PORT": "3307",
+            "DB_DIALECT": "mariadb",
+            "AWS_ACCESS_KEY": "AKIAISARQPKIIRYVBMZA",
+            "AWS_SECRET_ACCESS_KEY": "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",
+            "AWS_REGION": "ap-southeast-2"
+        }
+    },
+    "headers": {
+        "CloudFront-Forwarded-Proto": "https",
+        "CloudFront-Is-Desktop-Viewer": "true",
+        "CloudFront-Is-Mobile-Viewer": "false",
+        "CloudFront-Is-SmartTV-Viewer": "false",
+        "CloudFront-Is-Tablet-Viewer": "false",
+        "CloudFront-Viewer-Country": "IN",
+        "Host": "dondr7xa68.execute-api.us-west-2.amazonaws.com",
+        "User-Agent": "Fiddler",
+        "Via": "1.1 e14935429e8b5cfb258b503fe0233feb.cloudfront.net (CloudFront)",
+        "X-Amz-Cf-Id": "KksI7vEtmGsIFkO_uP7fh9TRx8ZHMQ0fZBeZWkyLCbDoDS_vOHI0ZA==",
+        "x-api-key": "uUinfGxE4n7apsQyuRVb81hTbCpZtmT7D3o68iHh",
+        "X-Forwarded-For": "202.131.115.45, 204.246.166.144",
+        "X-Forwarded-Port": "443",
+        "X-Forwarded-Proto": "https"
+    },
+    "queryParams": {},
+    "pathParams": {}
+}

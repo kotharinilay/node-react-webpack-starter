@@ -77,8 +77,8 @@ function checkDuplicatePIC(pic, propertyId = null) {
 }
 
 // get signed s3 request
-function getSignedRequest(file) {
-    return get('/s3_signed', file).then(function (res) {
+function getSignedRequest(files, uploadFolder) {
+    return get('/s3_signed', { files: files, uploadFolder: uploadFolder }).then(function (res) {
         return res.data;
     }).catch(function (err) {
         return err.response.data;
@@ -87,14 +87,31 @@ function getSignedRequest(file) {
 
 function s3Upload(file, signedRequest, progressData) {
     let headers = {
-        'Content-Type': file.type,
+        'Content-Type': 'text/csv',// file.type,
         'AWS': true
     };
-
     return put(signedRequest, file, headers, false, false, progressData).then(function (res) {
         return { success: true, msg: null };
     }).catch(function (err) {
         return { success: true, msg: err };
+    });
+}
+
+// download file from s3 path
+function downloadFile(path, name, type) {
+    return get('/downloadfile', { path: path, name: name, type: type }).then(function (res) {
+        return res.data;
+    }).catch(function (err) {
+        return err.response.data;
+    });
+}
+
+// Convert base64String to image file
+function base64ToImage(data, name) {
+    return post('/base64toimage', { data: data, name: name }).then(function (res) {
+        return res.data;
+    }).catch(function (err) {
+        return err.response.data;
     });
 }
 
@@ -106,5 +123,7 @@ module.exports = {
     getCompanyHierarchyIds: getCompanyHierarchyIds,
     checkDuplicatePIC: checkDuplicatePIC,
     getSignedRequest: getSignedRequest,
-    s3Upload: s3Upload
+    s3Upload: s3Upload,
+    downloadFile: downloadFile,
+    base64ToImage: base64ToImage
 }

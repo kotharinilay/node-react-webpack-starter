@@ -10,6 +10,7 @@ import Datetime from 'react-datetime';
 import { omit } from 'lodash';
 import PureComponent from '../wrapper-components/PureComponent';
 import { isValid, currentDateTime, formatDateTime, localToUTC } from '../../../shared/format/date';
+import { mandatory } from '../../lib/index';
 
 class DatetimePicker extends PureComponent {
     constructor(props) {
@@ -17,7 +18,8 @@ class DatetimePicker extends PureComponent {
         this.state = {
             visited: false,
             isLoading: false,
-            error: this.props.eReq
+            error: this.props.eReq,
+            value: this.props.defaultValue || undefined
         }
         this.fieldStatus = {
             visited: false,
@@ -36,8 +38,10 @@ class DatetimePicker extends PureComponent {
         let props = this.props;
         if (!input)
             return props.eReq;
-        else if (!isValid(input))
+        else if (!isValid(input) && input._i != 'Mixed Value')
             return props.eInvalid;
+        else if (props.eClientValidation)
+            return props.eClientValidation(input, props.inputProps.label)
         return null;
     }
 
@@ -45,16 +49,21 @@ class DatetimePicker extends PureComponent {
     validDate(current) {
         let props = this.props.dateFilter;
         if (props) {
-            let date = currentDateTime().DateTimeMoment;
-            if (props.isBefore) {
-                if (!props.isIncludeToday)
-                    date = date.subtract(1, 'day');
-                return current.isBefore(date);
+            if (props.minDate && props.maxDate) {
+                return (current.isSame(props.minDate) || current.isSame(props.maxDate) || (current.isAfter(props.minDate) && current.isBefore(props.maxDate)));
             }
-            else if (props.isAfter) {
-                if (props.isIncludeToday)
-                    date = date.subtract(1, 'day');
-                return current.isAfter(date);
+            else {
+                let date = currentDateTime().DateTimeMoment;
+                if (props.isBefore) {
+                    if (!props.isIncludeToday)
+                        date = date.subtract(1, 'day');
+                    return current.isBefore(date);
+                }
+                else if (props.isAfter) {
+                    if (props.isIncludeToday)
+                        date = date.subtract(1, 'day');
+                    return current.isAfter(date);
+                }
             }
         }
         return current;
@@ -76,7 +85,7 @@ class DatetimePicker extends PureComponent {
             this.fieldStatus.valid = true;
             this.updateToStore();
         }
-        this.setState({ error: (isValid ? null : errorMessage) });
+        this.setState({ error: (isValid ? null : errorMessage), value: isValid ? this.fieldStatus.value : undefined });
     }
 
     // Handle onBlur event
@@ -114,25 +123,45 @@ class DatetimePicker extends PureComponent {
             this.changeInput(formatDateTime(value).DateTimeMoment, false);
         }
 
+        if (props.eClientValidation && props.isClicked)
+            this.setState({ error: props.eClientValidation(value, props.inputProps.label) });
+
         if (isUpdateToStore)
             this.updateToStore();
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (this.props.defaultValue != nextProps.defaultValue && this.props.updateOnChange) {
+            this.changeInput(formatDateTime(nextProps.defaultValue).DateTimeMoment, false);
+        }
     }
 
     // Render component with error message
     render() {
         let props = omit(this.props, ['formSetValue', 'inputProps', 'dateFilter']);
+
+        let label = this.props.inputProps.label;
+        if (props.eReq != null && props.hideStar == false)
+            label = mandatory(label);
+
+        let invalidDate = (this.state.error != null && (this.state.visited || this.props.isClicked));
         return (
             <div className="custom-input-outer">
-                <div className="custom-label">{this.props.inputProps.label}</div>
+                <div className="custom-label">{label}</div>
                 <Datetime
                     {...props}
-                    className={this.state.error != null ? 'errorBorder' : ''}
-                    inputProps={this.props.inputProps}
+                    value={this.state.value}
+                    className={invalidDate ? 'errorBorder' : ''}
+                    inputProps={{
+                        ...this.props.inputProps,
+                        readOnly: this.props.readOnly || true
+                    }}
                     {...this.props.dateFilter}
                     isValidDate={this.validDate}
                     onChange={this.changeInput}
                     onBlur={this.blurInput} />
-                <span className={this.state.error != null ? 'error-message' : 'hidden'}>{this.state.error}</span>
+                <span className={invalidDate ? 'error-message' : 'hidden'}>{this.state.error}</span>
+
             </div>
         )
     }
@@ -169,14 +198,8 @@ DatetimePicker.propTypes = {
         isBefore: React.PropTypes.bool,
         isAfter: React.PropTypes.bool,
         isIncludeToday: React.PropTypes.bool,
-        // minDate: React.PropTypes.oneOfType([
-        //     React.PropTypes.string,
-        //     React.PropTypes.bool,
-        // ]).isRequired,
-        // maxDate: React.PropTypes.oneOfType([
-        //     React.PropTypes.string,
-        //     React.PropTypes.bool,
-        // ]).isRequired,
+        minDate: React.PropTypes.any,
+        maxDate: React.PropTypes.any
         // dateFormat: React.PropTypes.string.isRequired,        
     }),
     closeOnSelect: React.PropTypes.bool,
@@ -186,11 +209,13 @@ DatetimePicker.propTypes = {
         React.PropTypes.bool,
     ]),
     eInvalid: React.PropTypes.string.isRequired,
-    formSetValue: React.PropTypes.func
+    formSetValue: React.PropTypes.func,
+    eClientValidation: React.PropTypes.func
 }
 
 // Set defaultProps of DatetimePicker
 DatetimePicker.defaultProps = {
+    hideStar: false,
     closeOnSelect: true,
     dateFormat: 'DD-MM-YYYY',
     timeFormat: 'hh:mm A',

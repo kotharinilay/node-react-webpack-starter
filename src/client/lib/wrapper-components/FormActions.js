@@ -75,8 +75,8 @@ function has(obj, refs) {
 function getForm(state, refs) {
     let obj = {};
     if (refs) {
-        for (var formField in state) {            
-            let key = state[formField];          
+        for (var formField in state) {
+            let key = state[formField];
             let value = refs[key].fieldStatus['value'] ? refs[key].fieldStatus['value'] : null;
             obj = Object.assign({}, obj, { [key]: value });
         }

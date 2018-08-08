@@ -21,7 +21,7 @@ module.exports = {
         },
         SUCCESS: 'Configuration updated successfully.'
     },
-      NOTIFICATION_BOARD: {
+    NOTIFICATION_BOARD: {
         TITLE: "Your Notification",
         ALL_TAB_LABEL: "All",
         UNREAD_TAB_LABEL: "Unread",
@@ -34,8 +34,8 @@ module.exports = {
             CLEAR_LABEL: "Clear",
             APPLY_FILTER_LABEL: "Apply",
             CLEAR_FILTER_LABEL: "Clear",
-            RECEIVED_FROMDATE_PLACEHOLDER: "Recieved From Date",
-            RECEIVED_TODATE_PLACEHOLDER: "Recieved To Date"
+            RECEIVED_FROMDATE_PLACEHOLDER: "Received From Date",
+            RECEIVED_TODATE_PLACEHOLDER: "Received To Date"
         },
         DELETE_WARNING: "Please select notification.",
         DELETE_SUCCESS: "Notification(s) deleted successfully",

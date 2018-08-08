@@ -6,8 +6,10 @@
  ************************************/
 
 import path from 'path';
+import { getFileExtension } from '../../../shared';
 import Promise from 'bluebird';
 import { getResponse, resMessages } from '../../lib/index';
+import { deleteObjects as s3_delete, getSignedUrl } from '../../../../aws/s3';
 
 var multer = require('multer');
 let fs = require('fs');
@@ -45,7 +47,17 @@ let deleteServerFile = (fileName, hasThumb) => {
     }
 }
 
+let getSignedRequest = (files, uploadFolder) => {
+    let signedObj = [];
+    Object.keys(files).map(function (i) {
+        let file = JSON.parse(files[i]);
+        signedObj.push(getSignedUrl(file.filename, file.filetype, uploadFolder));
+    })
+    return getResponse(200, null, { data: signedObj });
+}
+
 module.exports = {
     upload: upload,
-    deleteServerFile: Promise.method(deleteServerFile)
+    deleteServerFile: Promise.method(deleteServerFile),
+    getSignedRequest: Promise.method(getSignedRequest)
 }

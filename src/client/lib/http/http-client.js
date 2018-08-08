@@ -7,6 +7,8 @@
 import axios from 'axios';
 import Promise from 'bluebird';
 import { loggedIn, logout, getToken, getRememberMe } from './token-management';
+import { getBrowserName } from '../index';
+import { browserList } from '../../../shared/constants';
 
 export default class HttpClient {
 
@@ -20,13 +22,35 @@ export default class HttpClient {
 
     // set header for request such as auth token
     setRequestHeader = (config) => {
+        let browserName = getBrowserName();
+
         if (loggedIn() && !config.headers.AWS) {
             config.headers.Authorization = 'Bearer ' + getToken();
             config.headers.RememberMe = getRememberMe();
+            if (browserName == browserList.chrome)
+                config.headers.Expires = '-1';
         }
         config.headers['Accept-Language'] = 'en';
-        config.headers.Expires = '-1';
-        config.headers['Cache-Control'] = "no-cache,no-store,must-revalidate,max-age=-1,private";
+
+        if (browserName == browserList.ie) {
+            // IE Browser settings for request header
+            config.headers['cacheSeconds'] = '0';
+            config.headers['useExpiresHeader'] = 'true';
+            config.headers['useCacheControlHeader'] = 'true';
+            config.headers['useCacheControlNoStore'] = 'true';
+            // Set to expire far in the past.
+            config.headers['Expires'] = 'Mon, 23 Aug 1982 12:00:00 GMT';
+            // Set standard HTTP/1.1 no-cache headers.
+            config.headers['Cache-Control'] = 'no-store, no-cache, must-revalidate';
+            // Set IE extended HTTP/1.1 no-cache headers (use addHeader).
+            config.headers['Cache-Control'] = 'post-check=0, pre-check=0';
+            // Set standard HTTP/1.0 no-cache header.
+            config.headers['Pragma'] = 'no-cache';
+        }
+        else {
+            config.headers['Cache-Control'] = "no-cache,no-store,must-revalidate,max-age=-1,private";
+        }
+
         return config;
     }
 

@@ -1,0 +1,1828 @@
+{
+  "ReportVersion": "2017.1.3.0",
+  "ReportGuid": "879daaf8b77d455ca3f38a07bb21d528",
+  "ReportName": "Report",
+  "ReportAlias": "Report",
+  "ReportCreated": "/Date(1496674083000+0530)/",
+  "ReportChanged": "/Date(1496668278616+0530)/",
+  "EngineVersion": "EngineV2",
+  "CalculationMode": "Interpretation",
+  "Script": "using System;\r\nusing System.Drawing;\r\nusing System.Windows.Forms;\r\nusing System.Data;\r\nusing Stimulsoft.Controls;\r\nusing Stimulsoft.Base.Drawing;\r\nusing Stimulsoft.Report;\r\nusing Stimulsoft.Report.Dialogs;\r\nusing Stimulsoft.Report.Components;\r\n\r\nnamespace Reports\r\n{\r\n    public class Report : Stimulsoft.Report.StiReport\r\n    {\r\n        public Report()        {\r\n            this.InitializeComponent();\r\n        }\r\n\r\n        #region StiReport Designer generated code - do not modify\r\n\t\t#endregion StiReport Designer generated code - do not modify\r\n    }\r\n}\r\n",
+  "ReferencedAssemblies": {
+    "0": "System.Dll",
+    "1": "System.Drawing.Dll",
+    "2": "System.Windows.Forms.Dll",
+    "3": "System.Data.Dll",
+    "4": "System.Xml.Dll",
+    "5": "Stimulsoft.Controls.Dll",
+    "6": "Stimulsoft.Base.Dll",
+    "7": "Stimulsoft.Report.Dll"
+  },
+  "Dictionary": {
+    "Variables": {
+      "0": {
+        "Name": "ConsignerPIC",
+        "DialogInfo": {
+          "DateTimeType": "DateAndTime"
+        },
+        "Alias": "ConsignerPIC",
+        "Type": "System.String"
+      },
+      "1": {
+        "Name": "ReferenceNumber",
+        "DialogInfo": {
+          "DateTimeType": "DateAndTime"
+        },
+        "Alias": "ReferenceNumber",
+        "Type": "System.String",
+        "ReadOnly": true
+      },
+      "2": {
+        "Name": "DeclarerName",
+        "DialogInfo": {
+          "DateTimeType": "DateAndTime"
+        },
+        "Alias": "DeclarerName",
+        "Type": "System.String",
+        "ReadOnly": true
+      },
+      "3": {
+        "Name": "DeclarerAddress",
+        "DialogInfo": {
+          "DateTimeType": "DateAndTime"
+        },
+        "Alias": "DeclarerAddress",
+        "Type": "System.String",
+        "ReadOnly": true
+      },
+      "4": {
+        "Name": "DeclarerSignatureDate",
+        "DialogInfo": {
+          "DateTimeType": "DateAndTime"
+        },
+        "Alias": "DeclarerSignatureDate",
+        "Type": "System.String",
+        "ReadOnly": true
+      },
+      "5": {
+        "Name": "DeclarerTelephone",
+        "DialogInfo": {
+          "DateTimeType": "DateAndTime"
+        },
+        "Alias": "DeclarerTelephone",
+        "Type": "System.String",
+        "ReadOnly": true
+      },
+      "6": {
+        "Name": "Signature",
+        "DialogInfo": {
+          "DateTimeType": "DateAndTime"
+        },
+        "Alias": "Signature",
+        "Type": "System.Drawing.Image"
+      },
+      "7": {
+        "Name": "DeclarerSignature",
+        "DialogInfo": {
+          "DateTimeType": "DateAndTime"
+        },
+        "Alias": "DeclarerSignature",
+        "Type": "System.Drawing.Image"
+      },
+      "8": {
+        "Value": "0",
+        "Name": "TotalLivestock",
+        "DialogInfo": {
+          "DateTimeType": "DateAndTime"
+        },
+        "Alias": "TotalLivestock",
+        "Type": "System.Int32"
+      },
+      "9": {
+        "Value": "false",
+        "Name": "cb",
+        "Alias": "cb",
+        "Type": "System.Boolean"
+      }
+    },
+    "DataSources": {
+      "0": {
+        "Ident": "StiDataTableSource",
+        "Name": "AnimalTreatments",
+        "Alias": "AnimalTreatments",
+        "Columns": {
+          "0": {
+            "Name": "chemicalProduct",
+            "Index": -1,
+            "NameInSource": "chemicalProduct",
+            "Alias": "chemicalProduct",
+            "Type": "System.String"
+          },
+          "1": {
+            "Name": "esi",
+            "Index": -1,
+            "NameInSource": "esi",
+            "Alias": "esi",
+            "Type": "System.String"
+          },
+          "2": {
+            "Name": "treatmentDate",
+            "Index": -1,
+            "NameInSource": "treatmentDate",
+            "Alias": "treatmentDate",
+            "Type": "System.String"
+          },
+          "3": {
+            "Name": "whp",
+            "Index": -1,
+            "NameInSource": "whp",
+            "Alias": "whp",
+            "Type": "System.String"
+          }
+        },
+        "NameInSource": "envdwaybill.AnimalTreatments"
+      },
+      "1": {
+        "Ident": "StiDataTableSource",
+        "Name": "FodderCropGrainTreatments",
+        "Alias": "FodderCropGrainTreatments",
+        "Columns": {
+          "0": {
+            "Name": "chemProduct",
+            "Index": -1,
+            "NameInSource": "chemProduct",
+            "Alias": "chemProduct",
+            "Type": "System.String"
+          },
+          "1": {
+            "Name": "dateApplied",
+            "Index": -1,
+            "NameInSource": "dateApplied",
+            "Alias": "dateApplied",
+            "Type": "System.String"
+          },
+          "2": {
+            "Name": "dateFeeding",
+            "Index": -1,
+            "NameInSource": "dateFeeding",
+            "Alias": "dateFeeding",
+            "Type": "System.String"
+          },
+          "3": {
+            "Name": "dateFirstFed",
+            "Index": -1,
+            "NameInSource": "dateFirstFed",
+            "Alias": "dateFirstFed",
+            "Type": "System.String"
+          },
+          "4": {
+            "Name": "grazingWHP",
+            "Index": -1,
+            "NameInSource": "grazingWHP",
+            "Alias": "grazingWHP",
+            "Type": "System.String"
+          }
+        },
+        "NameInSource": "envdwaybill.FodderCropGrainTreatments"
+      },
+      "2": {
+        "Ident": "StiDataTableSource",
+        "Name": "StockDescription",
+        "Alias": "StockDescription",
+        "Columns": {
+          "0": {
+            "Name": "NumberOfHead",
+            "Index": -1,
+            "NameInSource": "NumberOfHead",
+            "Alias": "NumberOfHead",
+            "Type": "System.String"
+          },
+          "1": {
+            "Name": "Description",
+            "Index": -1,
+            "NameInSource": "Description",
+            "Alias": "Description",
+            "Type": "System.String"
+          },
+          "2": {
+            "Name": "PICEarTag",
+            "Index": -1,
+            "NameInSource": "PICEarTag",
+            "Alias": "PICEarTag",
+            "Type": "System.String"
+          },
+          "3": {
+            "Name": "BrandText",
+            "Index": -1,
+            "NameInSource": "BrandText",
+            "Alias": "BrandText",
+            "Type": "System.String"
+          },
+          "4": {
+            "Name": "EarmarkText",
+            "Index": -1,
+            "NameInSource": "EarmarkText",
+            "Alias": "EarmarkText",
+            "Type": "System.String"
+          },
+          "5": {
+            "Name": "HasLT",
+            "Index": -1,
+            "NameInSource": "HasLT",
+            "Alias": "HasLT",
+            "Type": "System.String"
+          },
+          "6": {
+            "Name": "HasEU",
+            "Index": -1,
+            "NameInSource": "HasEU",
+            "Alias": "HasEU",
+            "Type": "System.String"
+          },
+          "7": {
+            "Name": "HasERP",
+            "Index": -1,
+            "NameInSource": "HasERP",
+            "Alias": "HasERP",
+            "Type": "System.String"
+          }
+        },
+        "NameInSource": "envdwaybill.StockDescription"
+      }
+    }
+  },
+  "Pages": {
+    "0": {
+      "Ident": "StiPage",
+      "Name": "Page1",
+      "Guid": "c85a22d99824418272a09f7da1d72268",
+      "Interaction": {
+        "Ident": "StiInteraction"
+      },
+      "Border": ";;2;;;;;solid:Black",
+      "Brush": "solid:",
+      "Components": {
+        "0": {
+          "Ident": "StiText",
+          "Name": "Text2",
+          "ShiftMode": "None",
+          "Guid": "e858c81e9b3983a7feba7cecf11b2d19",
+          "DockStyle": "Top",
+          "MinSize": "0,0",
+          "MaxSize": "0,0",
+          "ClientRectangle": "0,0,20,0.8",
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Text": {
+            "Value": "Attachment to the National Vendor Declaration and Waybill"
+          },
+          "HorAlignment": "Center",
+          "VertAlignment": "Center",
+          "Font": ";14;Bold;",
+          "Border": ";;;;;;;solid:Black",
+          "Brush": "solid:",
+          "TextBrush": "solid:Black",
+          "Type": "Expression"
+        },
+        "1": {
+          "Ident": "StiPanel",
+          "Name": "Panel1",
+          "Guid": "d46b3a483fe69fc2ee935044e5964341",
+          "DockStyle": "Top",
+          "MinSize": "0,0",
+          "MaxSize": "0,0",
+          "ClientRectangle": "0,0.8,20,3",
+          "Interaction": {
+            "Ident": "StiInteraction"
+          },
+          "Border": ";;;;;;;solid:Black",
+          "Brush": "solid:",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "Text3",
+              "Guid": "c895dea8acbaac283c85c8d67787f493",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0.4,4.8,0.6",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Serial number of National Vendor\r\nDeclaration and Waybill"
+              },
+              "Font": ";;Bold;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            },
+            "1": {
+              "Ident": "StiText",
+              "Name": "Text4",
+              "Guid": "22abd4a9dcc6589d3dd7bc6b20ef7b3d",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,1.3,5.2,0.4",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "The serial number is in the top left corner"
+              },
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            },
+            "2": {
+              "Ident": "StiText",
+              "Name": "Text5",
+              "Guid": "23e2bb4f4130618c921ffea2a7224232",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "4.8,0.4,4.8,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{ReferenceNumber}"
+              },
+              "HorAlignment": "Center",
+              "VertAlignment": "Center",
+              "Font": ";9;Bold;",
+              "Border": "All;;;;;;;solid:0,0,0",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black"
+            },
+            "3": {
+              "Ident": "StiText",
+              "Name": "Text6",
+              "Guid": "5b00649890e82c35662199e40d44a355",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "10,0.4,6.6,0.6",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Property Identification Code (PIC) of the property/place where the journey commenced"
+              },
+              "Font": ";;Bold;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "4": {
+              "Ident": "StiText",
+              "Name": "Text7",
+              "Guid": "70155ebdab5dd77e7ae8f721b3a615ad",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "16.6,0.4,3.4,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{ConsignerPIC}"
+              },
+              "HorAlignment": "Center",
+              "VertAlignment": "Center",
+              "Font": ";9;Bold;",
+              "Border": "All;;;;;;;solid:0,0,0",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            },
+            "5": {
+              "Ident": "StiText",
+              "Name": "Text8",
+              "Guid": "f1639394a3c665e48b04bba76dab7dd4",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "10,1.3,6,0.6",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "This must be the same as appears on National Vendor Declaration and Waybill"
+              },
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "6": {
+              "Ident": "StiText",
+              "Name": "Text25",
+              "Guid": "de020fd4fccacd09475f731ccd84f1fe",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,2.4,3.2,0.4",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Description of stock"
+              },
+              "Font": ";;Bold;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            }
+          },
+          "CanBreak": false
+        },
+        "2": {
+          "Ident": "StiDataBand",
+          "Name": "DataBand1",
+          "Guid": "406c55c67e256309fac7cbab06cd6bd3",
+          "ClientRectangle": "0,4.2,20,1",
+          "Interaction": {
+            "Ident": "StiBandInteraction"
+          },
+          "Border": ";;;;;;;solid:Black",
+          "Brush": "solid:",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "Text1",
+              "Guid": "7befc879f671737677d34793239db20c",
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0,1.5,1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Number of stock"
+              },
+              "VertAlignment": "Center",
+              "Border": "All;127,127,127;;;;;;solid:0,0,0",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression",
+              "Margins": {
+                "Left": 3.0,
+                "Right": 3.0,
+                "Top": 3.0,
+                "Bottom": 3.0
+              }
+            },
+            "1": {
+              "Ident": "StiText",
+              "Name": "Text24",
+              "Guid": "8feaa0f66bf75478315f41176acbfea2",
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "1.5,0,4.5,1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Description<Br /><div><font style=\"font-size: 9px;\">(breed, sex, eg. Hereford cross steers, cross bred)</font></div>"
+              },
+              "VertAlignment": "Center",
+              "Border": "All;127,127,127;;;;;;solid:0,0,0",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression",
+              "TextQuality": "Wysiwyg",
+              "AllowHtmlTags": true,
+              "Margins": {
+                "Left": 3.0,
+                "Right": 3.0,
+                "Top": 3.0,
+                "Bottom": 3.0
+              }
+            },
+            "2": {
+              "Ident": "StiText",
+              "Name": "Text31",
+              "Guid": "747e7074184ae89cb259ac090ade8aea",
+              "CanGrow": true,
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "6,0,4.9,1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "PIC on Transaction Tag (cattle),\r\nEar tag/PIC (sheep)\r\nif different from that shown above"
+              },
+              "VertAlignment": "Center",
+              "Border": "All;127,127,127;;;;;;solid:0,0,0",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression",
+              "Margins": {
+                "Left": 3.0,
+                "Right": 3.0,
+                "Top": 3.0,
+                "Bottom": 3.0
+              }
+            },
+            "3": {
+              "Ident": "StiText",
+              "Name": "Text38",
+              "Guid": "97d41a71623e52d6928f16544cc9b13e",
+              "CanGrow": true,
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "10.9,0,5,1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Brands, Earmarks"
+              },
+              "VertAlignment": "Center",
+              "Border": "All;127,127,127;;;;;;solid:0,0,0",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression",
+              "Margins": {
+                "Left": 3.0,
+                "Right": 3.0,
+                "Top": 3.0,
+                "Bottom": 3.0
+              }
+            },
+            "4": {
+              "Ident": "StiText",
+              "Name": "Text39",
+              "Guid": "131e61193af02651b15e51f6ef589651",
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "18.1,0,1.9,1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "ERP Status"
+              },
+              "VertAlignment": "Center",
+              "Border": "All;127,127,127;;;;;;solid:0,0,0",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression",
+              "Margins": {
+                "Left": 3.0,
+                "Right": 3.0,
+                "Top": 3.0,
+                "Bottom": 3.0
+              }
+            },
+            "5": {
+              "Ident": "StiText",
+              "Name": "Text40",
+              "Guid": "3772b2a71b4fe6137db5e637ed711159",
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "17,0,1.1,1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "EU"
+              },
+              "VertAlignment": "Center",
+              "Border": "All;127,127,127;;;;;;solid:0,0,0",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression",
+              "Margins": {
+                "Left": 3.0,
+                "Right": 3.0,
+                "Top": 3.0,
+                "Bottom": 3.0
+              }
+            },
+            "6": {
+              "Ident": "StiText",
+              "Name": "Text41",
+              "Guid": "e493910695eb1f8714fb2e90308d100a",
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "15.9,0,1.1,1",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "LT"
+              },
+              "VertAlignment": "Center",
+              "Border": "All;127,127,127;;;;;;solid:0,0,0",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression",
+              "Margins": {
+                "Left": 3.0,
+                "Right": 3.0,
+                "Top": 3.0,
+                "Bottom": 3.0
+              }
+            }
+          }
+        },
+        "3": {
+          "Ident": "StiDataBand",
+          "Name": "DataBand2",
+          "ClientRectangle": "0,6,20,0.6",
+          "Interaction": {
+            "Ident": "StiBandInteraction"
+          },
+          "Border": ";;;;;;;solid:Black",
+          "Brush": "solid:",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "Text26",
+              "Guid": "b10f30c1ef229f83ebe47709b3c89f4c",
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0,1.5,0.6",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{StockDescription.NumberOfHead}"
+              },
+              "HorAlignment": "Center",
+              "VertAlignment": "Center",
+              "Border": "All;127,127,127;;;;;;solid:0,0,0",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "DataColumn",
+              "Margins": {
+                "Left": 3.0,
+                "Right": 3.0,
+                "Top": 3.0,
+                "Bottom": 3.0
+              }
+            },
+            "1": {
+              "Ident": "StiText",
+              "Name": "Text27",
+              "Guid": "f70e9bccbfabec5e74a27dc88142d020",
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "1.5,0,4.5,0.6",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{StockDescription.Description}"
+              },
+              "VertAlignment": "Center",
+              "Border": "All;127,127,127;;;;;;solid:0,0,0",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "DataColumn",
+              "Margins": {
+                "Left": 3.0,
+                "Right": 3.0,
+                "Top": 3.0,
+                "Bottom": 3.0
+              }
+            },
+            "2": {
+              "Ident": "StiText",
+              "Name": "Text32",
+              "Guid": "62241d3e11aed8a0b657df35b4c6bf96",
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "6,0,4.9,0.6",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{StockDescription.PICEarTag}"
+              },
+              "VertAlignment": "Center",
+              "Border": "All;127,127,127;;;;;;solid:0,0,0",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "DataColumn",
+              "Margins": {
+                "Left": 3.0,
+                "Right": 3.0,
+                "Top": 3.0,
+                "Bottom": 3.0
+              }
+            },
+            "3": {
+              "Ident": "StiText",
+              "Name": "Text33",
+              "Guid": "dbb249f9dd4374778d8e0bfb007aad76",
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "10.9,0,2.5,0.6",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{StockDescription.BrandText}"
+              },
+              "VertAlignment": "Center",
+              "Border": "All;127,127,127;;;;;;solid:0,0,0",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "DataColumn",
+              "Margins": {
+                "Left": 3.0,
+                "Right": 3.0,
+                "Top": 3.0,
+                "Bottom": 3.0
+              }
+            },
+            "4": {
+              "Ident": "StiText",
+              "Name": "Text34",
+              "Guid": "459f1fcc4b43784c3a6a64dd1102f62d",
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "13.4,0,2.5,0.6",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{StockDescription.EarmarkText}"
+              },
+              "VertAlignment": "Center",
+              "Border": "All;127,127,127;;;;;;solid:0,0,0",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "DataColumn",
+              "Margins": {
+                "Left": 3.0,
+                "Right": 3.0,
+                "Top": 3.0,
+                "Bottom": 3.0
+              }
+            },
+            "5": {
+              "Ident": "StiText",
+              "Name": "Text35",
+              "Guid": "6b8b91f4015df75f656c016ecced9a2a",
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "18.1,0,1.9,0.6",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{StockDescription.HasERP}"
+              },
+              "VertAlignment": "Center",
+              "Border": "All;127,127,127;;;;;;solid:0,0,0",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "DataColumn",
+              "Margins": {
+                "Left": 3.0,
+                "Right": 3.0,
+                "Top": 3.0,
+                "Bottom": 3.0
+              }
+            },
+            "6": {
+              "Ident": "StiText",
+              "Name": "Text36",
+              "Guid": "e2c64d4ee8de0df28efbe13e307b4240",
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "17,0,1.1,0.6",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{StockDescription.HasEU}"
+              },
+              "VertAlignment": "Center",
+              "Border": "All;127,127,127;;;;;;solid:0,0,0",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "DataColumn",
+              "Margins": {
+                "Left": 3.0,
+                "Right": 3.0,
+                "Top": 3.0,
+                "Bottom": 3.0
+              }
+            },
+            "7": {
+              "Ident": "StiText",
+              "Name": "Text37",
+              "Guid": "d30bc35ab00a5a8b647514464ea45c79",
+              "GrowToHeight": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "15.9,0,1.1,0.6",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{StockDescription.HasLT}"
+              },
+              "VertAlignment": "Center",
+              "Border": "All;127,127,127;;;;;;solid:0,0,0",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "DataColumn",
+              "Margins": {
+                "Left": 3.0,
+                "Right": 3.0,
+                "Top": 3.0,
+                "Bottom": 3.0
+              }
+            }
+          },
+          "DataSourceName": "StockDescription"
+        },
+        "4": {
+          "Ident": "StiDataBand",
+          "Name": "DataBand14",
+          "ClientRectangle": "0,7.4,20,0.6",
+          "Interaction": {
+            "Ident": "StiBandInteraction"
+          },
+          "Border": ";;;;;;;solid:Black",
+          "Brush": "solid:",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "Text97",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0,1.5,0.6",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{TotalLivestock}"
+              },
+              "HorAlignment": "Center",
+              "VertAlignment": "Center",
+              "Border": "All;127,127,127;;;;;;solid:0,0,0",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            }
+          }
+        },
+        "5": {
+          "Ident": "StiDataBand",
+          "Name": "DataBand7",
+          "Guid": "2de7b08a200392226ca8fa283063a7d7",
+          "ClientRectangle": "0,8.8,20,1.8",
+          "Interaction": {
+            "Ident": "StiBandInteraction"
+          },
+          "Border": ";;;;;;;solid:Black",
+          "Brush": "solid:",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "Text10",
+              "Guid": "5380a3d7ae9c1bd9625964c473315fe2",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0.4,20,0.6",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "ANIMAL TREATMENTS: Are any of the livestock in this consignment still within a Withholding Period (WHP) or Export Slaughter Interval (ESI) as set by APVMA or SAFEMEAT, following treatment with any veterinary drug or chemical?"
+              },
+              "Font": ";;Bold;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "1": {
+              "Ident": "StiText",
+              "Name": "Text11",
+              "Guid": "8a9201a94cd9ee7515e6bcc6a1a1b862",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,1.2,3.2,0.4",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Additional details:"
+              },
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            }
+          }
+        },
+        "6": {
+          "Ident": "StiDataBand",
+          "Name": "DataBand8",
+          "Guid": "c74945ef70f08367faf7e3d866a3225a",
+          "ClientRectangle": "0,11.4,20,0.8",
+          "Interaction": {
+            "Ident": "StiBandInteraction"
+          },
+          "Border": ";;;;;;;solid:Black",
+          "Brush": "solid:",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "Text12",
+              "Guid": "8c3091e2a50c4fbf99cd1361d6513126",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0,5,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{AnimalTreatments.chemicalProduct}"
+              },
+              "VertAlignment": "Center",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              }
+            },
+            "1": {
+              "Ident": "StiText",
+              "Name": "Text13",
+              "Guid": "885f13dc4b409f74dcee67a30e42f9e4",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "5,0,5,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{AnimalTreatments.treatmentDate}"
+              },
+              "VertAlignment": "Center",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "TextFormat": {
+                "Ident": "StiDateFormatService",
+                "StringFormat": "dd/MM/yyyy"
+              }
+            },
+            "2": {
+              "Ident": "StiText",
+              "Name": "Text14",
+              "Guid": "82bf409584c578a471e6d6954aa804f1",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "10,0,5,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{AnimalTreatments.whp}"
+              },
+              "VertAlignment": "Center",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              }
+            },
+            "3": {
+              "Ident": "StiText",
+              "Name": "Text15",
+              "Guid": "9add42469ff0a908696d6521faad3434",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "15,0,5,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{AnimalTreatments.esi}"
+              },
+              "VertAlignment": "Center",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              }
+            }
+          },
+          "DataSourceName": "AnimalTreatments"
+        },
+        "7": {
+          "Ident": "StiDataBand",
+          "Name": "DataBand9",
+          "Guid": "b7d9f29d36bb124dcec36f95f8cc8cb8",
+          "ClientRectangle": "0,13,20,1",
+          "Interaction": {
+            "Ident": "StiBandInteraction"
+          },
+          "Border": "Top;;;;;;;solid:0,0,0",
+          "Brush": "solid:",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "Text16",
+              "Guid": "7144b9818486bf90da220978a34e3532",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0,5,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "CHEMICAL PRODUCT"
+              },
+              "Font": ";7;;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression",
+              "Margins": {
+                "Top": 3.0
+              }
+            },
+            "1": {
+              "Ident": "StiText",
+              "Name": "Text17",
+              "Guid": "e63d500c236d6716fa965576b2c7c71e",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "5,0,5,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "TREATMENT DATE"
+              },
+              "Font": ";7;;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression",
+              "Margins": {
+                "Top": 3.0
+              }
+            },
+            "2": {
+              "Ident": "StiText",
+              "Name": "Text18",
+              "Guid": "96a3e31127f66da723935682f9f00ed9",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "10,0,5,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "WHP"
+              },
+              "Font": ";7;;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression",
+              "Margins": {
+                "Top": 3.0
+              }
+            },
+            "3": {
+              "Ident": "StiText",
+              "Name": "Text19",
+              "Guid": "36e9c3f2701ba596cade358c9fd3f2bb",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "15,0,5,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "ESI (IF SET)"
+              },
+              "Font": ";7;;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression",
+              "Margins": {
+                "Top": 3.0
+              }
+            }
+          }
+        },
+        "8": {
+          "Ident": "StiDataBand",
+          "Name": "DataBand10",
+          "Guid": "c7d47533240d85f357653fb855dddf97",
+          "ClientRectangle": "0,14.8,20,1.8",
+          "Interaction": {
+            "Ident": "StiBandInteraction"
+          },
+          "Border": ";;;;;;;solid:Black",
+          "Brush": "solid:",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "Text20",
+              "Guid": "d3f63998d1187675122b5d350f1bd28d",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0.4,20,0.6",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "FODDER, CROP AND GRAIN TREATMENTS: In the past 60 days, have any of the livestock in this consignment consumed any material that was still within a withholding period when harvested, collected or first grazed?"
+              },
+              "Font": ";;Bold;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression"
+            },
+            "1": {
+              "Ident": "StiText",
+              "Name": "Text21",
+              "Guid": "9ab06c33c5c062a470c471ddc2f3297a",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,1.2,3.2,0.4",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Additional details:"
+              },
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            }
+          }
+        },
+        "9": {
+          "Ident": "StiDataBand",
+          "Name": "DataBand11",
+          "Guid": "dc4e9ebf5aadcdd68ee47685076f8ecb",
+          "ClientRectangle": "0,17.4,20,0.8",
+          "Interaction": {
+            "Ident": "StiBandInteraction"
+          },
+          "Border": ";;;;;;;solid:Black",
+          "Brush": "solid:",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "Text22",
+              "Guid": "27bdda5342f91dc70136c797d77e290c",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0,4,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{FodderCropGrainTreatments.chemProduct}"
+              },
+              "VertAlignment": "Center",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              }
+            },
+            "1": {
+              "Ident": "StiText",
+              "Name": "Text23",
+              "Guid": "d5dfd9699e357a5f525b6dd183fbbb6c",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "4,0,4,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{FodderCropGrainTreatments.dateApplied}"
+              },
+              "VertAlignment": "Center",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "TextFormat": {
+                "Ident": "StiDateFormatService",
+                "StringFormat": "dd/MM/yyyy"
+              }
+            },
+            "2": {
+              "Ident": "StiText",
+              "Name": "Text28",
+              "Guid": "46acf89c9ea2d4e612a59f92552e87a7",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "8,0,3.6,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{FodderCropGrainTreatments.grazingWHP}"
+              },
+              "VertAlignment": "Center",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              }
+            },
+            "3": {
+              "Ident": "StiText",
+              "Name": "Text29",
+              "Guid": "cf9ab3ccdc7495dcdedc70fa75346a67",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "11.6,0,4.4,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{FodderCropGrainTreatments.dateFirstFed}"
+              },
+              "VertAlignment": "Center",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "TextFormat": {
+                "Ident": "StiDateFormatService",
+                "StringFormat": "dd/MM/yyyy"
+              }
+            },
+            "4": {
+              "Ident": "StiText",
+              "Name": "Text30",
+              "Guid": "50226717bc7974b58b4a9a7913919adf",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "16,0,4,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{FodderCropGrainTreatments.dateFeeding}"
+              },
+              "VertAlignment": "Center",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "TextFormat": {
+                "Ident": "StiDateFormatService",
+                "StringFormat": "dd/MM/yyyy"
+              }
+            }
+          },
+          "DataSourceName": "FodderCropGrainTreatments"
+        },
+        "10": {
+          "Ident": "StiDataBand",
+          "Name": "DataBand12",
+          "Guid": "4394ed06f98cc153a37666c7fc8410d1",
+          "ClientRectangle": "0,19,20,1",
+          "Interaction": {
+            "Ident": "StiBandInteraction"
+          },
+          "Border": "Top;;;;;;;solid:0,0,0",
+          "Brush": "solid:",
+          "Components": {
+            "0": {
+              "Ident": "StiText",
+              "Name": "Text50",
+              "Guid": "6147bf94ae586d8621dbe3ad87fd7b58",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0,4,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "CHEMICAL PRODUCT"
+              },
+              "Font": ";7;;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression",
+              "Margins": {
+                "Top": 3.0
+              }
+            },
+            "1": {
+              "Ident": "StiText",
+              "Name": "Text59",
+              "Guid": "9b7daa25c8925b76b0bd52157377f2b1",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "4,0,4,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "DATE APPLIED"
+              },
+              "Font": ";7;;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression",
+              "Margins": {
+                "Top": 3.0
+              }
+            },
+            "2": {
+              "Ident": "StiText",
+              "Name": "Text60",
+              "Guid": "972042abaeb8419bd8e53be56ab22d26",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "8,0,3.6,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "GRAZING WHP"
+              },
+              "Font": ";7;;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression",
+              "Margins": {
+                "Top": 3.0
+              }
+            },
+            "3": {
+              "Ident": "StiText",
+              "Name": "Text61",
+              "Guid": "49b5aa0c441e77b7bf4be02266730642",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "11.6,0,4.4,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "DATE FIRST FED/GRAZED DATE"
+              },
+              "Font": ";7;;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression",
+              "Margins": {
+                "Top": 3.0
+              }
+            },
+            "4": {
+              "Ident": "StiText",
+              "Name": "Text62",
+              "Guid": "58d7023802491b72fcc8d307903cf521",
+              "CanGrow": true,
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "16,0,4,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "FEEDING/GRAZING CEASED"
+              },
+              "Font": ";7;;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression",
+              "Margins": {
+                "Top": 3.0
+              }
+            }
+          }
+        },
+        "11": {
+          "Ident": "StiDataBand",
+          "Name": "DataBand13",
+          "Guid": "28f4aade02b897275b6218332b146cde",
+          "ClientRectangle": "0,20.8,20,5.4",
+          "Interaction": {
+            "Ident": "StiBandInteraction"
+          },
+          "Border": ";;;;;;;solid:Black",
+          "Brush": "solid:",
+          "Components": {
+            "0": {
+              "Ident": "StiImage",
+              "Name": "Image1",
+              "Guid": "f1802c7cb1abeb13a2b6f93217196f84",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "1.6,2.6,5.2,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Border": "Bottom;;;;;;;solid:0,0,0",
+              "Brush": "solid:",
+              "ImageData": {
+                "Value": "{DeclarerSignature}"
+              },
+              "Image": ""
+            },
+            "1": {
+              "Ident": "StiText",
+              "Name": "Text63",
+              "Guid": "4f7dbdfcf3a7cb5a15d9329f6404977d",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,0.8,0.4,0.4",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "I"
+              },
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            },
+            "2": {
+              "Ident": "StiText",
+              "Name": "Text64",
+              "Guid": "776d61cb8d3dad1f53a7f51370e7857b",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "7.6,0.8,0.4,0.4",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "of"
+              },
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            },
+            "3": {
+              "Ident": "StiText",
+              "Name": "Text65",
+              "Guid": "f0da235ed125809f1418e4951012d80b",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "8,0.8,12,0.4",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{DeclarerAddress}"
+              },
+              "Border": "Bottom;;;;;;;solid:0,0,0",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            },
+            "4": {
+              "Ident": "StiText",
+              "Name": "Text66",
+              "Guid": "f44dff000fce41101f4e274b53841e91",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,1.4,20,0.4",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Declare that I am the owner or the person responsible for the husbandry of the stock, and that the description of the stock is true and correct."
+              },
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            },
+            "5": {
+              "Ident": "StiText",
+              "Name": "Text67",
+              "Guid": "2ac964d91b6dd3fa03c3458766be634e",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,3,1.6,0.4",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Signature"
+              },
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            },
+            "6": {
+              "Ident": "StiText",
+              "Name": "Text68",
+              "Guid": "adb9ad3280d0f5111010f1bc85db1327",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "7.6,3,1,0.4",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Date"
+              },
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            },
+            "7": {
+              "Ident": "StiText",
+              "Name": "Text69",
+              "Guid": "230539447bd569e951d968654086e38f",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "8.6,3,3.4,0.4",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{DeclarerSignatureDate}"
+              },
+              "Border": "Bottom;;;;;;;solid:0,0,0",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression",
+              "TextFormat": {
+                "Ident": "StiDateFormatService",
+                "StringFormat": "dd/MM/yyyy"
+              }
+            },
+            "8": {
+              "Ident": "StiText",
+              "Name": "Text70",
+              "Guid": "6cc99f26518611bacc3d95b2b8127949",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "12.8,3,1,0.4",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "Tel no."
+              },
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            },
+            "9": {
+              "Ident": "StiText",
+              "Name": "Text71",
+              "Guid": "7d5288c8f103ec849dd6c3a401147e52",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "13.8,3,6.2,0.4",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{DeclarerTelephone}"
+              },
+              "Border": "Bottom;;;;;;;solid:0,0,0",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            },
+            "10": {
+              "Ident": "StiText",
+              "Name": "Text72",
+              "Guid": "70fd66cb5d45aae8b331dbc5b0dd5458",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,3.6,20,0.8",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "OnlyText": true,
+              "Text": {
+                "Value": "<line-height=\"1.5\">ONLY THE PERSON WHOSE NAME APPEARS ON THE NATIONAL VENDOR DECLARATION AND WAY BILL MAY SIGN THIS DECLARATION, OR MAKE AMENDMENTS WHICH MUST BE INITIALLED.</line-height=\"1.5\">"
+              },
+              "Font": ";7;;",
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "TextOptions": {
+                "WordWrap": true
+              },
+              "Type": "Expression",
+              "TextQuality": "Wysiwyg",
+              "AllowHtmlTags": true,
+              "Margins": {
+                "Top": 3.0
+              }
+            },
+            "11": {
+              "Ident": "StiText",
+              "Name": "Text73",
+              "Guid": "58bd04ffb5edb72be47c790b4bbb7b59",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0.4,0.8,7.2,0.4",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "{DeclarerName}"
+              },
+              "Border": "Bottom;;;;;;;solid:0,0,0",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            },
+            "12": {
+              "Ident": "StiText",
+              "Name": "Text9",
+              "Guid": "6270f35c2471733c93547a9ed98e489a",
+              "MinSize": "0,0",
+              "MaxSize": "0,0",
+              "ClientRectangle": "0,4.6,20,0.4",
+              "Interaction": {
+                "Ident": "StiInteraction"
+              },
+              "Text": {
+                "Value": "*To be used for consignments that require more than four lines to describe the stock."
+              },
+              "Border": ";;;;;;;solid:Black",
+              "Brush": "solid:",
+              "TextBrush": "solid:Black",
+              "Type": "Expression"
+            }
+          }
+        }
+      },
+      "PaperSize": "A4",
+      "PageWidth": 21.0,
+      "PageHeight": 29.7,
+      "Watermark": {
+        "TextBrush": "solid:50,0,0,0"
+      },
+      "Margins": {
+        "Left": 0.5,
+        "Right": 0.5,
+        "Top": 0.5,
+        "Bottom": 0.5
+      },
+      "ReportUnit": {
+        "Ident": "StiCentimetersUnit"
+      }
+    }
+  }
+}

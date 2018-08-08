@@ -98,7 +98,7 @@ class ConfirmationPopup extends Component {
 // Define propTypes of Popup
 ConfirmationPopup.propTypes = {
     title: React.PropTypes.string,
-    confirmText: React.PropTypes.string,
+    confirmText: React.PropTypes.any,
     buttonText: React.PropTypes.string,
     cancelText: React.PropTypes.string,
     redirectUrlOnSuccess: React.PropTypes.string,

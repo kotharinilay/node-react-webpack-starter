@@ -1,11 +1,13 @@
 {
-    "apps": [{
-        "name": "react demo",
-        "script": "src/server/development.js",
-        "watch": [
-            "**/*.js", "*.js"
-        ],
-        "cwd": "src/server",
-        "log_date_format": "YYYY-MM-DD HH:mm Z"
-    }]
+    "apps": [
+        {
+            "name": "aglive_dev",
+            "script": "src/server/development.js",
+            "watch": [
+                "src/server/**/*.js",
+                "src/server/*.js"
+            ],
+            "log_date_format": "YYYY-MM-DD HH:mm Z"
+        }
+    ]
 }

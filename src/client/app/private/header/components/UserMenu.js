@@ -11,6 +11,7 @@ import { connect } from 'react-redux';
 import outSideClick from 'react-onclickoutside';
 
 import { toEmptyStr } from '../../../../../shared/format/string';
+import { getMenuIds } from '../../../../../shared/index';
 import { clientLogout } from '../../../../services/public/login';
 
 import { logout } from '../../../../services/private/header';
@@ -27,14 +28,22 @@ class UserMenu extends Component {
         this.editProfileClick = this.editProfileClick.bind(this);
         this.openChangePassword = this.openChangePassword.bind(this);
         this.state = {
-            visible: false
+            visible: false,
+            fullName: this.props.authUser ? (toEmptyStr(this.props.authUser.FirstName) + ' ' + toEmptyStr(this.props.authUser.LastName)) : null
         }
-        if (this.props.authUser) {            
-            this.fullName = toEmptyStr(this.props.authUser.FirstName) + ' ' + toEmptyStr(this.props.authUser.LastName);
+        if (this.props.authUser) {
+            //this.fullName = toEmptyStr(this.props.authUser.FirstName) + ' ' + toEmptyStr(this.props.authUser.LastName);
             this.avatar = this.props.authUser.AvatarField ? this.props.authUser.AvatarField
                 : this.siteURL + "/static/images/user-icon2.png";
         }
 
+    }
+
+
+    componentWillReceiveProps(nextProps) {
+        if ((toEmptyStr(this.props.authUser.FirstName) + ' ' + toEmptyStr(this.props.authUser.LastName)) != (toEmptyStr(nextProps.authUser.FirstName) + ' ' + toEmptyStr(nextProps.authUser.LastName))) {
+            this.setState({ fullName: (toEmptyStr(nextProps.authUser.FirstName) + ' ' + toEmptyStr(nextProps.authUser.LastName)) });
+        }
     }
 
     // Handle outside click event for user dropdown menu
@@ -54,6 +63,7 @@ class UserMenu extends Component {
     }
 
     openChangePassword() {
+        this.setState({ visible: !this.state.visible });
         this.props.toggleChangePassword(true);
     }
 
@@ -66,7 +76,7 @@ class UserMenu extends Component {
 
     // Open logout confirmation popup
     logoutClick() {
-        let {strings} = this.props;
+        let { strings } = this.props;
         // pass custom payload with popup
         let payload = {
             confirmText: 'Are you sure you want to sign out?',
@@ -83,6 +93,8 @@ class UserMenu extends Component {
     // Handle user logout event
     logout() {
         let _this = this;
+        let menuIds = getMenuIds(null, null, [], [], false);
+        this.props.setModule(menuIds.moduleId, menuIds.controlMenuId);
         return logout().then(function (res) {
             clientLogout();
             return true;
@@ -100,17 +112,17 @@ class UserMenu extends Component {
 
     // Render user menu content and related popup
     render() {
-        let {strings} = this.props;
+        let { strings } = this.props;
         return (
             <div className={'top-user ' + (this.state.visible ? 'active' : '')} >
                 <div ref="clickEvent" onClick={this.openPopup} >
-                    <span><img className="profile-icon" src={this.avatar} alt="user-icon" /></span>
-                    <h6 className="top-main-name">{this.fullName}<b>{strings.PRODUCER_NAME}</b></h6>
+                    <span><img className="profile-icon animated-img-bg" src={this.avatar} alt="user-icon" /></span>
+                    <h6 className="top-main-name">{this.state.fullName}<b>{strings.PRODUCER_NAME}</b></h6>
                     <div onClick={this.innerClick} className={'search-toggle ' + (this.state.visible ? 'popupShow' : 'popupHide')}>
                         <div className="top-dropdown">
                             <div className="u-profile">
-                                <img className="profile-icon1" src={this.avatar} alt="user-icon" />
-                                <span>{this.fullName}<b>{strings.PRODUCER_ATTRIBUTES}</b></span>
+                                <img className="profile-icon1 animated-img-bg" src={this.avatar} alt="user-icon" />
+                                <span>{this.state.fullName}<b>{strings.PRODUCER_ATTRIBUTES}</b></span>
                             </div>
                             <div className="expire-on">
                                 <span>{strings.EXPIRES_DATE}</span>

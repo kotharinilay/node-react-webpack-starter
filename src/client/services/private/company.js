@@ -97,6 +97,15 @@ function deleteCompany(uuids, auditLogIds, type) {
     });
 }
 
+// get all company details on selectAll button click
+function getAllCompany(filterObj = null) {
+    return post('/company/getall', { filterObj: filterObj }).then(function (res) {
+        return res.data;
+    }).catch(function (err) {
+        return err.response.data;
+    });
+}
+
 module.exports = {
     getCompanyData: getCompanyData,
     getCompanyDetail: getCompanyDetail,
@@ -107,5 +116,6 @@ module.exports = {
     saveBusinessUnit: saveBusinessUnit,
     checkDupName: checkDupName,
     getAllRegion: getAllRegion,
-    deleteCompanyRecords: deleteCompany
+    deleteCompanyRecords: deleteCompany,
+    getAllCompany: getAllCompany
 }

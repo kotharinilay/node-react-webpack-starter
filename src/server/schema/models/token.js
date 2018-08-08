@@ -3,26 +3,25 @@
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('token', {
     Id: {
-      type: DataTypes.INTEGER(11),
+      type: "BINARY(16)",
       allowNull: false,
-      primaryKey: true,
-      autoIncrement: true
+      primaryKey: true
     },
     ContactId: {
-      type: DataTypes.INTEGER(11),
-      allowNull: true,
+      type: "BINARY(16)",
+      allowNull: false,
       references: {
         model: 'contact',
         key: 'Id'
       }
     },
     Token: {
-      type: DataTypes.STRING(255),
-      allowNull: true
+      type: DataTypes.TEXT,
+      allowNull: false
     },
     ClientId: {
-      type: DataTypes.INTEGER(11),
-      allowNull: true,
+      type: "BINARY(16)",
+      allowNull: false,
       references: {
         model: 'client',
         key: 'Id'

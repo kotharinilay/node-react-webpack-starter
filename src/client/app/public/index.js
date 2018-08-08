@@ -13,23 +13,49 @@ import ConfirmPopup from '../../lib/core-components/ConfirmationPopup';
 import NotificationSystem from '../../lib/wrapper-components/ReduxNotificationSystem';
 import Footer from './footer';
 
+import LoadingBar, { resetLoading } from 'react-redux-loading-bar';
+
 // expose Layout as react component
 class Layout extends Component {
 
     constructor(props) {
         super(props);
+        this.hideLoadingIndicator = this.hideLoadingIndicator.bind(this);
+    }
+
+    componentDidUpdate() {
+        this.hideLoadingIndicator();
+    }
+    componentDidMount() {
+        this.hideLoadingIndicator();
+    }
+
+    hideLoadingIndicator() {
+        let _this = this;
+        setTimeout(function () {
+            _this.props.resetLoading();
+        }, 100);
     }
 
     render() {
         return (
             <div className="app-container">
+                <LoadingBar style={{ backgroundColor: '#c35f4b', zIndex: 99999 }} />
                 <div className="col-md-12">{this.props.children}</div>
                 <Footer />
-                <ConfirmPopup   />
+                <ConfirmPopup />
                 <NotificationSystem />
             </div>
         );
     }
 }
 
-export default connect()(Layout);
+const mapDispatchToProps = (dispatch) => {
+    return {
+        resetLoading: () => {
+            dispatch(resetLoading())
+        }
+    }
+}
+
+export default connect(null, mapDispatchToProps)(Layout);

@@ -9,7 +9,7 @@
 import Promise from 'bluebird';
 import { verifyToken, generateToken } from '../auth/jsonwebtoken';
 import { COOKIE } from '../../shared/cookie';
-import { getContactByCondition } from '../repository/contact';
+import { getContactById } from '../repository/contact';
 import { updateToken, removeToken } from '../repository/token';
 import { replaceAll, trim } from '../../shared/format/string';
 import cache from './../lib/cache-manager';
@@ -41,7 +41,7 @@ let validateTokenOnRequest = (req, res) => {
                     tokenStatus = verifyToken(newToken);
                     res.cookie(COOKIE.ID_TOKEN, newToken);
 
-                    return getContactByCondition({ Id: json.ContactId }).then(function (state) {
+                    return getContactById(json.ContactId).then(function (state) {
                         return state;
                     });
                 }
@@ -57,7 +57,7 @@ let validateTokenOnRequest = (req, res) => {
             else {
 
                 // token is valid
-                return getContactByCondition({ Id: json.ContactId }).then(function (state) {
+                return getContactById(json.ContactId).then(function (state) {
                     return state;
                 });
             }

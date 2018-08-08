@@ -50,19 +50,21 @@
     border: 0px;
 }
 .react-bs-table .table-bordered > tbody > tr > td {
-line-height: 30px !important;
+line-height: 20px !important;
 vertical-align: middle !important;
 font-weight:normal !important;
 font-size:13px !important;
 color:#37444b;
+padding-top: 5px;
+padding-bottom: 5px;
 }
 .react-bs-table .table-bordered > thead > tr > th{
   border-bottom-width: 2px;
-  line-height: 35px !important;
+  line-height: 40px !important;
 }
 .react-bs-table .table-bordered > thead > tr > td {
   border-bottom-width: 2px;
-  line-height: 30px !important;
+  line-height: 35px !important;
 }
 .react-bs-table .table-bordered > tfoot > tr > th,
 .react-bs-table .table-bordered > tfoot > tr > td {
@@ -232,6 +234,7 @@ line-height: 17px;
 }
 .Select--multi .Select-value-icon:hover{background:#cccccc !important; color: #009688;}
 .dropdown-input{margin:12px 0 0 0;}
+.multipicker-input{margin:7px 0 0 0;}
 .dropdown-checkbox{margin:30px 0 0 0;}
 .Select:focus{background:rgba(0,0,0,0) !important;}
 

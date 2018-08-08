@@ -1,0 +1,186 @@
+Hello {{SenderName}},
+<br />
+<br />
+eNVD {{referencenumber}} with {{totalcount}} {{species}}(s) {{title}}. This eNVD has following detail.
+<br />
+<br />
+eNVD
+<table style="border: 1px solid #000; border-collapse: collapse; border-spacing: 0; width: 50%; border-spacing: 0; font-size: inherit;"> 
+	<tbody style="display: table-row-group; vertical-align: middle; border-color: inherit; text-align: left;">
+		<tr style="border-bottom: 1px solid #000;"> 
+			<th style="padding: 2px; border: 1px solid #000; vertical-align: middle; background: rgba(0,0,0,0.05); width: 40%;">
+				Reference Number
+			</th> 
+			<td>{{referencenumber}}</td> 
+		</tr> 
+		<tr style="border-bottom: 1px solid #000;"> 
+			<th style="padding: 2px; border: 1px solid #000; vertical-align: middle; background: rgba(0,0,0,0.05); width: 40%;">
+				Serial Number
+			</th> 
+			<td>{{serialnumber}}</td> 
+		</tr> 
+		<tr style="border-bottom: 1px solid #000;"> 
+			<th style="padding: 2px; border: 1px solid #000; vertical-align: middle; background: rgba(0,0,0,0.05); width: 40%;">
+				Status
+			</th> 
+			<td>{{status}}</td> 
+		</tr> 
+		<tr style="border-bottom: 1px solid #000;"> 
+			<th style="padding: 2px; border: 1px solid #000; vertical-align: middle; background: rgba(0,0,0,0.05); width: 40%;">
+				Date of Consignor signed
+			</th> 
+			<td>{{declarerackdate}}</td> 
+		</tr> 
+	<tbody>
+</table>
+
+<br />
+Livestock Summary : {{totalcount}} {{species}}(s)
+<table style="border: 1px solid #000; border-collapse: collapse; border-spacing: 0; width: 50%; border-spacing: 0; font-size: inherit;"> 
+	<tbody style="display: table-row-group; vertical-align: middle; border-color: inherit; text-align: left;">
+		<tr style="border-bottom: 1px solid #000;"> 
+			<th style="padding: 2px; border: 1px solid #000; vertical-align: middle; background: rgba(0,0,0,0.05); width: 40%;">
+				Description
+			</th> 
+			<th style="padding: 2px; border: 1px solid #000; vertical-align: middle; background: rgba(0,0,0,0.05);">
+				Quantity
+			</th> 
+		</tr> 
+		{{{summarydata}}}
+	<tbody>
+</table>
+
+<br />
+Consignor Detail
+<table style="border: 1px solid #000; border-collapse: collapse; border-spacing: 0; width: 50%; border-spacing: 0; font-size: inherit;"> 
+	<tbody style="display: table-row-group; vertical-align: middle; border-color: inherit; text-align: left;">
+		<tr style="border-bottom: 1px solid #000;"> 
+			<th style="padding: 2px; border: 1px solid #000; vertical-align: middle; background: rgba(0,0,0,0.05); width: 40%;">
+				Livestock Owner
+			</th> 
+			<td>{{livestockowner}}</td> 
+		</tr> 
+		<tr style="border-bottom: 1px solid #000;"> 
+			<th style="padding: 2px; border: 1px solid #000; vertical-align: middle; background: rgba(0,0,0,0.05); width: 40%;">
+				Responsible Person
+			</th> 
+			<td>{{responsibleperson}}</td> 
+		</tr> 
+		<tr style="border-bottom: 1px solid #000;"> 
+			<th style="padding: 2px; border: 1px solid #000; vertical-align: middle; background: rgba(0,0,0,0.05); width: 40%;">
+				Contact Mobile
+			</th> 
+			<td>{{consignermobile}}</td> 
+		</tr> 
+		<tr style="border-bottom: 1px solid #000;"> 
+			<th style="padding: 2px; border: 1px solid #000; vertical-align: middle; background: rgba(0,0,0,0.05); width: 40%;">
+				Consigned from PIC
+			</th> 
+			<td>{{consignerpic}}</td> 
+		</tr> 
+		<tr style="border-bottom: 1px solid #000;"> 
+			<th style="padding: 2px; border: 1px solid #000; vertical-align: middle; background: rgba(0,0,0,0.05); width: 40%;">
+				Consigned from Address
+			</th> 
+			<td>{{consigneraddress}}</td> 
+		</tr> 
+	<tbody>
+</table>
+
+<br />
+Transporter Detail
+<table style="border: 1px solid #000; border-collapse: collapse; border-spacing: 0; width: 50%; border-spacing: 0; font-size: inherit;"> 
+	<tbody style="display: table-row-group; vertical-align: middle; border-color: inherit; text-align: left;">
+		<tr style="border-bottom: 1px solid #000;"> 
+			<th style="padding: 2px; border: 1px solid #000; vertical-align: middle; background: rgba(0,0,0,0.05); width: 40%;">
+				Transporter
+			</th> 
+			<td>{{transporter}}</td> 
+		</tr> 
+		<tr style="border-bottom: 1px solid #000;"> 
+			<th style="padding: 2px; border: 1px solid #000; vertical-align: middle; background: rgba(0,0,0,0.05); width: 40%;">
+				Driver
+			</th> 
+			<td>{{drivername}}</td> 
+		</tr> 
+		<tr style="border-bottom: 1px solid #000;"> 
+			<th style="padding: 2px; border: 1px solid #000; vertical-align: middle; background: rgba(0,0,0,0.05); width: 40%;">
+				Driver Mobile
+			</th> 
+			<td>{{dirvermobile}}</td> 
+		</tr> 
+		<tr style="border-bottom: 1px solid #000;"> 
+			<th style="padding: 2px; border: 1px solid #000; vertical-align: middle; background: rgba(0,0,0,0.05); width: 40%;">
+				Vehicle Registration Number
+			</th> 
+			<td>{{vehicleregonumber}}</td> 
+		</tr> 
+	<tbody>
+</table>
+
+<br />
+Sale Agent Detail
+<table style="border: 1px solid #000; border-collapse: collapse; border-spacing: 0; width: 50%; border-spacing: 0; font-size: inherit;"> 
+	<tbody style="display: table-row-group; vertical-align: middle; border-color: inherit; text-align: left;">
+		<tr style="border-bottom: 1px solid #000;"> 
+			<th style="padding: 2px; border: 1px solid #000; vertical-align: middle; background: rgba(0,0,0,0.05); width: 40%;">
+				Sale Agent Company
+			</th> 
+			<td>{{saleagentcompany}}</td> 
+		</tr> 
+		<tr style="border-bottom: 1px solid #000;"> 
+			<th style="padding: 2px; border: 1px solid #000; vertical-align: middle; background: rgba(0,0,0,0.05); width: 40%;">
+				Sale Agent
+			</th> 
+			<td>{{saleagentname}}</td> 
+		</tr> 
+		<tr style="border-bottom: 1px solid #000;"> 
+			<th style="padding: 2px; border: 1px solid #000; vertical-align: middle; background: rgba(0,0,0,0.05); width: 40%;">
+				Sale Agent Mobile
+			</th> 
+			<td>{{saleagentmobile}}</td> 
+		</tr> 
+	<tbody>
+</table>
+
+<br />
+Consignee Detail
+<table style="border: 1px solid #000; border-collapse: collapse; border-spacing: 0; width: 50%; border-spacing: 0; font-size: inherit;"> 
+	<tbody style="display: table-row-group; vertical-align: middle; border-color: inherit; text-align: left;">
+		<tr style="border-bottom: 1px solid #000;"> 
+			<th style="padding: 2px; border: 1px solid #000; vertical-align: middle; background: rgba(0,0,0,0.05); width: 40%;">
+				Consignee PIC
+			</th> 
+			<td>{{consigneepic}}</td> 
+		</tr> 
+		<tr style="border-bottom: 1px solid #000;"> 
+			<th style="padding: 2px; border: 1px solid #000; vertical-align: middle; background: rgba(0,0,0,0.05); width: 40%;">
+				Consignee Address
+			</th> 
+			<td>{{consigneeaddress}}</td> 
+		</tr> 
+		<tr style="border-bottom: 1px solid #000;"> 
+			<th style="padding: 2px; border: 1px solid #000; vertical-align: middle; background: rgba(0,0,0,0.05); width: 40%;">
+				Destination PIC
+			</th> 
+			<td>{{destinationpic}}</td> 
+		</tr> 
+		<tr style="border-bottom: 1px solid #000;"> 
+			<th style="padding: 2px; border: 1px solid #000; vertical-align: middle; background: rgba(0,0,0,0.05); width: 40%;">
+				Destination Address
+			</th> 
+			<td>{{destinationaddress}}</td> 
+		</tr> 
+	<tbody>
+</table>
+
+<br />
+You can download PDF file of eNVD and Waybill.
+<ul>
+	<li>
+		<a href='{{envdlink}}' target='_blank'>eNVD download link</a>
+	</li>
+	<li>
+		<a href='{{waybilllink}}' target='_blank'>Waybill download link</a>
+	</li>
+</ul>

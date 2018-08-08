@@ -41,7 +41,7 @@ module.exports = function (grunt) {
         prod_build: {
             command: [
                 'babel assets --out-dir ' + build_path + 'assets --presets=react,es2015,stage-0',
-                'babel src --out-dir ' + build_path + 'aws --presets=react,es2015,stage-0',
+                'babel aws --out-dir ' + build_path + 'aws --presets=react,es2015,stage-0',
                 'babel src --out-dir ' + build_path + 'src --presets=react,es2015,stage-0'
             ].join('&&')
         }

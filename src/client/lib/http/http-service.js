@@ -4,6 +4,7 @@
  * HTTP services (GET, POST) for server calls
  ***************************************/
 
+import Promise from 'bluebird';
 import axiosInstance from 'axios';
 import axios from 'axios';
 import HttpClient from './http-client';
@@ -35,9 +36,9 @@ function post(url, data = null, headers = null, includePublic = false, includeBa
 
     return httpClient.request({
         method: 'post', url: finalUrl, headers: headers, data: data
-    }).then(function (res) {
+    }).then(function (res) {        
         return Promise.resolve(res);
-    }).catch(function (err) {
+    }).catch(function (err) {        
         return Promise.reject(err);
     });
 }

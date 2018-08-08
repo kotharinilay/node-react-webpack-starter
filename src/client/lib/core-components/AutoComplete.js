@@ -18,11 +18,14 @@ import { autoCompleteStyle, errorStyle } from '../../../../assets/js/mui-theme';
 class AutoCompleteComponent extends PureComponent {
     constructor(props) {
         super(props);
+        this.siteURL = window.__SITE_URL__;
+
         this.state = {
             dataSource: [],
             isLoading: false,
             visited: false,
-            error: this.props.eReq
+            error: this.props.eReq,
+            searchText: this.props.searchText || ''
         }
         this.fieldStatus = {
             visited: false,
@@ -33,7 +36,15 @@ class AutoCompleteComponent extends PureComponent {
         this.onUpdateInput = this.onUpdateInput.bind(this);
         this.onNewRequest = this.onNewRequest.bind(this);
         this.onBlur = this.onBlur.bind(this);
-        this.isBlurReq = false;
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if ((nextProps.selectedObj && !this.props.selectedObj) || (nextProps.selectedObj && this.props.selectedObj &&
+            nextProps.selectedObj[this.props.valueField] != this.props.selectedObj[this.props.valueField]) && this.props.updateOnChange) {
+            let text = nextProps.selectedObj[this.props.textField];
+            this.setState({ searchText: text });
+            this.validateInput(text);
+        }
     }
 
     // Get list of data from given URL through api
@@ -59,6 +70,8 @@ class AutoCompleteComponent extends PureComponent {
             this.updateToStore();
         }
         return this.getData(value).then(function (items) {
+            if (self.props.itemTemplate)
+                items = self.props.itemTemplate(items, value, self.props.valueField, self.props.textField);
             self.setState({
                 dataSource: items,
                 isLoading: false
@@ -68,15 +81,14 @@ class AutoCompleteComponent extends PureComponent {
 
     // Fired when select value from dropdown menu
     onNewRequest(value) {
-        if (!this.isBlurReq)
-            this.validateInput(value);
-        this.isBlurReq = false;
+        this.validateInput(value);
     }
 
     // Handle onBlur event
     onBlur(e) {
+        // if (this.props.onBlur)
+        //     this.props.onBlur(e.target.value);
         this.fieldStatus.visited = true;
-        this.isBlurReq = true;
         if (e.target.value) {
             this.validateInput(e.target.value);
         }
@@ -89,7 +101,6 @@ class AutoCompleteComponent extends PureComponent {
                 this.props.onSelectionChange(this.fieldStatus.value);
             }
         }
-
     }
 
     // Validate the selected/search value 
@@ -97,11 +108,14 @@ class AutoCompleteComponent extends PureComponent {
         let fieldStatus = this.fieldStatus;
         fieldStatus.visited = true;
         fieldStatus.dirty = true;
-        if (!this.isBlurReq) {
+        if (typeof (value) != 'string') {
             fieldStatus.value = value;
             fieldStatus.valid = true;
             this.updateToStore();
             this.setState({ visited: true, error: null });
+            if (this.props.onSelectionChange) {
+                this.props.onSelectionChange(value);
+            }
         }
         else {
             var self = this;
@@ -112,10 +126,18 @@ class AutoCompleteComponent extends PureComponent {
                     fieldStatus.value = items[0];
                     fieldStatus.valid = true;
                 }
+                // condition to retain value if multiple items with same value and blur event fired and 
+                // item already selected
+                else if (items.length > 1 && fieldStatus.value && typeof fieldStatus.value != 'string' &&
+                    fieldStatus.value[self.props.textField] == value) {
+                    fieldStatus.valid = true;
+                }
                 else {
-                    fieldStatus.valid = false;
+                    fieldStatus.value = value;
+                    fieldStatus.valid = self.props.eInvalid ? false : true;
                     errorMessage = self.props.eInvalid;
                 }
+
                 self.updateToStore();
                 self.setState({ isLoading: false, visited: true, error: errorMessage });
                 if (self.props.onSelectionChange) {
@@ -137,6 +159,7 @@ class AutoCompleteComponent extends PureComponent {
         let isUpdateToStore = false;
         let text = props.searchText;
         let value = props.selectedValue;
+        let obj = props.selectedObj;
 
         if (!props.eReq) {
             isUpdateToStore = true;
@@ -148,7 +171,24 @@ class AutoCompleteComponent extends PureComponent {
             this.fieldStatus.valid = true;
             this.fieldStatus.value = { [this.props.textField]: text, [this.props.valueField]: value };
             let ds = values(selectedVal);
-            this.setState({ error: null, dataSource: ds });
+            this.setState({ error: null, dataSource: ds, searchText: text });
+        }
+        if (obj) {
+            if (typeof obj == 'string') {
+                isUpdateToStore = true;
+                this.fieldStatus.valid = true;
+                this.fieldStatus.value = obj;
+                let ds = [];
+                this.setState({ error: null, dataSource: ds, searchText: obj });
+            }
+            else {
+                let selectedVal = { 0: obj };
+                isUpdateToStore = true;
+                this.fieldStatus.valid = true;
+                this.fieldStatus.value = obj;
+                let ds = values(selectedVal);
+                this.setState({ error: null, dataSource: ds, searchText: obj[this.props.textField] });
+            }
         }
 
         if (isUpdateToStore)
@@ -164,15 +204,24 @@ class AutoCompleteComponent extends PureComponent {
         if (props.eReq != null) {
             manipulateProps.floatingLabelText = mandatory(manipulateProps.floatingLabelText);
         }
-
         return (
             <div>
                 <div style={{ position: 'relative' }}>
                     <CircularProgress inputProps={{ size: 15, thickness: 2, className: (state.isLoading ? 'input-loading' : 'hidden') }} />
+                    {this.props.searchIcon ? <img src={this.siteURL + '/static/images/add-search-icon.png'}
+                        style={{
+                            position: 'absolute', right: '5px', top: '30px', zIndex: '9',
+                            cursor: 'pointer', display: state.isLoading ? 'none' : 'block'
+                        }}
+                        onClick={() => {
+                            this.props.openFindContact({
+                                TargetKey: this.props.targetKey || 'contact'
+                            })
+                        }} /> : null}
                     <AutoComplete
                         {...manipulateProps}
                         className="autoCompleteStyle"
-                        searchText={props.searchText}
+                        searchText={state.searchText}
                         filter={AutoComplete.caseInsensitiveFilter}
                         dataSource={state.dataSource}
                         {...autoCompleteStyle}
@@ -209,7 +258,8 @@ AutoCompleteComponent.propTypes = {
     apiUrl: React.PropTypes.string.isRequired,
     selectedValue: React.PropTypes.any,
     searchText: React.PropTypes.string,
-    onSelectionChange: React.PropTypes.func
+    onSelectionChange: React.PropTypes.func,
+    onBlur: React.PropTypes.func
 };
 
 //Define defaultProps
@@ -217,7 +267,8 @@ AutoCompleteComponent.defaultProps = {
     fullWidth: true,
     eReq: null,
     eInvalid: 'Invalid input value.',
-    isClicked: true
+    isClicked: true,
+    searchIcon: false,
 }
 
 export default AutoCompleteComponent

@@ -23,7 +23,7 @@ class RadioButtonComponent extends PureComponent {
             valid: false,
             value: null
         }
-        this.data = values(this.props.dataSource);
+        this.data = [...this.props.dataSource];
         this.onChange = this.onChange.bind(this);
     }
 
@@ -54,6 +54,12 @@ class RadioButtonComponent extends PureComponent {
         this.updateToStore();
         if (!this.state.visited)
             this.setState({ visited: true });
+
+        if (this.fieldStatus.valid || this.props.callOnChange) {
+            if (this.props.onChange) {
+                this.props.onChange(this.fieldStatus.value, e.target.textContent);
+            }
+        }
     }
 
     // Update store values - (name, value, valid, dirty, visited)
@@ -68,14 +74,14 @@ class RadioButtonComponent extends PureComponent {
         let isUpdateToStore = false;
         let value = null;
 
-        if (props.inputGroupProps.defaultSelected)
+        if (props.inputGroupProps.defaultSelected != null && props.inputGroupProps.defaultSelected != undefined)
             value = props.inputGroupProps.defaultSelected;
 
         if (!props.eReq) {
             isUpdateToStore = true;
             this.fieldStatus.valid = true;
         }
-        if (value) {
+        if (value != null && value != undefined) {
             isUpdateToStore = true;
             this.fieldStatus.valid = true;
             this.fieldStatus.value = value;
@@ -122,12 +128,12 @@ class RadioButtonComponent extends PureComponent {
 RadioButtonComponent.propTypes = {
     inputGroupProps: React.PropTypes.shape({
         name: React.PropTypes.string.isRequired,
-        defaultSelected: React.PropTypes.string,
+        defaultSelected: React.PropTypes.any,
         labelPosition: React.PropTypes.string
     }).isRequired,
     disabled: React.PropTypes.bool,
     horizontalAlign: React.PropTypes.bool,
-    dataSource: React.PropTypes.object.isRequired,
+    dataSource: React.PropTypes.array.isRequired,
     textField: React.PropTypes.string.isRequired,
     valueField: React.PropTypes.string.isRequired,
     isClicked: React.PropTypes.bool.isRequired,
@@ -135,7 +141,8 @@ RadioButtonComponent.propTypes = {
         React.PropTypes.string,
         React.PropTypes.bool,
     ]),
-    formSetValue: React.PropTypes.func
+    formSetValue: React.PropTypes.func,
+    onChange: React.PropTypes.func
 }
 
 // Define defaultProps of radio button

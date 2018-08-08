@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<SOAP-ENV:Envelope xmlns:SOAPENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:nlis="http://www.nlis.com.au/soap/ver2.0/nlis-soap.xsd">
+<SOAP-ENV:Header>
+<nlis:originator-grp>
+<nlis:user>[username]</nlis:user>
+<nlis:password>[password]</nlis:password>
+<nlis:email></nlis:email>
+</nlis:originator-grp>
+<nlis:filename>ReplacedTags.xml</nlis:filename>
+<nlis:create-date>[currentdate]</nlis:create-date>
+<nlis:create-time>[currenttime]</nlis:create-time>
+</SOAP-ENV:Header>
+<SOAP-ENV:Body>
+<nlis:ReplacedTag>
+<nlis:replace-date>[replacementdate]</nlis:replace-date>
+[tags]
+</nlis:ReplacedTag>
+</SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

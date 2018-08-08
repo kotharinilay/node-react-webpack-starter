@@ -5,6 +5,7 @@
  * **************************** */
 
 import React, { Component } from 'react';
+import { browserHistory } from 'react-router';
 import ContactDetail from './contact_detail';
 
 import Button from '../../../../lib/core-components/Button';
@@ -28,7 +29,13 @@ class EditProfile extends Component {
 
     saveUserProfile(e) {
         e.preventDefault();
+        let _this = this;
         return this.refs.detail.saveUserProfile().then(function (res) {
+            if (res) {
+                if (_this.isProfile)
+                    _this.props.updateContact({ FirstName: res.data.firstName, LastName: res.data.lastName });
+                return true;
+            }
             return res;
         }).catch(function (err) {
             return false;
@@ -44,38 +51,48 @@ class EditProfile extends Component {
         if (this.isProfile) {
             title = this.strings.TITLE;
         }
-        return (<div className="dash-right-top">
-            <div className="live-detail-main">
-                <div className="configure-head">
-                    <span>{title}</span>
-                </div>
-                <div className="l-stock-top-btn">
-                    <ul>
-                        <li>
-                            <Button
-                                inputProps={{
-                                    name: 'btnBack',
-                                    label: this.strings.CONTROLS.BACK_LABEL,
-                                    className: 'button1Style button30Style'
-                                }}
-                                onClick={this.onReset} ></Button>
-                        </li>
-                        <li>
-                            <BusyButton
-                                inputProps={{
-                                    name: 'btnSave',
-                                    label: this.strings.CONTROLS.SAVE_LABEL,
-                                    className: 'button2Style button30Style'
-                                }}
-                                loaderHeight={25}
-                                redirectUrl='/contact'
-                                onClick={this.saveUserProfile} ></BusyButton>
-                        </li>
+        return (
+            <div className="dash-right-top">
+                <div className="live-detail-main">
+                    <div className="configure-head">
+                        <span>{title}</span>
+                    </div>
+                    <div className="l-stock-top-btn">
+                        <ul>
+                            <li>
+                                <Button
+                                    inputProps={{
+                                        name: 'btnBack',
+                                        label: this.strings.COMMON.CANCEL,
+                                        className: 'button1Style button30Style'
+                                    }}
+                                    onClick={() => { browserHistory.replace('/contact'); }} ></Button>
+                            </li>
+                            <li>
+                                <Button
+                                    inputProps={{
+                                        name: 'btnReset',
+                                        label: this.strings.COMMON.RESET,
+                                        className: 'button1Style button30Style'
+                                    }}
+                                    onClick={this.onReset} ></Button>
+                            </li>
+                            <li>
+                                <BusyButton
+                                    inputProps={{
+                                        name: 'btnSave',
+                                        label: this.strings.COMMON.SAVE,
+                                        className: 'button2Style button30Style'
+                                    }}
+                                    loaderHeight={25}
+                                    redirectUrl={this.isProfile ? '/dashboard' : '/contact'}
+                                    onClick={this.saveUserProfile} ></BusyButton>
+                            </li>
 
-                    </ul>
+                        </ul>
+                    </div>
                 </div>
-            </div>
-        </div>);
+            </div>);
     }
 
     // Render components

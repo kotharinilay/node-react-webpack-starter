@@ -6,12 +6,12 @@
 
 module.exports = {
     TITLE: "Change Password",
-    EXISTING_PASSWORD_LABEL: 'Existing Password',
-    EXISTING_PASSWORD_PLACE_HOLDER: 'Enter Existing Password',
-    EXISTING_PASSWORD_REQ_MESSAGE: 'Please enter Existing Password',
+    EXISTING_PASSWORD_LABEL: 'Your Current Password',
+    EXISTING_PASSWORD_PLACE_HOLDER: 'Your Current Password',
+    EXISTING_PASSWORD_REQ_MESSAGE: 'Please enter Your Current Password',
 
     NEW_PASSWORD_LABEL: 'New Password',
-    NEW_PASSWORD_PLACE_HOLDER: 'Enter New Password',
+    NEW_PASSWORD_PLACE_HOLDER: 'New Password',
     NEW_PASSWORD_REQ_MESSAGE: 'Please enter New Password',
     MUST_CHAR_REQ_MESSAGE: 'New Password must be at least 8 characters',
 

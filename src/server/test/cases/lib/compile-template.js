@@ -4,7 +4,7 @@
  * compile-template test cases
  * *************************************/
 
-var {data} = require('../../lib/server');
+var { data } = require('../../lib/server');
 var CompileTemplate = require('../../../lib/compile-template');
 
 describe('generate email template from html', function () {
@@ -16,7 +16,7 @@ describe('generate email template from html', function () {
             SiteUrl: process.env.SITE_URL
         };
 
-        CompileTemplate("./assets/templates/layout.html", templateData);
+        CompileTemplate("email/layout.html", templateData);
         done();
     });
 });

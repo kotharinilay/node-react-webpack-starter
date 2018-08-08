@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/' xmlns:nlis='http://www.nlis.com.au/soap/ver2.0/nlis-soap.xsd'>
+<SOAP-ENV:Header>
+<nlis:originator-grp>
+<nlis:user>[username]</nlis:user>
+<nlis:password>[password]</nlis:password>
+<nlis:email></nlis:email>
+</nlis:originator-grp>
+<nlis:create-date>[currentdate]</nlis:create-date>
+<nlis:create-time>[currenttime]</nlis:create-time>
+<nlis:processing-mode>async</nlis:processing-mode>
+</SOAP-ENV:Header><SOAP-ENV:Body>
+<nlis:MobBasedMovementOffPIC><nlis:MobBasedMovementOffPIC-upload-grp>
+<nlis:species>[speciesName]</nlis:species>
+<nlis:transfer-date>[movementDate]</nlis:transfer-date>
+<nlis:from-pic>[consignerPIC]</nlis:from-pic>
+<nlis:num-head>[totalNumberOfLivestock]</nlis:num-head>
+<nlis:to-pic>[consigneePIC]</nlis:to-pic>
+<nlis:nvd>[MLAReferenceNumber]</nlis:nvd>
+<nlis:comment>Free Text</nlis:comment>
+</nlis:MobBasedMovementOffPIC-upload-grp></nlis:MobBasedMovementOffPIC>
+</SOAP-ENV:Body></SOAP-ENV:Envelope>

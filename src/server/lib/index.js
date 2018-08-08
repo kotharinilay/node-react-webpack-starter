@@ -4,6 +4,8 @@
  * comman functions for server area
  ************************************/
 
+import fs from 'fs';
+
 // Common messages for api response
 function resMessages() {
     return {
@@ -36,18 +38,14 @@ function resMessages() {
  * getResponse(400, 'something wrong') -> { status: 400, response: { success: false, error: 'something wrong' } }
  * getResponse(200, null, { test: '123' }) -> { status: 200, response: { success: true, test: '123' } }
  ************************************/
-function getResponse(status = 200, error = null, options = null) {
+function getResponse(status = HttpStatus.SUCCESS, error = null, options = null) {
     let result = {
         status: status,
-        response: {}
+        response: {
+            success: (status == HttpStatus.SUCCESS),
+            error: error
+        }
     }
-
-    if (error) {
-        result.response.success = false;
-        result.response.error = error;
-    }
-    else
-        result.response.success = true;
 
     if (options)
         Object.assign(result.response, { ...options });
@@ -72,9 +70,66 @@ let dataSetResponse = (result) => {
     return { data: data, total: total[0].Total };
 }
 
-// Generate data grid filter query
-let gridFilterQuery = (sortColumn, sortOrder, skipRec, pageSize) => {
-    return "order by " + sortColumn + " " + sortOrder + " Limit " + skipRec + "," + pageSize;
+// convert JSON to CSV data
+let jsonToCSVConvertor = (JSONData, ShowLabel) => {
+    //If JSONData is not an object then JSON.parse will parse the JSON string in an Object
+    var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
+
+    var CSV = '';
+
+    //This condition will generate the Label/Header
+    if (ShowLabel) {
+        var row = "";
+
+        //This loop will extract the label from 1st index of on array
+        for (var index in arrData[0]) {
+
+            //Now convert each value to string and comma-seprated
+            row += index + ',';
+        }
+
+        row = row.slice(0, -1);
+
+        //append Label row with line break
+        CSV += row + '\r\n';
+    }
+
+    //1st loop is to extract each row
+    for (var i = 0; i < arrData.length; i++) {
+        var row = "";
+
+        //2nd loop will extract each column and convert it in string comma-seprated
+        for (var index in arrData[i]) {
+            row += arrData[i][index] ? arrData[i][index] + ',' : ',';
+        }
+
+        row.slice(0, row.length - 1);
+
+        //add a line break after each row
+        CSV += row + '\r\n';
+    }
+
+    return CSV;
+}
+
+// copy file from src to dest
+function copyFile(src, dest) {
+    let readStream = fs.createReadStream(src);
+    readStream.once('error', (err) => {
+        // console.log(err);
+    });
+    readStream.once('end', () => {
+        //console.log('done copying');
+    });
+    readStream.pipe(fs.createWriteStream(dest));
+}
+
+function getCommaSeparatedIds(ids) {
+    let uuids = [];
+    ids.map(id => {
+        uuids.push(`'${id}'`);
+    });
+    return uuids.join();
 }
 
 module.exports = {
@@ -82,5 +137,7 @@ module.exports = {
     getResponse: getResponse,
     HttpStatus: HttpStatus,
     dataSetResponse: dataSetResponse,
-    gridFilterQuery: gridFilterQuery
+    jsonToCSVConvertor: jsonToCSVConvertor,
+    copyFile: copyFile,
+    getCommaSeparatedIds: getCommaSeparatedIds
 }

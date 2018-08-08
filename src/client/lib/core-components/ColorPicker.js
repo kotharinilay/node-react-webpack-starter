@@ -19,8 +19,8 @@ class ColorPickerComponent extends Component {
     render() {
         return (
             <div style={{ textAlign: 'left', ...this.props.style }} className={this.props.className}>
+                {this.props.clickOnOuter || this.props.selectionVisible ? <div className="colorpicker-outer" onClick={this.props.clickOnOuter}></div> : null}
                 <ColorPickerPanel
-
                     color={this.props.color}
                     alpha={this.props.alpha}
                     mode="RGB"
@@ -41,7 +41,8 @@ ColorPickerComponent.propTypes = {
 ColorPickerComponent.defaultProps = {
     color: '#36c',
     alpha: 100,
-    className: ''
+    className: '',
+    selectionVisible: false
 }
 
 export default ColorPickerComponent;

@@ -88,6 +88,48 @@ function deleteProperty(uuids, auditLogIds) {
     });
 }
 
+// get PIC manager hierarchy
+function getPICManagerHierarchy(propertyId, companyId, regionId, businessId) {
+    return get('/property/pichierarchy', { propertyId: propertyId, companyId: companyId, regionId: regionId, businessId: businessId }).then(function (res) {
+        return res.data;
+    }).catch(function (err) {
+        return err.response.data;
+    });
+}
+
+// get data of property for modify
+function getPropertyMapDetail(uuid) {
+    return get('/property/mapdetail', { uuid: uuid }).then(function (res) {
+        return res.data;
+    }).catch(function (err) {
+        return err.response.data;
+    });
+}
+
+function getInductionInitialData(propertyId) {
+    return get('/property/inductioninitialdetails', { propertyId: propertyId }).then(function (res) {
+        return res.data;
+    }).catch(function (err) {
+        return err.response.data;
+    });
+}
+
+function getPropertyByCondition(columns, join, condition) {
+    return get('/property/getbycondition', { columns, join, condition }).then(function (res) {
+        return res.data;
+    }).catch(function (err) {
+        return err.response.data;
+    });
+}
+
+function getAllProperty(filterObj = null) {
+    return post('/property/getalldataset', { filterObj: filterObj }).then(function (res) {
+        return res.data;
+    }).catch(function (err) {
+        return err.response.data;
+    });
+}
+
 module.exports = {
     getPropertyFilterData: getFilterData,
     getPropertyMngrAsstMngr: getMngrAsstMngr,
@@ -97,5 +139,10 @@ module.exports = {
     getPropertyDetail: getPropertyDetail,
     propertySearch: propertySearch,
     getPropertyAccessList: getPropertyAccessList,
-    deletePropertyRecords: deleteProperty
+    deletePropertyRecords: deleteProperty,
+    getPropertyMapDetail: getPropertyMapDetail,
+    getPICManagerHierarchy: getPICManagerHierarchy,
+    getInductionInitialData: getInductionInitialData,
+    getPropertyByCondition: getPropertyByCondition,
+    getAllProperty: getAllProperty
 }

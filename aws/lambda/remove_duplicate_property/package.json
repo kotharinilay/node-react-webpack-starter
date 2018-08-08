@@ -1,0 +1,25 @@
+{
+  "name": "remove_duplicate_property",
+  "version": "1.0.0",
+  "description": "Lambda function to remove duplicate data from CSV",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "devDependencies": {
+    "grunt": "~0.4.5",
+    "grunt-aws-lambda": "~0.x",
+    "grunt-contrib-clean": "^1.0.0",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-pack": "~0.1",
+    "lambda-tester": "^2.6.0",
+    "load-grunt-tasks": "^3.5.0"
+  },
+  "author": "Zealous System Pvt.Ltd.",
+  "license": "ISC",
+  "dependencies": {
+    "aws-sdk": "^2.38.0",
+    "bluebird": "^3.5.0",
+    "firebase-admin": "^4.2.0"
+  }
+}

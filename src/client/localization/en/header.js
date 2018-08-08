@@ -32,10 +32,10 @@ module.exports = {
     USER_BAR: {
         PRODUCER_NAME: 'Producer',
         PRODUCER_ATTRIBUTES: 'Producer, Abattair, Sale Agent',
-        EXPIRES_DATE: 'Expires on 31st December 2016',
+        EXPIRES_DATE: 'Expires on 31st December 2017',
         EDIT_PROFILE_BUTTON_LABEL: 'Edit Profile',
         CHANGEPASSWORD_BUTTON_LABEL: 'Change Password',
-        SIGNOUT_BUTTON_LABEL: 'Signout',
+        SIGNOUT_BUTTON_LABEL: 'Sign out',
         CHANGE_PASSWORD_COMPONENT: require('./popup-changepassword'),
         CONFIRMATION_POPUP_COMPONENT: require('./popup-confirmation')
     }

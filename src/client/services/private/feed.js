@@ -42,9 +42,29 @@ function checkDuplicateFeed(name, feedId = null) {
     });
 }
 
+// get default data for record feed
+function getRecordFeedData(topPIC) {
+    return get('/recordfeed/getdata', { topPIC: topPIC }).then(function (res) {
+        return res.data;
+    }).catch(function (err) {
+        return err.response.data;
+    });
+}
+
+// save record feed data to database
+function saveRecordFeed(recordFeedObj) {
+    return post('/recordfeed/save', { recordFeedObj: recordFeedObj }).then(function (res) {
+        return res.data;
+    }).catch(function (err) {
+        return err.response.data;
+    });
+}
+
 module.exports = {
     saveFeedStockComp: saveFeedStockComp,
     getFeedStockComp: getFeedStockComp,
     deleteFeedStockComp: deleteFeedStockComp,
-    checkDuplicateFeed: checkDuplicateFeed
+    checkDuplicateFeed: checkDuplicateFeed,
+    getRecordFeedData: getRecordFeedData,
+    saveRecordFeed: saveRecordFeed
 }

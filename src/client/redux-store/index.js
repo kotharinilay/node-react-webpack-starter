@@ -28,6 +28,6 @@ export default function configureStore(initialState) {
 
 export function injectAsyncReducer(store, name, asyncReducer) {
     store.asyncReducers[name] = asyncReducer;
-    let cr = combineReducer([store.asyncReducers], );
+    let cr = combineReducer([store.asyncReducers]);
     store.replaceReducer(cr);
 }

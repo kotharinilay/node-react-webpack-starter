@@ -1,0 +1,4 @@
+Company,Region,Business,PIC,Property Name,Property Type,Address,Suburb,State,Postcode,Property Manager,Brand Text,Earmark Text,NLIS Username,NLIS Password,Export Eligibility,EU Accreditation License Number,EU Accreditation Expiry Date,EU Accreditation State,EU Accreditation Description,EU Accreditation Status,OBE Accreditation License Number,OBE Accreditation Expiry Date,OBE Accreditation State,OBE Accreditation Description,OBE Accreditation Status
+C2,,,EUAB5459,New name 5454,Abattoir,Testing address,SUNDERLAND bay,victoria,3922,,brand,earmark Text,,,china,,29/10/2017,,,,,,,,
+C2,,,EUAB5452,New name 5451,Abattoir,Testing address1,SUNDERLAND bay,victoria,3922,,brand,earmark Text,,,china,,,,,nothing,,,,,
+C2,C2_R1,,EUAB5453,New name 5451,Abattoir,Testing address1,SUNDERLAND bay,victoria,3922,,brand,earmark Text,,,china,,,,,,,,,,

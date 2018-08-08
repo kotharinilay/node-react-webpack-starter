@@ -5,7 +5,7 @@
  * *************************************/
 
 // load react dependacies
-import React from 'react';
+import React from 'react'; 
 import { Route, IndexRoute } from 'react-router';
 import { injectAsyncReducer } from '../redux-store/index';
 import { checkAuth } from '../services/public/login';

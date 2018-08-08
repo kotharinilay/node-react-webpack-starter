@@ -15,6 +15,14 @@ import {
 
 export default function (router) {
 
+    // Check contact email exist
+    router.post('/contactusernameexist', function (req, res, next) {
+        return contactUsernameExist(req.body.email).then(function (result) {
+            return res.status(result.status).send(result.response);
+        }).catch(function (err) {
+            next(err);
+        });
+    });
     // Send email for forgot password request
     router.post('/forgotpassword', function (req, res, next) {
         return sendForgotPasswordEmail(req.body.email).then(function (result) {

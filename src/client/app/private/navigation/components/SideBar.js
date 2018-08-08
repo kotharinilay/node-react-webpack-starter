@@ -11,6 +11,7 @@ import { map } from 'lodash';
 import { contains } from '../../../../../shared/format/string';
 import { getIgnoreModule } from '../../../../../shared/index';
 import { getCurrentURL } from '../../../../lib/index';
+import { NOTIFY_INFO } from '../../../common/actiontypes';
 
 class SideBar extends Component {
     constructor(props) {
@@ -21,7 +22,7 @@ class SideBar extends Component {
         this.state = {
             selected: this.props.controlMenuId || null,
             moduleId: this.props.moduleId || null,
-            setupClicked: this.props.controlMenuId || this.urlPath != '/setup' ? false : true
+            setupClicked: this.props.controlMenuId || this.urlPath != '/usersetup' ? false : true
         }
 
         this.menu = [];
@@ -54,7 +55,13 @@ class SideBar extends Component {
     }
 
     // set controlMenuId to store on control menu click
-    setSelectedControlMenu(controlMenuId, setupClicked = false, IsSetupMenu = 0) {
+    setSelectedControlMenu(controlMenuId, setupClicked = false, IsSetupMenu = 0, menu = null) {
+        // for temporary perpose only
+        if (menu.Name == 'Report') {
+            this.props.notifyToaster(NOTIFY_INFO, { message: 'Not implemented yet.' });
+        }
+        // for temporary perpose only
+
         this.props.setModule(this.props.moduleId, controlMenuId, IsSetupMenu ? Math.random() : null);
         this.setState({ selected: controlMenuId, setupClicked: setupClicked });
     }
@@ -87,7 +94,7 @@ class SideBar extends Component {
         if (this.menu.length > 0) {
             return (
                 map(this.menu, (m, i) =>
-                    <li key={i} className={this.setActive(m.Id, m.RedirectURL)} onClick={this.setSelectedControlMenu.bind(this, m.Id, false, m.IsSetupMenu)} >
+                    <li key={i} className={this.setActive(m.Id, m.RedirectURL)} onClick={this.setSelectedControlMenu.bind(this, m.Id, false, m.IsSetupMenu, m)} >
                         <Link to={m.RedirectURL || "#"}>
                             <i className="left-side-icon"><img src={this.siteURL + "/static/images/modules/" + m.Icon} alt={m.Name} /></i>
                             <i className="left-icon-hover"><img src={this.siteURL + "/static/images/modules/" + m.HoverIcon} alt={m.Name} /></i>
@@ -105,7 +112,7 @@ class SideBar extends Component {
         if (!this.ignoreModule.includes(this.props.moduleId)) {
             return (
                 <li className={this.setActive(null, null)} onClick={this.setSelectedControlMenu.bind(this, null, true)} >
-                    <Link to="/setup">
+                    <Link to="/usersetup/species">
                         <i className="left-side-icon"><img src={this.siteURL + "/static/images/modules/control-setup.png"} alt={this.props.strings.SETUP_LABEL} /></i>
                         <i className="left-icon-hover"><img src={this.siteURL + "/static/images/modules/control-setup-hover.png"} alt={this.props.strings.SETUP_LABEL} /></i>
                         <span>{this.props.strings.SETUP_LABEL}</span></Link>

@@ -52,7 +52,7 @@ class Input extends PureComponent {
                 return props.eLength;
         }
         else if (props.eClientValidation)
-            return props.eClientValidation(input)
+            return props.eClientValidation(input, props.inputProps.floatingLabelText)
         return null;
     }
 
@@ -90,7 +90,9 @@ class Input extends PureComponent {
 
         if (this.fieldStatus.valid || this.props.callOnChange) {
             if (e.type == 'blur' && this.props.onBlurInput) {
-                this.setState({ isLoading: true });
+                if (this.props.isLoading) {
+                    this.setState({ isLoading: true });
+                }
                 this.props.onBlurInput(this.fieldStatus.value);
             }
             else if (e.type == 'change' && this.props.onChangeInput) {
@@ -128,7 +130,6 @@ class Input extends PureComponent {
         let props = this.props;
         let isUpdateToStore = false;
         let value = '';
-
         if (props.initialValue)
             value = trim(props.initialValue);
 
@@ -143,8 +144,20 @@ class Input extends PureComponent {
             this.setState({ error: null });
         }
 
+        if (props.eClientValidation && props.isClicked)
+            this.setState({ error: props.eClientValidation(value, props.inputProps.floatingLabelText) });
+
         if (isUpdateToStore)
             this.updateToStore();
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.initialValue != this.props.initialValue && this.props.updateOnChange) {
+            this.fieldStatus.value = nextProps.initialValue;
+            this.fieldStatus.valid = !this.fieldStatus.value && nextProps.eReq ? false : true;
+            this.setState({ value: this.fieldStatus.value || '', error: this.fieldStatus.valid ? null : nextProps.eReq });
+            this.updateToStore();
+        }
     }
 
     // Render component with error message

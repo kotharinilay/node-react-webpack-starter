@@ -125,7 +125,8 @@ function deleteMaturity(uuids, auditLogIds) {
 function saveSpeciesType(obj) {
     return post('/speciestype/save', {
         speciesId: obj.species, speciesTypeName: obj.speciesTypeName,
-        speciesTypeCode: obj.speciesTypeCode, uuid: obj.speciesTypeId, auditLogId: obj.auditId
+        speciesTypeCode: obj.speciesTypeCode, uuid: obj.speciesTypeId, auditLogId: obj.auditId,
+        configuredByAdmin: obj.configuredByAdmin
     }).then(function (res) {
         return res.data;
     }).catch(function (err) {
@@ -281,7 +282,8 @@ function deleteUomConversion(uuids, auditLogIds) {
 function saveServiceType(obj) {
     return post('/servicetype/save', {
         serviceTypeName: obj.serviceTypeName, serviceTypeCode: obj.serviceTypeCode,
-        uuid: obj.serviceTypeId, auditLogId: obj.auditId, ColorCode: obj.ColorCode
+        uuid: obj.serviceTypeId, auditLogId: obj.auditId, ColorCode: obj.ColorCode,
+        configuredByAdmin: obj.configuredByAdmin
     }).then(function (res) {
         return res.data;
     }).catch(function (err) {

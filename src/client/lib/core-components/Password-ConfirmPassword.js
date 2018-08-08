@@ -8,7 +8,7 @@
 import React from 'react'
 import TextField from 'material-ui/TextField';
 import PureComponent from '../wrapper-components/PureComponent'
-import { textFieldStyle,errorStyle } from '../../../../assets/js/mui-theme';
+import { textFieldStyle, errorStyle } from '../../../../assets/js/mui-theme';
 import PasswordStrength from './PasswordStrength';
 import { mandatory } from '../../lib/index';
 
@@ -38,7 +38,7 @@ class Password extends PureComponent {
             return this.props.eReq;
         else if (this.props.eLength) {
             let inputLength = input.length;
-            let {minLength, maxLength} = this.props;
+            let { minLength, maxLength } = this.props;
             if ((minLength && maxLength && inputLength < minLength && inputLength > maxLength) ||
                 (minLength && inputLength < minLength) ||
                 (maxLength && inputLength > maxLength))
@@ -59,6 +59,7 @@ class Password extends PureComponent {
 
     // Update error state based on Password
     updateErrorState(type, password) {
+        
         let isValid = true;
         let errorMessage = this.validPassword(password);
         if (errorMessage)
@@ -81,6 +82,7 @@ class Password extends PureComponent {
 
     // Validate when onBlur event handle by Password
     checkConfirmPassword(password, confirmPassword) {
+        
         if (confirmPassword) {
             let props = this.props;
             let isValid = true;
@@ -97,19 +99,23 @@ class Password extends PureComponent {
             this.fieldStatus.value = password;
 
             this.updateToStore();
+            return isValid;
         }
+        else
+            return false;
     }
 
     // Handle onChange/onBlur events by Password
     changePassword(e) {
+        
         let props = this.props;
         let password = e.target.value;
         let isValid = this.updateErrorState(e.type, password);
         if (e.type == 'blur') {
             this.fieldStatus.visited = true;
-            this.checkConfirmPassword(password, this.fieldStatus.valueCP);
+            isValid = this.checkConfirmPassword(password, this.fieldStatus.valueCP);
             if (!this.state.visited) {
-                this.setState({ visited: true });
+                this.setState({ visited: true, visitedCP: true });
             }
         }
         else {
@@ -126,6 +132,7 @@ class Password extends PureComponent {
 
     // Handle onChange/onBlur events by ConfirmPassword
     changeConfirmPassword(e) {
+        
         let props = this.props;
         let confirmPassword = e.target.value;
         let isValid = this.updateErrorStateCP(e.type, this.fieldStatus.value, confirmPassword);
@@ -172,13 +179,13 @@ class Password extends PureComponent {
         let props = this.props;
         let state = this.state;
 
-        let manipulateProps = Object.assign({},props.inputProps);
-        if(props.eReq != null){
+        let manipulateProps = Object.assign({}, props.inputProps);
+        if (props.eReq != null) {
             manipulateProps.floatingLabelText = mandatory(manipulateProps.floatingLabelText);
         }
 
-        let manipulatePropsCP = Object.assign({},props.inputPropsCP);
-        if(props.eReqCP != null){
+        let manipulatePropsCP = Object.assign({}, props.inputPropsCP);
+        if (props.eReqCP != null) {
             manipulatePropsCP.floatingLabelText = mandatory(manipulatePropsCP.floatingLabelText);
         }
 
@@ -195,7 +202,7 @@ class Password extends PureComponent {
                     onBlur={this.changePassword}
                     errorStyle={errorStyle}
                     onChange={this.changePassword} />
-                {props.strengthBar ? <PasswordStrength ref="PWStrength" /> : null}
+                {props.strengthBar ? <PasswordStrength className={this.props.passwordStrengthClass || ''} ref="PWStrength" /> : null}
                 <TextField
                     {...textFieldStyle}
                     {...manipulatePropsCP}

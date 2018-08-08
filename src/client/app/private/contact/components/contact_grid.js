@@ -6,6 +6,7 @@
 
 import React, { Component } from 'react';
 import { browserHistory } from 'react-router';
+import { uniqBy as _uniqBy } from 'lodash';
 
 import SetPassword from './set_password';
 import Grid from '../../../../lib/core-components/Grid';
@@ -13,12 +14,14 @@ import ConfirmPopup from '../../../../lib/core-components/ConfirmationPopup';
 import Button from '../../../../lib/core-components/Button';
 import ToggleSwitch from '../../../../lib/core-components/ToggleSwitch';
 import Dropdown from '../../../../lib/core-components/Dropdown';
+import CompanyHierarchy from '../../../common/companyhierarchy/index';
 
 import { gridActionNotify } from '../../../../lib/wrapper-components/FormActions';
 import { NOTIFY_SUCCESS, NOTIFY_ERROR } from '../../../common/actiontypes';
 
 import { getForm } from '../../../../lib/wrapper-components/FormActions';
-import { deleteContactRecords } from '../../../../services/private/contact';
+import { getAllState } from '../../../../services/private/setup';
+import { deleteContactRecords, getAllContactDataset } from '../../../../services/private/contact';
 import { formatDateTime } from '../../../../../shared/format/date';
 
 class ContactGrid extends Component {
@@ -55,20 +58,20 @@ class ContactGrid extends Component {
             ],
             displayFilter: false,
             isClicked: false,
+            stateFilterData: [],
             filterObj: {
                 companyId: this.props.companyId ||
                 (this.props.hierarchyProps.isSiteAdmin == 0 ? this.props.hierarchyProps.companyId : undefined)
             },
             clearKey: new Date(),
-            refreshGrid: new Date(),
-            openSetPassword: false
+            openSetPassword: false,
+            selectedData: []
         }
 
         this.strings = this.props.strings;
         //this.deleteContactClick = this.deleteContactClick.bind(this);
         this.deleteContact = this.deleteContact.bind(this);
         //this.modifyContact = this.modifyContact.bind(this);
-        this.clearSelection = this.clearSelection.bind(this);
 
         this.rowClickId = [];
         this.expandableRow = this.expandableRow.bind(this);
@@ -78,6 +81,8 @@ class ContactGrid extends Component {
         this.clearFilter = this.clearFilter.bind(this);
         this.toggleSetPassword = this.toggleSetPassword.bind(this);
         this.toggleFilter = this.toggleFilter.bind(this);
+        this.toggleSelection = this.toggleSelection.bind(this);
+        this.rowSelect = this.rowSelect.bind(this);
     }
 
     stateSet(setObj) {
@@ -85,8 +90,22 @@ class ContactGrid extends Component {
             this.setState(setObj);
     }
 
+    // Perform header search
+    componentWillReceiveProps(nextProps) {
+        
+        if (nextProps.topSearch == undefined)
+            return;
+        this.refs.contactGrid.onSearchChange(nextProps.topSearch.searchText);
+    }
+
     componentWillMount() {
         this.mounted = true;
+        let _this = this;
+        getAllState().then(function (res) {
+            if (res.success) {
+                _this.stateSet({ stateFilterData: res.data })
+            }
+        })
     }
 
     componentWillUnmount() {
@@ -97,7 +116,7 @@ class ContactGrid extends Component {
     deleteContact() {
         this.props.hideConfirmPopup();
 
-        let selectedRows = this.refs.contactGrid.selectedRows;
+        let selectedRows = this.state.selectedData;
 
         let uuids = [];
         let auditLogIds = [];
@@ -111,7 +130,10 @@ class ContactGrid extends Component {
         deleteContactRecords(uuids, auditLogIds).then(function (res) {
             if (res.success) {
                 _this.props.notifyToaster(NOTIFY_SUCCESS, { message: _this.strings.DELETE_SUCCESS });
+                _this.props.toggleButtonText(false);
+                _this.refs.contactGrid.onSelectAll(false, []);
                 _this.refs.contactGrid.refreshDatasource();
+                _this.setState({ selectedData: [] });
             }
             else if (res.badRequest) {
                 _this.props.notifyToaster(NOTIFY_ERROR, { message: res.error, strings: _this.strings });
@@ -121,13 +143,9 @@ class ContactGrid extends Component {
         });
     }
 
-    // Clear grid selection
-    clearSelection() {
-        this.refs.contactGrid.cleanSelected();
-    }
-
     // apply filter on grid data
     applyFilter() {
+        
         let obj = getForm(this.filterSchema, this.refs);
         let hierarchyValues = this.refs.hierarchy.getValues();
         let filterObj = {};
@@ -140,19 +158,20 @@ class ContactGrid extends Component {
             hierarchyValues.businessId ? filterObj['BusinessId'] = hierarchyValues.businessId : null;
         }
         if (Object.keys(filterObj).length < 1)
-            this.stateSet({
-                filterObj: filterObj,
-                refreshGrid: new Date()
-            });
-        else
             this.props.notifyToaster(NOTIFY_ERROR, { message: this.strings.SEARCH_WARNING });
+        else {
+            this.refs.contactGrid.onSelectAll(false, []);
+            this.props.toggleButtonText(false);
+            this.stateSet({ filterObj: filterObj, selectedData: [] });
+        }
     }
 
     // clear filter on grid data and display all data
     clearFilter() {
+        this.refs.contactGrid.onSelectAll(false, []);
+        this.props.toggleButtonText(false);
         this.stateSet({
-            clearKey: new Date(), refreshGrid: new Date(),
-            filterObj: {
+            clearKey: new Date(), selectedData: [], filterObj: {
                 companyId: this.props.companyId ||
                 (this.props.hierarchyProps.isSiteAdmin == 0 ? this.props.hierarchyProps.companyId : undefined)
             }
@@ -161,12 +180,13 @@ class ContactGrid extends Component {
 
     toggleSetPassword(isOpen) {
         if (!isOpen) {
-            this.refs.contactGrid.cleanSelected();
-            this.setState({ openSetPassword: isOpen });
+            this.refs.contactGrid.onSelectAll(false, []);
+            this.props.toggleButtonText(false);
+            this.setState({ openSetPassword: isOpen, selectedData: [] });
         }
         else {
-            if (gridActionNotify(this.strings, this.props.notifyToaster, this.refs.contactGrid.selectedRows.length, true, true)) {
-                this.selectedId = this.refs.contactGrid.selectedRows[0].Id;
+            if (gridActionNotify(this.strings, this.props.notifyToaster, this.state.selectedData.length, true, true)) {
+                this.selectedId = this.state.selectedData[0].Id;
                 this.setState({ openSetPassword: isOpen });
             }
         }
@@ -185,6 +205,59 @@ class ContactGrid extends Component {
         let displayFilter = this.state.displayFilter;
         this.setState({ displayFilter: !displayFilter });
     }
+
+    // toggle selection of grid rows
+    toggleSelection() {
+        let selectAll = !this.props.selectAll;
+        if (selectAll) {
+            let _this = this;
+            getAllContactDataset(this.state.filterObj).then(function (res) {
+                if (res.success) {
+                    _this.refs.contactGrid.onSelectAll(selectAll, []);
+                    _this.props.toggleButtonText(selectAll);
+                    _this.stateSet({ selectedData: res.data });
+                }
+            }).catch(function (err) {
+                _this.props.notifyToaster(NOTIFY_ERROR);
+            });
+        }
+        else {
+            this.refs.contactGrid.onSelectAll(selectAll, []);
+            this.props.toggleButtonText(selectAll);
+            this.stateSet({ selectedData: [], selectAll: selectAll });
+        }
+    }
+
+    // Handle grid selection
+    rowSelect(selectedRow, row, isSelected) {
+        let selectedData = [...this.state.selectedData];
+        if (row.Id) {
+            if (isSelected) {
+                let obj = selectedData.find(r => r.Id == row.Id);
+                if (!obj)
+                    selectedData.push(row);
+            }
+            else
+                selectedData = selectedData.filter(r => r.Id != row.Id);
+        } else {
+            if (isSelected)
+                row.map(r => selectedData.push(r));
+            else {
+                row.map(r => {
+                    let objIndex = selectedData.findIndex(x => x.Id == r.Id);
+                    if (objIndex != -1)
+                        selectedData.splice(objIndex, 1);
+                });
+            }
+        }
+
+        selectedData = _uniqBy(selectedData, 'Id');
+        if (selectedData.length == 0)
+            this.stateSet({ selectedData: [], selectAll: false });
+        else
+            this.stateSet({ selectedData: selectedData });
+    }
+
 
     /*--------- Bind nested grid start --------------*/
     // Return for bind nested grid
@@ -232,7 +305,12 @@ class ContactGrid extends Component {
             expandClick: this.expandClick,
             expandableRow: this.expandableRow,
             expandComponent: this.expandComponent,
-            columnVisible: true
+            columnVisible: true,
+
+            // Settings for handle Select All button
+            selectAll: this.props.selectAll,
+            onRowSelect: this.rowSelect,
+            selectedAllData: this.state.selectedData
         }
 
         return (<div className="stock-list">
@@ -243,7 +321,7 @@ class ContactGrid extends Component {
                         <a href="#"><img src={this.siteURL + "/static/images/quest-mark-icon.png"} alt="icon" />{strings.HELP_LABEL}</a>
                     </div>
                     <div className="clear"></div>
-                    <Grid ref="contactGrid" {...gridProps} key={this.state.refreshGrid} />
+                    <Grid ref="contactGrid" {...gridProps} />
                 </div>
                 {this.renderFilter(strings)}
             </div>
@@ -272,6 +350,18 @@ class ContactGrid extends Component {
                     isClicked={this.state.isClicked} strings={{ ...strings.COMMON }} ref="hierarchy" />
                 <div className="livestoct-status">
                     <div className="form-group">
+                        <Dropdown inputProps={{
+                            name: 'stateFilter',
+                            hintText: strings.CONTROLS.FILTER_STATE_LABEL,
+                            floatingLabelText: strings.CONTROLS.FILTER_STATE_PLACEHOLDER,
+                            value: this.state.filterObj.stateId ? this.state.filterObj.stateId : null
+                        }}
+                            textField="StateName" valueField="Id" dataSource={this.state.stateFilterData}
+                            isClicked={this.state.isClicked} ref="stateFilter" />
+                    </div>
+                </div>
+                <div className="livestoct-status">
+                    <div className="form-group">
                         <ToggleSwitch inputProps={{
                             label: strings.CONTROLS.FILTER_PRIVATE_LABEL,
                             labelPosition: "right",
@@ -291,14 +381,26 @@ class ContactGrid extends Component {
                     </div>
                 </div>
                 <div className="f-btn">
-                    <a onClick={this.applyFilter} className="ripple-effect filter-btn">
-                        {strings.CONTROLS.APPLY_FILTER_LABEL}
-                    </a>
+                    <Button
+                        inputProps={{
+                            name: 'btnApplyFilter',
+                            label: this.strings.CONTROLS.APPLY_FILTER_LABEL,
+                            className: 'button1Style button30Style',
+                        }}
+                        fullWidth={true}
+                        onClick={this.applyFilter}
+                    ></Button>
                 </div>
-                <div className="f-btn">
-                    <a onClick={this.clearFilter} className="ripple-effect filter-btn">
-                        {strings.CONTROLS.CLEAR_FILTER_LABEL}
-                    </a>
+                <div className="f-btn mt5">
+                    <Button
+                        inputProps={{
+                            name: 'btnClearFilter',
+                            label: this.strings.CONTROLS.CLEAR_FILTER_LABEL,
+                            className: 'button3Style button30Style',
+                        }}
+                        fullWidth={true}
+                        onClick={this.clearFilter}
+                    ></Button>
                 </div>
             </div>
         );

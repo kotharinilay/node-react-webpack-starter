@@ -7,6 +7,7 @@
 
 import nodemailer from 'nodemailer';
 import fs from 'fs';
+import path from 'path';
 import Promise from 'bluebird';
 import { getResponse, resMessages } from './index';
 import CompileTemplate from './compile-template';
@@ -42,7 +43,7 @@ function sendEmail(emailFrom, emailTo, subject, message, emailCc = null, emailBC
         return getResponse(400, resMessages.emailMessageReq);
 
     let finalBody = wrapLayout(message);
-    
+
     // Setup mail options
     let mailOptions = {
         from: emailFrom, // sender address
@@ -67,10 +68,10 @@ function sendEmail(emailFrom, emailTo, subject, message, emailCc = null, emailBC
 
 // Gets the header
 function wrapLayout(message) {
-
-    let footer = fs.readFileSync("../../assets/templates/footer.html", 'utf-8');
-    let data = { body: message,footer: footer,SiteUrl: process.env.SITE_URL};
-    return CompileTemplate("assets/templates/layout.html", data);
+    let templatePath = path.join(__dirname, "../templates/email/footer.html");
+    let footer = fs.readFileSync(templatePath, 'utf-8');
+    let data = { body: message, footer: footer, SiteUrl: process.env.SITE_URL };
+    return CompileTemplate("email/layout.html", data);
 }
 
 module.exports = {

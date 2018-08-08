@@ -12,7 +12,7 @@ import outSideClick from 'react-onclickoutside';
 
 import Input from '../../../../lib/core-components/Input';
 import Button from '../../../../lib/core-components/Button';
-import { NOTIFY_ERROR } from '../../../common/actiontypes';
+import { NOTIFY_ERROR, NOTIFY_INFO } from '../../../common/actiontypes';
 
 class SearchBar extends Component {
     constructor(props) {
@@ -109,7 +109,7 @@ class SearchBar extends Component {
                                         name: 'btnAdvanceSearch',
                                         label: strings.ADVANCE_SEARCH_LABEL,
                                         className: 'button2Style search-button'
-                                    }} onClick={() => console.log('button clicked')}></Button>
+                                    }} onClick={() => this.props.notifyToaster(NOTIFY_INFO, { message: 'Not implemented yet.' })}></Button>
 
                                 <Button
                                     inputProps={{

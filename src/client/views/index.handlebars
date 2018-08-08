@@ -46,7 +46,7 @@
   </div>--}}
 
   <!-- Modal -->
-  <div class="modal fade" id="global_modal" role="dialog">
+  <div class="modal fade" id="global_modal" role="dialog" style="z-index: 99999;">
     <div class="modal-dialog">
       <!-- Modal content-->
       <div class="modal-content">
@@ -65,29 +65,33 @@
   </div>
 </body>
 
-<script type="text/javascript " charset="utf-8 ">
+{{!--IE/Edge polyfill functions--}}
+<script src="{{{SiteUrl}}}/static/js/polyfill.js "></script>
+
+<script type="text/javascript" charset="utf-8">
   // app global variables
-    window.__SITE_URL__ = "{{SiteUrl}}";
-    window.__REDUX_STATE__ = {{{ReduxState}}};    
-    //window.__MENUS__ = {{{Menus}}};
+  window.__SITE_URL__ = '{{SiteUrl}}';
+  window.__REDUX_STATE__ = JSON.parse('{{{ReduxState}}}');
+  window.__MENUS__ = JSON.parse('{{{Menus}}}');
+  window.__FIREBASE__ = JSON.parse('{{{Firebase}}}');
 
-    // show material loader 
-    // when percentage count started 
-    /*Pace.on("start", function () {
-      $(".app-init-loader").show();
-    });    
+  // show material loader 
+  // when percentage count started 
+  /*Pace.on("start", function () {
+    $(".app-init-loader").show();
+  });    
 
-    // hide material loader 
-    // when percentage reaches to 100
-    Pace.on("done", function () {
-      $(".app-init-loader").hide();
-    });   */
+  // hide material loader 
+  // when percentage reaches to 100
+  Pace.on("done", function () {
+    $(".app-init-loader").hide();
+  });   */
 
-    $('#global_modal').on('hidden.bs.modal', function (e) {           
-      if(window.location.pathname.indexOf('/login')==-1){
-        window.location = "/login?redirect="+window.location.pathname;
-      }
-    });
+  $('#global_modal').on('hidden.bs.modal', function (e) {
+    if (window.location.pathname.indexOf('/login') == -1) {
+      window.location = "/login?redirect=" + window.location.pathname;
+    }
+  });
 
 </script>
 {{!--this file should be loaded at last after all initializations--}}

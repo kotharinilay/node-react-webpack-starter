@@ -21,6 +21,7 @@ class SetPassword extends PureComponent {
         this.mounted = false;
         this.stateSet = this.stateSet.bind(this);
         this.state = {
+            isOpen: true,
             isClicked: false,
             error: null,
         }
@@ -46,7 +47,11 @@ class SetPassword extends PureComponent {
 
     // To hide modal popup
     hideModal() {
-        this.props.toggleSetPassword(false);
+        this.setState({ isOpen: false });
+        let _this = this;
+        setTimeout(function () {
+            _this.props.toggleSetPassword(false);
+        }, 1000);
     }
 
     // Handle ESC key
@@ -70,93 +75,93 @@ class SetPassword extends PureComponent {
         try {
             let isFormValid = isValidForm(this.setPasswordSchema, this.refs);
             if (!isFormValid) {
-                if (!this.state.isClicked)
-                    this.stateSet({
-                        isClicked: true
-                    });
+                if (!this.state.isClicked && !this.refs.newPassword.fieldStatus.visited)
+                    this.stateSet({ isClicked: true });
                 return false;
             }
             let obj = getForm(this.setPasswordSchema, this.refs);
             let _this = this;
-            let {strings} = this.props;
-            setPassword(obj.loggedinPassword, obj.newPassword, this.props.selectedId).then(function(res) {
+            let { strings } = this.props;
+            setPassword(obj.loggedinPassword, obj.newPassword, this.props.selectedId).then(function (res) {
                 if (res.success) {
-                    _this.props.notifyToaster(NOTIFY_SUCCESS, {
-                        message: strings.PASSWORD_SET_SUCCESS
-                    });
+                    _this.props.notifyToaster(NOTIFY_SUCCESS, { message: strings.PASSWORD_SET_SUCCESS });
                     _this.hideModal();
-                } else if (!res.unauthorized) {
-                    let errorMsg = _this.props.notifyToaster(NOTIFY_ERROR, {
-                        message: res.error,
-                        strings: strings
-                    });
-                    _this.stateSet({
-                        isClicked: false,
-                        error: errorMsg
-                    });
                 }
-            }).catch(function(err) {
+                else if (!res.unauthorized) {
+                    let errorMsg = _this.props.notifyToaster(NOTIFY_ERROR, { message: res.error, strings: strings });
+                    _this.stateSet({ isClicked: false, error: errorMsg });
+                }
+            }).catch(function (err) {
                 _this.props.notifyToaster(NOTIFY_ERROR)
             });
-        } catch (Ex) {
+        }
+        catch (Ex) {
             _this.props.notifyToaster(NOTIFY_ERROR)
         }
     }
 
     // Render popup
     render() {
-        let {strings} = this.props;
-        return ( < Modal isOpen={ true } keyboard={ false }>
-                   < ModalHeader>
-                     < ModalClose onClick={ this.hideModal } />
-                     < h2>
-                       { strings.TITLE }
-                       < /h2>
-                         < /ModalHeader>
-                           < ModalBody>
-                             < div key={ Math.random() } className="form-cover">
-                               < Input inputProps={ {
- name: 'loggedinPassword',
- type: 'password',
- floatingLabelText: strings.CONTROLS.LOGGEDIN_PASSWORD_LABEL,
- hintText: strings.CONTROLS.LOGGEDIN_PASSWORD_PLACE_HOLDER
- } } eReq={ strings.CONTROLS.LOGGEDIN_PASSWORD_REQ_MESSAGE } isClicked={ this.state.isClicked } ref="loggedinPassword" />
-                               < ConfirmPassword inputProps={ {
- name: 'newPassword',
- hintText: strings.CONTROLS.NEW_PASSWORD_PLACE_HOLDER,
- floatingLabelText: strings.CONTROLS.NEW_PASSWORD_LABEL
- } } inputPropsCP={ {
- name: 'confirmPassword',
- hintText: strings.CONTROLS.CONFIRM_PASSWORD_PLACE_HOLDER,
- floatingLabelText: strings.CONTROLS.CONFIRM_PASSWORD_LABEL
- } } minLength={ 8 } eLength={ strings.CONTROLS.MUST_CHAR_REQ_MESSAGE } eReq={ strings.CONTROLS.NEW_PASSWORD_REQ_MESSAGE }
-                                 eReqCP={ strings.CONTROLS.CONFIRM_PASSWORD_REQ_MESSAGE } eCPNotMatch={ strings.CONTROLS.CONFIRM_PASSWORD_VALIDATE_MESSAGE } ref="newPassword" isClicked={ this.state.isClicked } strengthBar={ true }
-                               />
-                               < span className={ (this.state.error != null) ? 'error-message' : 'hidden' }>
-                                 { this.state.error }
-                                 < /span>
-                                   < /div>
-                                     < div className="clearfix">
-                                       < /div>
-                                         < /ModalBody>
-                                           < ModalFooter>
-                                             < div className="search-btn-main">
-                                               < Button inputProps={ {
- name: 'btnSubmit',
- label: strings.CONTROLS.SUBMIT_LABEL,
- className: 'button1Style button30Style mr10'
- } } showLoading={ true } onClick={ this.setPassword }>
-                                                 < /Button>
-                                                   < Button inputProps={ {
- name: 'btnClose',
- label: strings.CONTROLS.CLOSE_LABEL,
- className: 'button2Style button30Style'
- } } onClick={ this.hideModal }>
-                                                     < /Button>
-                                                       < /div>
-                                                         < /ModalFooter>
-                                                           < /Modal>
-            );
+        let { strings } = this.props;
+        return (
+            <Modal isOpen={this.state.isOpen} keyboard={false}>
+                <ModalHeader>
+                    <ModalClose onClick={this.hideModal} />
+                    <h2> {strings.TITLE}</h2>
+                </ModalHeader>
+                <ModalBody>
+                    <div key={Math.random()} className="form-cover">
+                        <Input inputProps={{
+                            name: 'loggedinPassword',
+                            type: 'password',
+                            floatingLabelText: strings.CONTROLS.LOGGEDIN_PASSWORD_LABEL,
+                            hintText: strings.CONTROLS.LOGGEDIN_PASSWORD_PLACE_HOLDER
+                        }}
+                            eReq={strings.CONTROLS.LOGGEDIN_PASSWORD_REQ_MESSAGE}
+                            isClicked={this.state.isClicked} ref="loggedinPassword" />
+                        <ConfirmPassword
+                            inputProps={{
+                                name: 'newPassword',
+                                hintText: strings.CONTROLS.NEW_PASSWORD_PLACE_HOLDER,
+                                floatingLabelText: strings.CONTROLS.NEW_PASSWORD_LABEL
+                            }}
+                            inputPropsCP={{
+                                name: 'confirmPassword',
+                                hintText: strings.CONTROLS.CONFIRM_PASSWORD_PLACE_HOLDER,
+                                floatingLabelText: strings.CONTROLS.CONFIRM_PASSWORD_LABEL
+                            }}
+                            passwordStrengthClass='set-password-strength'
+                            minLength={8}
+                            eLength={strings.CONTROLS.MUST_CHAR_REQ_MESSAGE}
+                            eReq={strings.CONTROLS.NEW_PASSWORD_REQ_MESSAGE}
+                            eReqCP={strings.CONTROLS.CONFIRM_PASSWORD_REQ_MESSAGE}
+                            eCPNotMatch={strings.CONTROLS.CONFIRM_PASSWORD_VALIDATE_MESSAGE}
+                            ref="newPassword" isClicked={this.state.isClicked} strengthBar={true} />
+                        <span className={(this.state.error != null) ? 'error-message' : 'hidden'}>{this.state.error}</span>
+                    </div>
+                    <div className="clearfix"></div>
+                </ModalBody>
+                <ModalFooter>
+                    <div className="search-btn-main">
+                        <Button
+                            inputProps={{
+                                name: 'btnSubmit',
+                                label: strings.CONTROLS.SUBMIT_LABEL,
+                                className: 'button1Style button30Style mr10'
+                            }}
+                            showLoading={true}
+                            onClick={this.setPassword}></Button>
+                        <Button
+                            inputProps={{
+                                name: 'btnClose',
+                                label: strings.CONTROLS.CLOSE_LABEL,
+                                className: 'button2Style button30Style'
+                            }}
+                            onClick={this.hideModal}></Button>
+                    </div>
+                </ModalFooter>
+            </Modal>
+        );
     }
 }
 

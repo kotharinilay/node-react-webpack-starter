@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV='http://schemas.xmlsoap.org/soap/envelope/' xmlns:nlis='http://www.nlis.com.au/soap/ver2.0/nlis-soap.xsd'>
+<SOAP-ENV:Header>
+<nlis:originator-grp>
+<nlis:user>[username]</nlis:user>
+<nlis:password>[password]</nlis:password>
+<nlis:email></nlis:email>
+</nlis:originator-grp>
+<nlis:create-date>[currentdate]</nlis:creyate-date>
+<nlis:create-time>[currenttime]</nlis:create-time>
+<nlis:processing-mode>async</nlis:processing-mode>
+</SOAP-ENV:Header>
+<SOAP-ENV:Body>
+<nlis:KillUpload>
+<nlis:kill-grp>
+<nlis:processor-id>1</nlis:processor-id>
+<nlis:kill-date>[killdate]</nlis:kill-date>
+[rfids]
+</nlis:kill-grp>
+</nlis:KillUpload>
+</SOAP-ENV:Body>
+</SOAP-ENV:Envelope>

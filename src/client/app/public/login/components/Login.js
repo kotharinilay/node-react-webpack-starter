@@ -60,6 +60,7 @@ class Login extends Component {
                 setToken(res.data.Token, obj.RememberMe)
                 cookieFn.deleteCookie('loginAttempt');
                 _this.props.setUserInfo(res.data.userInfo);
+                _this.props.setTopPIC(res.data.userInfo.TopPIC);
                 return true;
             }).catch(function (err) {
                 if (_this.state.enableCaptcha) _this.resetRecaptcha();
@@ -87,7 +88,7 @@ class Login extends Component {
     render() {
         let { strings } = this.props;
         let redirect = null;
-        debugger;
+        ;
         if (this.props.location.query && this.props.location.query.redirect) {
             redirect = this.props.location.query.redirect;
         }
@@ -173,14 +174,7 @@ class Login extends Component {
                                 <h2>{strings.CREATE_AGLIVE_ACCOUNT}</h2>
                                 <p>{strings.DESCRIPTION_LINE1}</p>
                                 <p>{strings.DESCRIPTION_LINE2}</p>
-                                <div className="col-md-6">
-                                    <div className="row">
-                                        <div className="ag-envd">
-                                            <h3>{strings.AGLIVE_ENVD_LABEL} <span>{strings.FREE_MOB_ENVD_LABEL}</span></h3>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div className="col-md-6">
+                                <div className="col-md-12">
                                     <div className="row">
                                         <div className="ag-pro">
                                             <h3>{strings.AGLIVE_PRO_LABEL} <span>{strings.FULLFARM_MANAGEMENT_LABEL}</span></h3>

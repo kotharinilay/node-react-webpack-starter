@@ -6,7 +6,7 @@
 
 import React, { Component } from 'react';
 import ReactNotificationSystem from 'react-notification-system';
-import {get} from 'lodash';
+import { get } from 'lodash';
 
 function NotificationSystem(ComposedComponent) {
     return class NotificationSystem extends ComposedComponent {
@@ -56,7 +56,7 @@ function NotificationSystem(ComposedComponent) {
 
         // show error notification to user
         error(message = this.ERROR_MSG, strings = null, action = null) {
-            
+
             if (strings)
                 message = get(strings, message, this.ERROR_MSG);
 

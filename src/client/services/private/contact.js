@@ -99,6 +99,31 @@ function superuserPerCompany(companyId, contactId) {
     });
 }
 
+// get list of contact to whoom property is accessible
+function getPropertyAccessContactList(propertyId, includePICAccess) {
+    return get('/contact/accesstoproperty', { propertyId: propertyId, includePICAccess: includePICAccess }).then(function (res) {
+        return res.data;
+    }).catch(function (err) {
+        return err.response.data;
+    });
+}
+
+function getContactByCondition(columns, join, condition) {
+    return get('/contact/getbycondition', { columns, join, condition }).then(function (res) {
+        return res.data;
+    }).catch(function (err) {
+        return err.response.data;
+    });
+}
+
+function getAllContactDataset(filterObj = null) {
+    return post('/contact/getalldataset', { filterObj: filterObj }).then(function (res) {
+        return res.data;
+    }).catch(function (err) {
+        return err.response.data;
+    });
+}
+
 module.exports = {
     getBusinessRolesData: getBusinessRolesData,
     getRegionRolesData: getRegionRolesData,
@@ -109,5 +134,8 @@ module.exports = {
     setPassword: setPassword,
     getAllContact: getAllContact,
     setDefaultPIC: setDefaultPIC,
-    superuserPerCompany: superuserPerCompany
+    superuserPerCompany: superuserPerCompany,
+    getPropertyAccessContactList: getPropertyAccessContactList,
+    getContactByCondition: getContactByCondition,
+    getAllContactDataset: getAllContactDataset
 }

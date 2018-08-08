@@ -7,6 +7,9 @@
  * ******************************* */
 
 var validator = require('validator');
+let constants = require('../constants');
+let rfidManufacturerCodes = require('../constants').rfidManufacturerCodes;
+let manufacturerCodes = require('../constants').manufacturerCodes;
 const regex = /^[-a-z0-9~!$%^&*_=+}{\'?]+(\.[-a-z0-9~!$%^&*_=+}{\'?]+)*@([a-z0-9_][-a-z0-9_]*(\.[-a-z0-9_]+[a-z]){1,2}|([0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}))(:[0-9]{1,5})?$/;
 
 // STRING VALIDATORS
@@ -45,6 +48,7 @@ var isNumeric = function (n) {
 // check for valid uuid
 var isUUID = function (str) {
     if (!str) return false;
+    else if (typeof str != 'string') return false;
     return validator.isUUID(str);
 }
 
@@ -105,8 +109,52 @@ var replaceAll = function (sourceStr, replaceStr, replaceToStr, ignore = true) {
         (ignore ? "gi" : "g")), (typeof (replaceToStr) == "string") ? replaceToStr.replace(/\$/g, "$$$$") : replaceToStr);
 }
 
+let EIDValidation = (val) => {
+    let rfidManufacturers = constants.rfidManufacturerCodes.map((code) => {
+        return code.Text;
+    });
+    if (!val) { return false; }
+    else if (val.length != 16) { return false; }
+    let parts = val.split(' ');
+    if (parts.length != 2) { return false; }
+    else if (rfidManufacturers.indexOf(parts[0]) == -1)
+    { return false; }
+
+    return true;
+}
+
+let NLISValidation = (val) => {
+    if (!val) { return false; }
+    else if (val.length != 16) { return false; }
+
+    let manufacturers = constants.manufacturerCodes.map((code) => {
+        return code.Text;
+    });
+
+    let devices = constants.deviceTypes.map((code) => {
+        return code.Text;
+    });
+
+    if (manufacturers.indexOf(val.charAt(8)) == -1) return false;
+    if (devices.indexOf(val.charAt(9)) == -1) return false;
+    if (!val.charAt(10).match(/[a-z]/i)) return false;
+
+    return true;
+}
+
+let VisualTagValidation = (val) => {
+    if (!val) return false;
+    return true;
+}
+
+let SocietyIdValidation = (val) => {
+    if (!val) return false;
+    return true;
+}
+
 module.exports = {
     contains, isDate, isEmpty, isEmail, isJSON, isNumeric, isUUID, isURL,
     trim, escape, unescape, toEmptyStr,
-    getFirstChar, getLastChar, replaceAll
+    getFirstChar, getLastChar, replaceAll,
+    EIDValidation, NLISValidation, VisualTagValidation, SocietyIdValidation
 };

@@ -3,26 +3,26 @@
 module.exports = function(sequelize, DataTypes) {
   return sequelize.define('client', {
     Id: {
-      type: DataTypes.INTEGER(11),
+      type: "BINARY(16)",
       allowNull: false,
-      primaryKey: true,
-      autoIncrement: true
+      primaryKey: true
     },
     Name: {
-      type: DataTypes.STRING(50),
-      allowNull: true
+      type: DataTypes.STRING,
+      allowNull: false
     },
     ClientId: {
-      type: DataTypes.STRING(255),
-      allowNull: true
+      type: DataTypes.STRING,
+      allowNull: false
     },
     ClientSecret: {
-      type: DataTypes.STRING(255),
-      allowNull: true
+      type: DataTypes.STRING,
+      allowNull: false
     },
     IsDeleted: {
-      type: DataTypes.INTEGER(4),
-      allowNull: true
+      type: DataTypes.INTEGER(1),
+      allowNull: false,
+      defaultValue: "0"
     }
   }, {
     tableName: 'client'

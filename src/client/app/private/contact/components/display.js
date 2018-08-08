@@ -15,11 +15,17 @@ class ContactDisplay extends Component {
         super(props);
         this.siteURL = window.__SITE_URL__;
         this.strings = this.props.strings;
+
+        this.state = {
+            selectAll: false
+        }
+
         this.deleteContactClick = this.deleteContactClick.bind(this);
         this.modifyContact = this.modifyContact.bind(this);
-        this.clearSelection = this.clearSelection.bind(this);
+        this.toggleSelection = this.toggleSelection.bind(this);
         this.toggleSetPassword = this.toggleSetPassword.bind(this);
         this.toggleFilter = this.toggleFilter.bind(this);
+        this.toggleButtonText = this.toggleButtonText.bind(this);
     }
 
     // Open delete Contact confirmation popup
@@ -42,9 +48,13 @@ class ContactDisplay extends Component {
         }
     }
 
-    // Clear grid selection
-    clearSelection() {
-        this.refs.grid.clearSelection();
+    toggleButtonText(val) {
+        this.setState({ selectAll: val });
+    }
+
+    // Select All/Clear grid selection
+    toggleSelection() {
+        this.refs.grid.toggleSelection();
     }
 
     // open popup for set password
@@ -58,81 +68,78 @@ class ContactDisplay extends Component {
     }
 
     renderHeader(strings) {
-        return (<div className="dash-right-top" >
-            <div className="live-detail-main">
-                <div className="configure-head">
-                    <span> {strings.TITLE} </span>
+        return (
+            <div className="dash-right-top">
+                <div className="live-detail-main">
+                    <div className="configure-head">
+                        <span>{strings.TITLE}</span>
+                    </div>
+                    <div className="l-stock-top-btn">
+                        <ul>
+                            <li>
+                                <Button
+                                    inputProps={{
+                                        name: 'btnAddNew',
+                                        label: this.strings.CONTROLS.FILTER_LABEL,
+                                        className: 'button1Style button30Style',
+                                    }}
+                                    onClick={this.toggleFilter}
+                                ></Button>
+                            </li>
+                            <li>
+                                <Button
+                                    inputProps={{
+                                        name: 'btnSelectAll',
+                                        label: this.state.selectAll == false ? this.strings.COMMON.SELECT_ALL : this.strings.COMMON.CLEAR,
+                                        className: 'button3Style button30Style',
+                                    }}
+                                    onClick={this.toggleSelection}
+                                ></Button>
+                            </li>
+                            <li><a href="javascript:void(0)" className="ripple-effect search-btn" data-toggle="dropdown">{this.strings.CONTROLS.ACTION_LABEL}</a>
+                                <a href="javascript:void(0)" className="ripple-effect dropdown-toggle caret2" data-toggle="dropdown"> <span><img src={this.siteURL + "/static/images/caret-white.png"} /></span></a>
+                                <ul className="dropdown-menu mega-dropdown-menu action-menu action-menu-height">
+                                    <li>
+                                        <ul>
+                                            <li><a href="javascript:void(0)"
+                                                onClick={() => browserHistory.replace('/contact/new')}>
+                                                {this.strings.CONTROLS.NEW_CONTACT}</a>
+                                            </li>
+                                            <li><a href="javascript:void(0)" onClick={this.modifyContact}>
+                                                {this.strings.CONTROLS.MODIFY_CONTACT}</a>
+                                            </li>
+                                            <li><a href="javascript:void(0)" onClick={this.deleteContactClick}>
+                                                {this.strings.CONTROLS.DELETE_CONTACT}</a>
+                                            </li>
+                                            <li><a href="javascript:void(0)" onClick={this.toggleSetPassword}>
+                                                {this.strings.CONTROLS.SET_PASSWORD_LABEL}</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+
+                        </ul>
+                    </div>
                 </div>
-                <div className="l-stock-top-btn">
-                    <ul>
-                        <li>
-                            <Button inputProps={{
-                                name: 'btnAddNew',
-                                label: this.strings.CONTROLS.FILTER_LABEL,
-                                className: 'button1Style button30Style',
-                            }}
-                                onClick={this.toggleFilter}>
-                            </Button>
-                        </li>
-                        <li>
-                            <Button inputProps={{
-                                name: 'btnClear',
-                                label: this.strings.CONTROLS.CLEAR_LABEL,
-                                className: 'button3Style button30Style',
-                            }}
-                                onClick={this.clearSelection} >
-                            </Button>
-                        </li>
-                        <li>
-                            <a href="javascript:void(0)" className="ripple-effect search-btn"
-                                data-toggle="dropdown"> {this.strings.CONTROLS.ACTION_LABEL} </a>
-                            <a href="javascript:void(0)"
-                                className="ripple-effect dropdown-toggle caret2"
-                                data-toggle="dropdown" >
-                                <span>
-                                    <img src={this.siteURL + "/static/images/caret-white.png"} />
-                                </span>
-                            </a>
-                            <ul className="dropdown-menu mega-dropdown-menu action-menu action-menu-height">
-                                <li>
-                                    <ul>
-                                        <li>
-                                            <a href="javascript:void(0)"
-                                                onClick={() => browserHistory.replace('/contact/new')}> {this.strings.CONTROLS.NEW_CONTACT} </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void(0)" onClick={this.modifyContact}>
-                                                {this.strings.CONTROLS.MODIFY_CONTACT} </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void(0)" onClick={this.deleteContactClick}>
-                                                {this.strings.CONTROLS.DELETE_CONTACT} </a>
-                                        </li>
-                                        <li>
-                                            <a href="javascript:void(0)" onClick={this.toggleSetPassword}>
-                                                {this.strings.CONTROLS.SET_PASSWORD_LABEL} </a>
-                                        </li>
-                                    </ul>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </div>);
+            </div >);
     }
 
     // Render Contact components
     render() {
-        return (<div className="dash-right" > {this.renderHeader(this.strings)}
-            <div className="clear"> </div>
-            <ContactGrid strings={this.props.strings}
-                hierarchyProps={{ ...this.props.hierarchyProps }}
-                hideConfirmPopup={this.props.hideConfirmPopup}
-                openConfirmPopup={this.props.openConfirmPopup}
-                notifyToaster={this.props.notifyToaster}
-                ref='grid' />
-        </div>
+        return (
+            <div className="dash-right">
+                {this.renderHeader(this.strings)}
+                <div className="clear"></div>
+                <ContactGrid strings={this.props.strings}
+                    topSearch={this.props.topSearch}
+                    selectAll={this.state.selectAll}
+                    toggleButtonText={this.toggleButtonText}
+                    hierarchyProps={{ ...this.props.hierarchyProps }}
+                    hideConfirmPopup={this.props.hideConfirmPopup}
+                    openConfirmPopup={this.props.openConfirmPopup}
+                    notifyToaster={this.props.notifyToaster} ref='grid' />
+            </div>
         );
     }
 }

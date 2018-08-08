@@ -25,6 +25,7 @@ class ContactUs extends PureComponent {
         this.mounted = false;
         this.stateSet = this.stateSet.bind(this);
         this.state = {
+            isOpen: true,
             key: Math.random(),
             isClicked: false,
             contact: null
@@ -42,7 +43,11 @@ class ContactUs extends PureComponent {
 
     // To hide modal popup
     hideModal() {
-        this.props.closePopup();
+        this.setState({ isOpen: false });
+        let _this = this;
+        setTimeout(function () {
+            _this.props.closePopup();
+        }, 1000);
     }
 
     // Handle ESC key
@@ -167,7 +172,7 @@ class ContactUs extends PureComponent {
     render() {
         let { strings } = this.props;
         return (
-            <Modal isOpen={true} keyboard={false}>
+            <Modal isOpen={this.state.isOpen} keyboard={false}>
                 <ModalHeader>
                     <ModalClose onClick={this.hideModal} />
                     <h2> {strings.TITLE}</h2>

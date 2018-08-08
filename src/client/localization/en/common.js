@@ -9,6 +9,7 @@ module.exports = {
         SOMETHING_WRONG: 'Sorry, something went wrong. Please try again later.',
         UNAUTHORIZED: 'Un authorized user.',
         MANDATORY_DETAILS: 'Please fill all mandatory details.',
+        RADIO_BUTTON_REQ: 'Please select any one option.',
         INVALID_DETAILS: 'Invalid data value given.',
         EMAIL_FROM_REQ: 'Email from-address not specified.',
         EMAIL_TO_REQ: 'Email to-address not specified.',
@@ -16,10 +17,29 @@ module.exports = {
         EMAIL_MESSAG_EREQ: 'Message body not specified.',
         SELECT_ONLY_ONE: 'Please select only one record.',
         SELECT_AT_LEAST_ONE: 'Please select at least one record.',
-
+        SELECT_AT_LEAST_TWO: 'Please select at least two records.',
+        SELECT_SAME_TYPE: 'Please select either individual livestocks or mobs.',
+        SELECT_SAME_SPECIES: 'Please select same species records.',
+        SELECT_ONLY_MOB: 'Operation can be performed only on Mob.',
+        SELECT_ONLY_EID: 'Operation can be performed only on Individual Livestock.',
+        ONLY_EID_OR_MOB: 'Please select either Mob or Individual Livestock',
         PIC_REQ: 'Please enter PIC.',
         PIC_INVALID: "Please enter valid PIC.",
         DUPLICATE_PIC: "PIC already exist.",
+
+        SAVE: 'Save',
+        CLEAR: 'Clear',
+        CLOSE: 'Close',
+        RESET: 'Reset',
+        CANCEL: 'Cancel',
+        BACK: 'Back',
+        SELECT_ALL: "Select All",
+
+        NLIS_REQ: 'NLIS Username & Password are required.',
+        NLIS_VERIFIED: 'NLIS Credentials are verified successfully.',
+
+        PIC_LPA_ACCREDITED: 'PIC is LPA accredited.',
+        PIC_NOT_LPA_ACCREDITED: 'PIC is not LPA accredited.',
 
         CONFIRMATION_POPUP_COMPONENT: require('./popup-confirmation'),
 
@@ -36,6 +56,12 @@ module.exports = {
         PROPERTY_REQ_MESSAGE: 'Please select Property',
         PROPERTY_LABEL: 'Property',
 
+        BREED_PLACEHOLDER: 'Select Breed',
+        BREED_LABEL: 'Breed',
+        BREED_REQ_MESSAGE: 'Please select Breed',
+        BREED_PERCENT_PLACEHOLDER: 'Enter Percent',
+        BREED_PERCENT_REQ_MESSAGE: 'Please enter Breed Percent',
+
         SUBURB_PLACEHOLDER: "Enter Suburb",
         SUBURB_LABEL: "Suburb",
         STATE_PLACEHOLDER: "Enter State",
@@ -46,12 +72,16 @@ module.exports = {
         FILTERS_LABEL: 'Filters',
 
         CHOOSE_FILE_LABEL: 'Choose File...',
-        SELECT_LABEL: "Select",
+        SELECT_LABEL: "Choose File",
         UPLOAD_LABEL: "Upload",
         DELETE_LABEL: "Delete",
         FILE_SELECT_VALIDATION_MESSAGE: 'Please select file to upload.',
         UPLOAD_FILE_SIZE_EXCESS_MESSAGE: "Please upload file upto 2 MB in size.",
         PICTURE_TYPE_VIOLATION_MESSAGE: "Please select image file only.",
+        SIGNATURE_PAD: "SIGNATURE PAD",
+
+        DOC_UPLOAD_SUCCESS: "Document uploaded successfully.",
+        DOC_DELETE_SUCCESS: "Document deleted successfully.",
 
         VALIDATION: {
             1102: "Please enter PIC.",
